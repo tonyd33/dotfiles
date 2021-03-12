@@ -1,0 +1,4 @@
+configuration {
+	theme: "/home/tony/.local/share/rofi/themes/slate.rasi";
+}
+@import "/usr/share/rofi/themes/Arc-Dark.rasi"
