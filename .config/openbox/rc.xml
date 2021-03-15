@@ -114,10 +114,8 @@
   <desktops>
     <!-- this stuff is only used at startup, pagers allow you to change them
        during a session
-
        these are default values to use when other ones are not already set
        by other applications, or saved in your session
-
        use obconf if you want to change these without having to log out
        and back in -->
     <number>4</number>
@@ -178,32 +176,18 @@
   </dock>
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
+    <keybind key="C-S-Escape">
+      <action name="Exit"/>
+    </keybind>
+    <keybind key="C-S-BackSpace">
+      <action name="Restart"/>
+    </keybind>
+    <keybind key="C-S-R">
+      <action name="Reconfigure"/>
+    </keybind>
     <!-- Keybindings for desktop switching -->
-    <keybind key="C-A-Left">
-      <action name="GoToDesktop">
-        <to>left</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Right">
-      <action name="GoToDesktop">
-        <to>right</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Up">
-      <action name="GoToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Down">
-      <action name="GoToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-        <keybind key="S-W-1">
+    
+    <keybind key="S-W-1">
       <action name="SendToDesktop">
         <desktop>1</desktop>
       </action>
@@ -266,7 +250,7 @@
       <action name="UnmaximizeFull"/>
       <action name="MaximizeVert"/>
       <action name="MoveResizeTo">
-        <width>49%</width>
+        <width>50%</width>
       </action>
       <action name="MoveToEdgeWest"/>
     </keybind>
@@ -274,7 +258,7 @@
       <action name="UnmaximizeFull"/>
       <action name="MaximizeVert"/>
       <action name="MoveResizeTo">
-        <width>49%</width>
+        <width>50%</width>
       </action>
       <action name="MoveToEdgeEast"/>
     </keybind>
@@ -289,6 +273,35 @@
       </action>
       <action name="MoveToCenter"/>
     </keybind>
+    
+    <keybind key="W-S-h">
+      <action name="UnmaximizeFull"/>
+      <action name="MaximizeVert"/>
+      <action name="MoveResizeTo">
+        <width>50%</width>
+      </action>
+      <action name="MoveToEdgeWest"/>
+    </keybind>
+    <keybind key="W-S-l">
+      <action name="UnmaximizeFull"/>
+      <action name="MaximizeVert"/>
+      <action name="MoveResizeTo">
+        <width>50%</width>
+      </action>
+      <action name="MoveToEdgeEast"/>
+    </keybind>
+    <keybind key="W-S-k">
+      <action name="MaximizeFull"/>
+    </keybind>
+    <keybind key="W-S-j">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <width>60%</width>
+        <height>80%</height>
+      </action>
+      <action name="MoveToCenter"/>
+    </keybind>
+
     <!-- Keybindings for windows -->
     <keybind key="W-S-q">
       <action name="Close"/>
@@ -335,7 +348,7 @@
     </keybind>
     <keybind key="W-f">
       <action name="Execute">
-        <command>thunar</command>
+        <command>termite -e ranger</command>
       </action>
     </keybind>
     <keybind key="W-Return">
@@ -343,25 +356,35 @@
         <command>termite</command>
       </action>
     </keybind>
+    <keybind key="W-x">
+      <action name="Execute">
+        <command>~/.config/rofi/bin/powermenu</command>
+      </action>
+    </keybind>
+    <keybind key="W-m">
+      <action name="Execute">
+        <command>~/.config/rofi/bin/mpd</command>
+      </action>
+    </keybind>
     <!-- Resize -->
     <keybind key="C-A-Right">
       <action name="ResizeRelative">
-        <right>20</right>
+        <right>30</right>
       </action>
     </keybind>
     <keybind key="C-A-Left">
       <action name="ResizeRelative">
-        <right>-20</right>
+        <right>-30</right>
       </action>
     </keybind>
     <keybind key="C-A-Down">
       <action name="ResizeRelative">
-        <bottom>20</bottom>
+        <bottom>30</bottom>
       </action>
     </keybind>
     <keybind key="C-A-Up">
       <action name="ResizeRelative">
-        <bottom>-20</bottom>
+        <bottom>-30</bottom>
       </action>
     </keybind>
     <!-- Move -->
@@ -389,6 +412,10 @@
         <y>0</y>
       </action>
     </keybind>
+    <!-- Activate Move/Resize -->
+    <keybind key="A-r">
+      <action name="Resize"/>
+    </keybind>
     <!-- Keybindings for window switching with the arrow keys -->
     <keybind key="W-Right">
       <action name="DirectionalCycleWindows">
@@ -410,6 +437,32 @@
         <direction>down</direction>
       </action>
     </keybind>
+    <keybind key="W-Right">
+      <action name="DirectionalCycleWindows">
+        <direction>right</direction>
+      </action>
+    </keybind>
+
+    <keybind key="W-h">
+      <action name="DirectionalCycleWindows">
+        <direction>left</direction>
+      </action>
+    </keybind>
+    <keybind key="W-k">
+      <action name="DirectionalCycleWindows">
+        <direction>up</direction>
+      </action>
+    </keybind>
+    <keybind key="W-j">
+      <action name="DirectionalCycleWindows">
+        <direction>down</direction>
+      </action>
+    </keybind>
+    <keybind key="W-l">
+      <action name="DirectionalCycleWindows">
+        <direction>right</direction>
+      </action>
+    </keybind>
     <!-- Keybindings for running applications -->
     <keybind key="W-r">
       <action name="Execute">
@@ -417,7 +470,7 @@
           <enabled>true</enabled>
           <name>Rofi</name>
         </startupnotify>
-        <command>rofi -show run -theme ~/.config/rofi/theme</command>
+        <command>~/.config/rofi/bin/launcher</command>
       </action>
     </keybind>
   </keyboard>
@@ -786,7 +839,6 @@
   # own rules, but without the comments of course.
   # you may use one or more of the name/class/role/title/type rules to specify
   # windows to match
-
   <application name="the window's _OB_APP_NAME property (see obxprop)"
               class="the window's _OB_APP_CLASS property (see obxprop)"
           groupname="the window's _OB_APP_GROUP_NAME property (see obxprop)"
@@ -797,27 +849,19 @@
                       (if unspecified, then it is 'dialog' for child windows)">
   # you may set only one of name/class/role/title/type, or you may use more
   # than one together to restrict your matches.
-
   # the name, class, role, and title use simple wildcard matching such as those
   # used by a shell. you can use * to match any characters and ? to match
   # any single character.
-
   # the type is one of: normal, dialog, splash, utility, menu, toolbar, dock,
   #    or desktop
-
   # when multiple rules match a window, they will all be applied, in the
   # order that they appear in this list
-
-
     # each rule element can be left out or set to 'default' to specify to not 
     # change that attribute of the window
-
     <decor>yes</decor>
     # enable or disable window decorations
-
     <shade>no</shade>
     # make the window shaded when it appears, or not
-
     <position force="no">
       # the position is only used if both an x and y coordinate are provided
       # (and not set to 'default')
@@ -834,7 +878,6 @@
       # specifies the monitor in a xinerama setup.
       # 1 is the first head, or 'mouse' for wherever the mouse is
     </position>
-
     <size>
       # the size to make the window.
       <width>20</width>
@@ -844,35 +887,26 @@
       # appears on.
       <height>30%</height>
     </size>
-
     <focus>yes</focus>
     # if the window should try be given focus when it appears. if this is set
     # to yes it doesn't guarantee the window will be given focus. some
     # restrictions may apply, but Openbox will try to
-
     <desktop>1</desktop>
     # 1 is the first desktop, 'all' for all desktops
-
     <layer>normal</layer>
     # 'above', 'normal', or 'below'
-
     <iconic>no</iconic>
     # make the window iconified when it appears, or not
-
     <skip_pager>no</skip_pager>
     # asks to not be shown in pagers
-
     <skip_taskbar>no</skip_taskbar>
     # asks to not be shown in taskbars. window cycling actions will also
     # skip past such windows
-
     <fullscreen>yes</fullscreen>
     # make the window in fullscreen mode when it appears
-
     <maximized>true</maximized>
     # 'Horizontal', 'Vertical' or boolean (yes/no)
   </application>
-
   # end of the example
 -->
   </applications>

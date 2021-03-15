@@ -6,6 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
+alias ll='ls -alh'
 PS1='[\u@\h \W]\$ '
 
 # Powerline

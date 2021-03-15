@@ -20,7 +20,7 @@
     urgent-background:           rgba ( 29, 31, 33, 17 % );
     alternate-normal-foreground: var(foreground);
     selected-active-background:  rgba ( 20, 27, 34, 100 % );
-    background:                  rgba(38, 50, 56, 0.8);
+    background:                  rgba ( 34, 46, 58, 50 % );
     selected-normal-foreground:  rgba ( 249, 249, 249, 100 % );
     active-background:           rgba ( 20, 27, 34, 17 % );
     alternate-active-foreground: var(active-foreground);
@@ -31,7 +31,7 @@
     normal-foreground:           var(foreground);
     alternate-urgent-foreground: var(urgent-foreground);
     selected-normal-background:  rgba ( 20, 27, 34, 100 % );
-    font: "Knack Nerd Font 12";
+    font: "System San Francisco 12";
 }
 window {
     padding:          5;

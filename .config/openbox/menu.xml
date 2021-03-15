@@ -7,8 +7,14 @@
         <item label="Thunar File Manager"> <action name="Execute">
                 <execute>thunar</execute>
             </action> </item>
+        <item label="ranger"> <action name="Execute">
+                <execute>termite -e ranger</execute>
+            </action> </item>
         <item label="Neovim"> <action name="Execute">
                 <execute>termite -e nvim</execute>
+            </action> </item>
+        <item label="Code"> <action name="Execute">
+                <execute>code</execute>
             </action> </item>
         <item label="Discord"> <action name="Execute">
                 <execute>discord</execute>
@@ -17,9 +23,6 @@
                 <execute>firefox</execute>
         </action> </item>
         <menu id="6" label="Graphics">
-            <item label="dotty"> <action name="Execute">
-                <execute>dotty</execute>
-            </action> </item>
             <item label="Flameshot"> <action name="Execute">
                 <execute>flameshot</execute>
             </action> </item>
@@ -39,7 +42,7 @@
             </action> </item>
         </menu>
         <menu id="3" label="Office">
-            <item label="Document Viewer"> <action name="Execute">
+            <item label="Evince"> <action name="Execute">
                 <execute>evince</execute>
             </action> </item>
             <item label="Zathura"> <action name="Execute">
@@ -52,9 +55,6 @@
             </action> </item>
             <item label="GIT"> <action name="Execute">
                 <execute>termite -e git</execute>
-            </action> </item>
-            <item label="ranger"> <action name="Execute">
-                <execute>termite -e ranger</execute>
             </action> </item>
             <item label="Termite"> <action name="Execute">
                 <execute>termite</execute>
