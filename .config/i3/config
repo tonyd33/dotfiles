@@ -57,7 +57,7 @@ set $thick 16
 bindsym $mod+Return exec termite
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # hide title bar
 for_window [class="^.*"] border pixel 0 
@@ -79,11 +79,17 @@ assign [class="discord"] $ws5
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # start dmenu (a program launcher)
-# bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec dmenu_run
 bindsym $mod+r exec ~/.config/rofi/bin/launcher
-bindsym $mod+m exec ~/.config/rofi/bin/mpd
+#bindsym $mod+m exec ~/.config/rofi/bin/mpd
 bindsym $mod+x exec ~/.config/rofi/bin/powermenu
 bindsym $mod+z exec flameshot gui
+# read 1 character and mark the current window with this character
+bindsym $mod+m exec i3-input -F 'mark %s' -l 2 -P 'Mark: '
+
+# read 1 character and go to the window with the character
+bindsym $mod+g exec i3-input -F '[con_mark="%s"] focus' -l 2 -P 'Goto: '
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -114,13 +120,13 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+g split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -134,7 +140,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -227,10 +233,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #}
 
 # resizing
-bindsym $mod+y resize shrink width 20 px or 20 ppt
-bindsym $mod+u resize grow height 10 px or 20 ppt
-bindsym $mod+i resize shrink height 20 px or 20 ppt
-bindsym $mod+o resize grow width 20 px or 20 ppt
+bindsym $mod+Shift+y resize shrink width 20 px or 20 ppt
+bindsym $mod+Shift+u resize grow height 10 px or 20 ppt
+bindsym $mod+Shift+i resize shrink height 20 px or 20 ppt
+bindsym $mod+Shift+o resize grow width 20 px or 20 ppt
 
 # bindsym $mod+r mode "resize"
 
@@ -245,4 +251,34 @@ exec_always xrandr --output DP-0 --primary --mode 1920x1080 --pos 0x0 --rate 144
 exec_always --no-startup-id picom -bf --experimental-backends --xrender-sync-fence
 # background
 exec_always nitrogen --restore
+
+bindsym $mod+f exec termite -e ranger
+
+for_window [window_role="dropdown"] floating enable
+for_window [window_role="dropdown"] resize set 625 400
+for_window [window_role="dropdown"] move scratchpad
+exec --no-startup-id termite --role=dropdown -e tmux
+
+
+for_window [window_role="math"] floating enable
+for_window [window_role="math"] resize set 800 600
+for_window [window_role="math"] move scratchpad
+exec --no-startup-id termite --role=math --config=/home/tony/.config/termite/config.math -e python
+
+for_window [window_role="music"] floating enable
+for_window [window_role="music"] resize set 920 500
+for_window [window_role="music"] move position 20 px 70 px
+for_window [window_role="music"] move scratchpad
+exec --no-startup-id termite --role=music -e ncmpcpp
+
+for_window [window_role="visualizer"] floating enable
+for_window [window_role="visualizer"] resize set 920 500
+for_window [window_role="visualizer"] move position 980 px 550 px
+for_window [window_role="visualizer"] move scratchpad
+exec --no-startup-id termite --role=visualizer -e vis
+
+bindsym $mod+u [window_role="dropdown"] scratchpad show; [window_role="dropdown"] move position center
+bindsym $mod+y [window_role="math"] scratchpad show; [window_role="math"] move position center
+bindsym $mod+i [window_role="music"] scratchpad show; 
+bindsym $mod+o [window_role="visualizer"] scratchpad show; 
 
