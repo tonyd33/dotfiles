@@ -1,3 +1,6 @@
+" To find an IDEA action, use
+" :action VimFindActionIdAction
+
 let mapleader=" "
 
 " Configuration
@@ -6,6 +9,9 @@ set hls
 set ignorecase smartcase
 " Unhighlight after search
 nnoremap <CR> :noh<CR>
+
+nnoremap <leader>t gt
+nnoremap <leader>T gT
 
 " Bookmarks
 nnoremap m0 :action ToggleBookmark0<CR>
@@ -39,7 +45,14 @@ nnoremap <leader>p "*p
 nnoremap <leader>rn :action RenameElement<CR>
 nnoremap <leader>gf :action GotoFile<CR>
 nnoremap <leader>gF :action FindInPath<CR>
+nnoremap <leader>gs :action GotoSymbol<CR>
 nnoremap <leader>ga :action GotoAction<CR>
+nnoremap <leader>gy :action CopyReferencePopup<CR>
+nnoremap <leader>gc :action ActivateCommitToolWindow<CR>
+nnoremap <leader>gh :action HideActiveWindow<CR>
+nnoremap <leader>re :action Replace<CR>
+nnoremap <leader>rf :action ReplaceInPath<CR>
+" nnoremap / :action Find<CR>
 " This is already just mapped to gd by default
 " nnoremap <leader>gd :action GotoDeclaration<CR>
 
@@ -60,3 +73,4 @@ nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nc :NERDTreeToggle<CR>
 nnoremap <leader>nF :NERDTreeToggle<CR>
+
