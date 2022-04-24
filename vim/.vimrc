@@ -16,6 +16,7 @@ Plug 'machakann/vim-sandwich'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ap/vim-css-color'
 Plug 'easymotion/vim-easymotion'
+Plug 'christoomey/vim-tmux-navigator'
 
 " themes
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
@@ -38,6 +39,8 @@ set list
 setlocal foldmethod=syntax          " folding via syntax for this filetype
 set foldlevel=99                    " start with folds open
 set autoindent                      " indent a new line the same amount as the line just typed
+set cursorline
+set t_Co=256
 " }}}
 
 " plugin configuration {{{1
@@ -64,6 +67,22 @@ map <leader> <Plug>(easymotion-prefix)
 map s <Plug>(easymotion-prefix)s
 " }}}
 
+" vim-css-colors {{{
+function s:CssColorInit(typ, keywords, groups)
+  try
+    call css_color#init(a:typ, a:keywords, a:groups)
+  catch /^Vim\%((\a\+)\)\=:E117/
+    echom 'ap/vim-css-color not yet installed.'
+  endtry 
+endfunction
+
+augroup CssColorCustomFiletypes
+  autocmd!
+  autocmd Filetype conf call s:CssColorInit('hex', 'none', 'confComment')
+  autocmd Filetype haskell call s:CssColorInit('hex', 'none', 'haskellLineComment,haskellString,haskellBlockComment')
+augroup END
+" }}}
+
 " 1}}}
 
 " maps {{{
@@ -86,5 +105,7 @@ set background=dark
 " }}}
 
 " auto save folds
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* loadview
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
+
+" vim:fileencoding=utf-8:foldmethod=marker
