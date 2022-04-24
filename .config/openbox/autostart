@@ -1,4 +1,0 @@
-tint2 &
-$HOME/.config/polybar/launch.sh &
-picom -bf --experimental-backends &
-nitrogen --restore &
