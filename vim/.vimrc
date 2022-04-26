@@ -33,6 +33,8 @@ set number relativenumber           " show absolute line as well as relative lin
 set showmatch                       " show matching brackets
 set cc=80                           " column count
 set tabstop=2
+set shiftwidth=4
+set expandtab
 set hlsearch                        " highlight search results
 set listchars=tab:>~,nbsp:_,trail:. " detect whitespace characters
 set list
@@ -40,7 +42,7 @@ setlocal foldmethod=syntax          " folding via syntax for this filetype
 set foldlevel=99                    " start with folds open
 set autoindent                      " indent a new line the same amount as the line just typed
 set cursorline
-set t_Co=256
+set t_Co=256                        " set 256 terminal colors
 " }}}
 
 " plugin configuration {{{1
@@ -97,11 +99,29 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+" change working directory for current window
+nnoremap <leader><leader>cwd :lcd %:p:h<CR>
 " }}}
 
 " theming {{{
 colorscheme onehalfdark
 set background=dark
+" }}}
+
+
+" treat .dot files without the prefix {{{
+function s:changeft()
+  let ext = expand('%:e')
+  let filename_orig = @%
+  if ext != "dot"
+    return
+  endif
+  let file_dot_stripped = substitute(filename_orig, '.dot', '', '')
+  execute "file " file_dot_stripped
+  filetype detect
+  execute "file " filename_orig
+endfunction
+autocmd BufWinEnter *.dot :call s:changeft()
 " }}}
 
 " auto save folds

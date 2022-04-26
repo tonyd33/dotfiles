@@ -7,7 +7,7 @@ function build () {
 				file_ext=${filename##*.}
 				[ $file_ext != dot ] && exit
 				built="$directory/${filename::-4}"
-				dotpp -s lookup.py -t $path_to_file -o $built
+				dotpp.py -s lookup.py -t $path_to_file -o $built
 				echo "built $path_to_file->$built"
 }
 

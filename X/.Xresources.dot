@@ -1,0 +1,36 @@
+! special
+*.foreground:   #a0a0a0
+*.background:   #232323
+*.cursorColor:  #a0a0a0
+
+! black
+*.color0:       $$black_primary$$
+*.color8:       $$black_secondary$$
+
+! red
+*.color1:      	$$red$$
+*.color9:       $$red$$
+
+! green
+*.color2:       $$green$$
+*.color10:      $$green$$
+
+! yellow
+*.color3:       $$yellow$$
+*.color11:      $$yellow$$
+
+! blue
+*.color4:       $$blue$$
+*.color12:      $$blue$$
+
+! magenta
+*.color5:       $$magenta$$
+*.color13:      $$magenta$$
+
+! cyan
+*.color6:       $$cyan$$
+*.color14:      $$cyan$$
+
+! white
+*.color7:       $$white$$
+*.color15:      $$white$$
