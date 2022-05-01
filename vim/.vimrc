@@ -17,9 +17,14 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'ap/vim-css-color'
 Plug 'easymotion/vim-easymotion'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'adelarsq/vim-matchit'
+Plug 'preservim/nerdcommenter'
 
 " themes
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 " }}}
@@ -46,6 +51,15 @@ set t_Co=256                        " set 256 terminal colors
 " }}}
 
 " plugin configuration {{{1
+
+" nerdcommenter {{{
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+" }}}
 
 " vim-easy-align {{{
 " start interactive EasyAlign in visual mode (e.g. vipga)
@@ -99,6 +113,8 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+nnoremap <C-o> <C-o>zz
+nnoremap <C-i> <C-i>zz
 " change working directory for current window
 nnoremap <leader><leader>cwd :lcd %:p:h<CR>
 " }}}

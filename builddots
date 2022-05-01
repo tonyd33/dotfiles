@@ -1,13 +1,12 @@
 #!/usr/bin/sh
 
 function build () {
-				path_to_file=$1
-				directory=`dirname $path_to_file`
-				filename=`basename $path_to_file`
+				directory=`dirname $1`
+				filename=`basename $1`
 				file_ext=${filename##*.}
-				[ $file_ext != dot ] && exit
+				[ $file_ext != 'dot' ] && exit # ignore non .dot files
 				built="$directory/${filename::-4}"
-				dotpp.py -s lookup.py -t $path_to_file -o $built
+				dotpp.py -s lookup.json -t $1 -o $built
 				echo "built $path_to_file->$built"
 }
 

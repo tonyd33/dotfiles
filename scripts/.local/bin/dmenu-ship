@@ -1,0 +1,6 @@
+#!/usr/bin/sh
+
+cd /home/tony/git/dotfiles
+command=`echo -e "sail\nanchor" | dmenu -b -i`
+/home/tony/git/dotfiles/ship $command
+

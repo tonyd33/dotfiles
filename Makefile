@@ -1,7 +1,12 @@
 all:
-	./builddots.sh
-	stow --verbose --target=$$HOME --ignore='.*\.dot' --restow `ls -d */ | grep -v -f .stowignore`
+	./builddots
+	./ship sail
 
 delete:
-	stow --verbose --target=$$HOME --delete */
+	./ship anchor
 
+sail:
+	./ship sail
+
+dot:
+	./builddots

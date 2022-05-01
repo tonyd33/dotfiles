@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Search through open programs and switch to their tag
+application=$(
+	# List all running programs
+	lsi3 -a window_class name window |\
+      # First line is always just for tables
+      tail -n +2 |\
+	# Pipe to dmenu ($@ to include font settings from dwm/config.h)
+	dmenu -i -b -p "Switch to" $@
+)
+
+# Change 4 to whichever attribute window is +1
+window_id=`echo $application | cut -d '[' -f 4 | sed 's/\]//'`
+i3-msg "[id=$window_id] focus"
+

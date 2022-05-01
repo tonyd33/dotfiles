@@ -1,0 +1,76 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        interval = 1
+        color_good = "$$green$$"
+        color_bad = "$$red$$"
+        color_degraded = "$$magenta$$"
+        color_separator = "$$cyan$$"
+}
+
+order += "disk /"
+order += "cpu_usage"
+order += "memory"
+order += "load"
+order += "tztime local"
+order += "volume master"
+
+ethernet eth0 {
+        format_up = "E: %speed"
+        format_down = "E: down"
+}
+
+run_watch DHCP {
+        pidfile = "/var/run/dhclient*.pid"
+}
+
+run_watch VPNC {
+        # file containing the PID of a vpnc process
+        pidfile = "/var/run/vpnc/pid"
+}
+
+path_exists VPN {
+        # path exists when a VPN tunnel launched by nmcli/nm-applet is active
+        path = "/proc/sys/net/ipv4/conf/tun0"
+}
+
+tztime local {
+        format = "%Y-%m-%d %H:%M:%S"
+        hide_if_equals_localtime = false
+}
+
+tztime berlin {
+        format = "%Y-%m-%d %H:%M:%S %Z"
+        timezone = "Europe/Berlin"
+}
+
+load {
+        format = "load %15min"
+}
+
+cpu_temperature 0 {
+        format = "T: %degrees °C"
+        path = "/sys/devices/platform/coretemp.0/temp1_input"
+}
+
+memory {
+        format = "%used / %total"
+        threshold_degraded = "10%"
+        format_degraded = "MEMORY: %free"
+}
+
+disk "/" {
+        format = "%avail/%total"
+}
+
+read_file uptime {
+        path = "/proc/uptime"
+}
+
+cpu_usage {
+        format = "CPU: %usage"
+}
+
+volume master {
+    format = "♪ %volume"
+}

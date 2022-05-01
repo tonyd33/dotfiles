@@ -73,6 +73,7 @@ ZSH_THEME="robbyrussell"
 plugins=(git colored-man-pages tmux)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.bitwardenenv
 
 # User configuration
 
@@ -101,7 +102,7 @@ export EDITOR=nvim
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias cl="clear"
-
 PATH=$PATH:/home/tony/.local/bin
-PATH=$PATH:/home/tony/scripts
+
+export MPD_HOST=localhost
+export MPD_PORT=6600

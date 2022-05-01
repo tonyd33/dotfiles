@@ -1,2 +1,10 @@
 i3/.config/i3/config
 kitty/.config/kitty/theme.conf
+X/.Xresources
+qutebrowser/.config/qutebrowser/bookmarks/urls
+i3status/.config/i3status/config
+mpd/.config/mpd/cache
+mpd/.config/mpd/db
+mpd/.config/mpd/playlists
+mpd/.config/mpd/state
+mpd/.config/mpd/sticker.sql

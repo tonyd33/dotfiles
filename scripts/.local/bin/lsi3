@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+from i3ipc import Connection
+import argparse
+import sys
+
+i3con_attrs = [
+    "border",
+    "current_border_width",
+    "floating",
+    "focus",
+    "focused",
+    "fullscreen_mode",
+    "id",
+    "layout",
+    "marks",
+    "name",
+    "num",
+    "orientation",
+    "percent",
+    "scratchpad_state",
+    "sticky",
+    "type",
+    "urgent",
+    "window",
+    "window_class",
+    "window_role",
+    "window_title",
+]
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="lsi3")
+    parser.add_argument(
+        "-a",
+        "--attributes",
+        nargs="+",
+        choices=i3con_attrs,
+        action="store",
+        required=True,
+        help="attribute of each window to list",
+    )
+
+    args = parser.parse_args()
+    attributes = args.attributes
+
+    sys.stdout.write(" ".join((f"{attribute}" for attribute in attributes)))
+    sys.stdout.write("\n")
+
+    i3 = Connection()
+    for con in i3.get_tree():
+        if not is_window(con):
+            continue
+
+        out = ""
+        for attribute in attributes:
+            value = f"[{getattr(con, attribute)}]"
+            out = f"{out} {value}"
+        out += "\n"
+        sys.stdout.write(out)
+
+
+# Expand this if ever needed
+def is_window(con):
+    return con.window is not None and con.window_class != "i3bar"
+
+
+if __name__ == "__main__":
+    main()

@@ -8,4 +8,8 @@ nitrogen --restore &
 # pipewire
 pipewire &
 pipewire-pulse &
-pipewire-media-session
+wireplumber &
+picom &
+screenkey --start-disabled &
+mpd &
+

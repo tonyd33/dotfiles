@@ -41,6 +41,20 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+# colors
+set $bg-color $$background$$
+set $inactive-bg-color $$black_secondary$$
+set $text-color $$foreground$$
+set $inactive-text-color $$tan$$
+set $urgent-bg-color $$red$$
+set $indicator-color $$blue$$
+
+# selector              border             background         text                 indicator
+client.focused          $bg-color          $bg-color          $text-color          $indicator-color
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
+client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $indicator-color
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -83,7 +97,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mode+b split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -183,6 +197,11 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3status
+        position top
+        tray_output primary
+        font pango:Cartograph Mono CF 16
+        workspace_min_width 72
+        tray_padding 0
 }
 
 # gaps
@@ -190,8 +209,28 @@ gaps outer 5
 gaps inner 20
 gaps horizontal 2
 
+# dropdowns
+for_window [class="dropdown"] floating enable
+for_window [class="dropdown"] resize set 1600 900
+for_window [class="dropdown"] move scratchpad
+exec --no-startup-id kitty --class kitty-dropdown sh -c "tmux new -s dropdown || tmux a -t dropdown"
+bindsym $mod+u [class="dropdown"] scratchpad show; [class="dropdown"] move position center
+
+for_window [class="music"] floating enable
+for_window [class="music"] resize set 1600 900
+for_window [class="music"] move scratchpad
+exec --no-startup-id kitty --class music sh -c "ncmpcpp"
+bindsym $mod+i [class="music"] scratchpad show; [class="music"] move position center
+
+for_window [class="discord"] floating enable
+for_window [class="discord"] resize set 1600 900
+for_window [class="discord"] move scratchpad
+exec --no-startup-id discord
+bindsym $mod+o [class="discord"] scratchpad show; [class="discord"] move position center
+
+
 # startup
-exec_always --no-startup-id $$scripts_dir$$/xstart.sh
+exec --no-startup-id $$scripts_dir$$/xstart
 
 # other binds
 bindsym $mod+z exec flameshot gui

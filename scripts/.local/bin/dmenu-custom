@@ -1,3 +1,5 @@
 #!/bin/sh
 
+PATH=$PATH:/home/tony/.local/bin
+
 dmenu_run -i -fn "Cartograph Mono CF" -b

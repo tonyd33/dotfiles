@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+
+[ $1 = sail ] && stow --verbose --target=$HOME --ignore='.*\.dot' --restow `ls -d */ | grep -v -f .stowignore` && exit
+
+[ $1 = anchor ] && stow --verbose --target=$HOME --delete */ && exit
+
+echo 'Unknown command.'
+echo 'Usage:'
+echo '  ship [sail|anchor]'
+echo ''
