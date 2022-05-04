@@ -19,3 +19,8 @@ built to centralize shared variables and does a simple token replacement in
 `.dot` files across the repo and spits out the built result for `stow` to ship
 the changes.
 
+# Screenshots
+
+![image](https://github.com/tonyd33/dotfiles/blob/glass/screenshot1.png?raw=true)
+
+![image](https://github.com/tonyd33/dotfiles/blob/glass/screenshot2.png?raw=true)
