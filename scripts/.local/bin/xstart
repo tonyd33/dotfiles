@@ -10,6 +10,9 @@ pipewire &
 pipewire-pulse &
 wireplumber &
 picom &
-screenkey --start-disabled &
 mpd &
-
+screenkey --start-disabled &
+gromit-mpx &
+dunst &
+/home/tony/.local/bin/launch-polybar &
+emote &

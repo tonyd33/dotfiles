@@ -2,4 +2,4 @@
 
 PATH=$PATH:/home/tony/.local/bin
 
-dmenu_run -i -fn "Cartograph Mono CF" -b
+dmenu_run -i -fn "Cartograph Mono CF"

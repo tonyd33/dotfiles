@@ -4,10 +4,10 @@ source ~/.bitwardenenv
 export BW_SESSION=`bw unlock --passwordenv BW_PASSWORD | grep export | cut -d '"' -f 2`
 
 
-selection=`bw list items | jq -j 'map([.name,.login.username,.id] | join(" ")) | join("\n")' | dmenu -b -i | awk '{print $NF}'`
+selection=`bw list items | jq -j 'map([.name,.login.username,.id] | join(" ")) | join("\n")' | dmenu -i | awk '{print $NF}'`
 echo $selection
 
-option=`echo -e 'username\npassword\nitem' | dmenu -b -i`
+option=`echo -e 'username\npassword\nitem' | dmenu -i`
 
 bw get $option $selection | xclip -sel clip
 

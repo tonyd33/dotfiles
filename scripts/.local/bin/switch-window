@@ -7,7 +7,7 @@ application=$(
       # First line is always just for tables
       tail -n +2 |\
 	# Pipe to dmenu ($@ to include font settings from dwm/config.h)
-	dmenu -i -b -p "Switch to" $@
+	dmenu -i -p "Switch to" $@
 )
 
 # Change 4 to whichever attribute window is +1

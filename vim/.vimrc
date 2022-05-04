@@ -21,6 +21,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'adelarsq/vim-matchit'
 Plug 'preservim/nerdcommenter'
+Plug 'vimwiki/vimwiki'
 
 " themes
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
@@ -48,6 +49,7 @@ set foldlevel=99                    " start with folds open
 set autoindent                      " indent a new line the same amount as the line just typed
 set cursorline
 set t_Co=256                        " set 256 terminal colors
+set nocompatible                    " used for vimwiki
 " }}}
 
 " plugin configuration {{{1

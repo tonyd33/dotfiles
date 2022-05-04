@@ -102,7 +102,15 @@ export EDITOR=nvim
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-PATH=$PATH:/home/tony/.local/bin
+SCRIPTS_PATH=/home/tony/.local/bin
+PATH=$PATH:$SCRIPTS_PATH
 
 export MPD_HOST=localhost
 export MPD_PORT=6600
+
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+alias dl-music="yt-dlp --config-location ~/.config/yt-dlp/music.conf"
+
+export EDITOR=nvim
+export VISUAL=$EDITOR

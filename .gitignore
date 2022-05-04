@@ -8,3 +8,7 @@ mpd/.config/mpd/db
 mpd/.config/mpd/playlists
 mpd/.config/mpd/state
 mpd/.config/mpd/sticker.sql
+newsboat/.newsboat/urls
+calcurse/.config/calcurse/caldav/config
+dunst/.config/dunst/dunstrc
+polybar/.config/polybar/config.ini
