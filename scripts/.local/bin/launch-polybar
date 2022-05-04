@@ -1,0 +1,18 @@
+#!/usr/bin/sh
+
+tray_output=HDMI-0
+
+killall polybar
+
+if type "xrandr"; then
+  for m in $(polybar --list-monitors | cut -d":" -f1); do
+    export TRAY_POSITION=none
+    export MONITOR=$m 
+    if [[ $m == $tray_output ]]; then
+        TRAY_POSITION=right
+    fi
+    polybar --reload example &
+  done
+else
+  polybar --reload example &
+fi
