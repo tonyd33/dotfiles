@@ -8,29 +8,29 @@
 *.color8:       $$black_secondary$$
 
 ! red
-*.color1:      	$$red$$
-*.color9:       $$red$$
+*.color1:       $$red$$
+*.color9:       $$red_secondary$$
 
 ! green
 *.color2:       $$green$$
-*.color10:      $$green$$
+*.color10:      $$green_secondary$$
 
 ! yellow
 *.color3:       $$yellow$$
-*.color11:      $$yellow$$
+*.color11:      $$yellow_secondary$$
 
 ! blue
 *.color4:       $$blue$$
-*.color12:      $$blue$$
+*.color12:      $$blue_secondary$$
 
 ! magenta
 *.color5:       $$magenta$$
-*.color13:      $$magenta$$
+*.color13:      $$magenta_secondary$$
 
 ! cyan
 *.color6:       $$cyan$$
-*.color14:      $$cyan$$
+*.color14:      $$cyan_secondary$$
 
 ! white
 *.color7:       $$white$$
-*.color15:      $$white$$
+*.color15:      $$white_secondary$$

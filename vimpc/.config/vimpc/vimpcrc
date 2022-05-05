@@ -1,0 +1,18 @@
+set windownumbers
+set autoscroll
+set autolyrics
+set autoscrolllyrics
+set incsearch
+set smartcase
+set ignorecase
+
+set window playlist
+set windows playlist,browse,lists
+
+hi song black cyan
+hi id black cyan
+hi dir black white
+hi current black green
+hi tab black white
+hi progress black yellow
+hi status black green

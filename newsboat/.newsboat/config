@@ -1,1 +1,17 @@
 browser "qutebrowser"
+
+color background        white black
+color listnormal        white black
+color listfocus         white color8 blink
+color listnormal_unread white black bold
+color listfocus_unread  white color8 bold blink
+color info              black white   bold
+color article           white black
+
+bind-key j down
+bind-key k up
+bind-key l open
+bind-key h quit
+bind-key ^F pagedown
+bind-key ^B pagedown
+
