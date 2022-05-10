@@ -23,9 +23,11 @@ Plug 'adelarsq/vim-matchit'
 Plug 'preservim/nerdcommenter'
 Plug 'vimwiki/vimwiki'
 
+" ⚠ bloat ⚠
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " themes
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 " }}}
@@ -50,6 +52,7 @@ set autoindent                      " indent a new line the same amount as the l
 set cursorline
 set t_Co=256                        " set 256 terminal colors
 set nocompatible                    " used for vimwiki
+set ignorecase
 " }}}
 
 " plugin configuration {{{1
@@ -101,6 +104,30 @@ augroup CssColorCustomFiletypes
 augroup END
 " }}}
 
+" coc {{{
+
+if !exists("*CocEableAndStart")
+    function CocEnableAndStart()
+        :CocEnable
+        :CocRestart
+    endfunction
+endif
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+nmap <silent> <leader>gd <Plug>(coc-definition)
+
+nnoremap <leader>sn :CocAction("showSignatureHelp")<CR>
+
+nnoremap <leader>rn <Plug>(coc-rename)
+" don't waste resources
+let g:coc_start_at_startup = v:false
+" unless necessary
+nnoremap <silent> <leader>bs :call CocEnableAndStart()<CR>
+" or not
+nnoremap <leader>bd :CocDisable<CR>
+" }}}
+
 " 1}}}
 
 " maps {{{
@@ -123,7 +150,11 @@ nnoremap <leader><leader>cwd :lcd %:p:h<CR>
 
 " theming {{{
 colorscheme onehalfdark
-set background=dark
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 " }}}
 
 
@@ -138,6 +169,7 @@ function s:ChangeDotFileType()
   execute "file " file_dot_stripped
   filetype detect
   execute "file " filename_orig
+  execute ":w!"
 endfunction
 autocmd BufWinEnter *.dot :call s:ChangeDotFileType()
 " }}}
@@ -145,33 +177,35 @@ autocmd BufWinEnter *.dot :call s:ChangeDotFileType()
 " numbered tab lines {{{
 " credit: https://vim.fandom.com/wiki/Show_tab_number_in_your_tab_line
 if exists("+showtabline")
-     function NumberedTabs()
-         let s = ''
-         let t = tabpagenr()
-         let i = 1
-         while i <= tabpagenr('$')
-             let buflist = tabpagebuflist(i)
-             let winnr = tabpagewinnr(i)
-             let s .= '%' . i . 'T'
-             let s .= (i == t ? '%1*' : '%2*')
-             let s .= ' '
-             let s .= i . ')'
-             let s .= ' %*'
-             let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-             let file = bufname(buflist[winnr - 1])
-             let file = fnamemodify(file, ':p:t')
-             if file == ''
-                 let file = '[No Name]'
-             endif
-             let s .= file
-             let i = i + 1
-         endwhile
-         let s .= '%T%#TabLineFill#%='
-         let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-         return s
-     endfunction
-     set stal=2
-     set tabline=%!NumberedTabs()
+  if !exists("*NumberedTabs")
+         function NumberedTabs()
+             let s = ''
+             let t = tabpagenr()
+             let i = 1
+             while i <= tabpagenr('$')
+                 let buflist = tabpagebuflist(i)
+                 let winnr = tabpagewinnr(i)
+                 let s .= '%' . i . 'T'
+                 let s .= (i == t ? '%1*' : '%2*')
+                 let s .= ' '
+                 let s .= i . ')'
+                 let s .= ' %*'
+                 let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+                 let file = bufname(buflist[winnr - 1])
+                 let file = fnamemodify(file, ':p:t')
+                 if file == ''
+                     let file = '[No Name]'
+                 endif
+                 let s .= file
+                 let i = i + 1
+             endwhile
+             let s .= '%T%#TabLineFill#%='
+             let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+             return s
+         endfunction
+         set stal=2
+         set tabline=%!NumberedTabs()
+  endif
 endif
 " }}}
 

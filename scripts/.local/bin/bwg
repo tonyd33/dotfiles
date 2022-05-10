@@ -1,0 +1,121 @@
+#!/usr/bin/sh
+
+program_name=${0##*/}
+
+cache_expiry_seconds=86400 # 24 hours
+progname=${0##*/}
+refresh_cache=false
+cache_file="$HOME/.bwcache"
+
+now=$(date +%s)
+
+declare -A map
+
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done <<-EOF
+Usage:
+    ${progname} [-h | --help ][ -r | --refresh ] [ -c | --cache <cache-path> ]
+
+Options:
+    -h, --help    Prints this help message
+    -r, --refresh Force refresh cache
+    -c, --cache   Custom cache path
+    -n, --new     (Not implemented)
+EOF
+}
+
+maybe_update_cache() {
+    last_modified=$([ -f $cache_file ] && stat -c "%Y" $cache_file || echo 0)
+    items=""
+    if [ $(($now-$last_modified)) -gt $cache_expiry_seconds ] || [ $refresh_cache = true ]; then
+        source ~/.bitwardenenv
+        export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD | grep export | cut -d'"' -f 2)
+        items=$(bw list items)
+        echo $items > $cache_file
+        notify-send -a $program_name "Updated bitwarden cache"
+    else
+        items=$(cat $cache_file)
+    fi
+
+    info=$(echo $items | jq -j 'map([.name,.login.username,.login.password,.id] | join(",")) | join("\n")')
+}
+
+try_insert_item() {
+    name=$1
+    value=$2
+    num=0
+    key="$name"
+    while [ -v map["$key"] ]; do
+        ((num++))
+        key="$name $num"
+    done
+    map["$key"]=$value
+}
+
+parse_results() {
+    while IFS= read -r line; do
+        title=$(echo $line | awk -F ',' '{print $1}')
+        username=$(echo $line | awk -F ',' '{print $2}')
+        password=$(echo $line | awk -F ',' '{print $3}')
+        item_id=$(echo $line | awk -F ',' '{print $4}')
+
+        key="${title}||${username}"
+        value="$username $password"
+
+        try_insert_item "$key" "$value"
+    done <<< $info
+
+    output=""
+}
+
+send_results_to_dmenu() {
+    for key in "${!map[@]}"; do
+        output="$key\n$output"
+    done
+
+    selection=$(echo -e $output | dmenu -i -p "Select an item" -l 5)
+    [ ! -v map["$selection"] ] && notify-send -a $program_name "Failed to retrieve data." && exit 1
+
+    operation=$(echo -e "username\npassword" | dmenu -i -p "Get")
+    command=""
+
+    case $operation in
+        username) command='{print $1}';;
+        password) command='{print $2}';;
+        *) command='{print $1}';;
+    esac
+
+    echo ${map["$selection"]} | awk "$command" | xclip -sel clip
+    notify-send -a $program_name "Password copied successfully."
+}
+
+args=$(getopt -a -n $progname -o 'hrc:' --long help,refresh,cache: -- "$@")
+eval set -- $args
+
+while :;do
+    case $1 in
+        -r | --refresh)
+            refresh_cache=true
+            shift
+            ;;
+        -c | --cache)
+            cache_file=$2
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            help_text
+            exit 1
+            ;;
+    esac
+done
+
+maybe_update_cache
+parse_results
+send_results_to_dmenu
+

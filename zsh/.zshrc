@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="fwalch"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -73,6 +73,8 @@ ZSH_THEME="robbyrussell"
 plugins=(git colored-man-pages tmux)
 
 source $ZSH/oh-my-zsh.sh
+# https://github.com/jeffreytse/zsh-vi-mode
+# source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $HOME/.bitwardenenv
 
 # User configuration
@@ -114,3 +116,7 @@ alias dl-music="yt-dlp --config-location ~/.config/yt-dlp/music.conf"
 
 export EDITOR=nvim
 export VISUAL=$EDITOR
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

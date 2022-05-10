@@ -1,0 +1,8 @@
+{
+    "suggest.autoTrigger": "none",
+    "suggest.maxCompleteItemCount": 5,
+    "suggest.lowPrioritySourceLimit": 5,
+    "suggest.highPrioritySourceLimit": 5,
+    "diagnostic.enableMessage": "jump",
+    "signature.enable": false
+}

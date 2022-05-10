@@ -61,7 +61,8 @@ def main():
 
 # Expand this if ever needed
 def is_window(con):
-    return con.window is not None and con.window_class != "i3bar"
+    workspace = con.workspace()
+    return con.window is not None and con.window_class != "i3bar" and con.window_class != "Polybar" and (workspace is None or workspace.name != "__i3_scratch")
 
 
 if __name__ == "__main__":

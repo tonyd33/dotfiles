@@ -1,16 +1,18 @@
 #!/usr/bin/sh
 
 function build () {
-				directory=`dirname $1`
-				filename=`basename $1`
-				file_ext=${filename##*.}
-				[ $file_ext != 'dot' ] && exit # ignore non .dot files
-				built="$directory/${filename::-4}"
-				dotpp.py -s lookup.json -t $1 -o $built
-				echo "built $path_to_file->$built"
+  directory=`dirname $1`
+  filename=`basename $1`
+  file_ext=${filename##*.}
+  [ $file_ext != 'dot' ] && exit # ignore non .dot files
+  built="$directory/${filename::-4}"
+  dotpp.py -s lookup.json -t $1 -o $built
+  echo "built $path_to_file->$built"
 }
 
 # export this for find subshell to pick it up
 export -f build
+
+cd /home/tony/git/dotfiles
 
 find . -type f -exec bash -c 'build "{}"' \;

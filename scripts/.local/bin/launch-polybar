@@ -11,8 +11,8 @@ if type "xrandr"; then
     if [[ $m == $tray_output ]]; then
         TRAY_POSITION=right
     fi
-    polybar --reload example &
+    polybar example &
   done
 else
-  polybar --reload example &
+  polybar example &
 fi

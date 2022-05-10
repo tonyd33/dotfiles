@@ -1,18 +1,24 @@
 #!/bin/sh
 
-# faster typing speed
-xset r rate 150 30 &
+# status bar
+/home/tony/.local/bin/launch-polybar &
 # wallpaper
 nitrogen --restore &
-
 # pipewire
 pipewire &
 pipewire-pulse &
 wireplumber &
+# compositor
 picom &
+# music player daemon
 mpd &
+# recording keyboard
 screenkey --start-disabled &
+# draw on screen
 gromit-mpx &
+# notification daemon
 dunst &
-/home/tony/.local/bin/launch-polybar &
+# emojis 😂
 emote &
+# faster typing speed
+xset r rate 150 30 &
