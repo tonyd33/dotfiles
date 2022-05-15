@@ -1,7 +1,6 @@
 #!/usr/bin/sh
 
-program_name=${0##*/}
-
+# Variable declarations {{{
 cache_expiry_seconds=86400 # 24 hours
 progname=${0##*/}
 refresh_cache=false
@@ -10,39 +9,41 @@ cache_file="$HOME/.bwcache"
 now=$(date +%s)
 
 declare -A map
+# }}}
 
+# Function definitions {{{
 help_text() {
     while IFS= read -r line; do
         printf "%s\n" "$line"
     done <<-EOF
 Usage:
-    ${progname} [-h | --help ][ -r | --refresh ] [ -c | --cache <cache-path> ]
+    ${progname} [OPTIONS...] <subcommand>
 
 Options:
-    -h, --help    Prints this help message
-    -r, --refresh Force refresh cache
-    -c, --cache   Custom cache path
-    -n, --new     (Not implemented)
+    -h, --help        Prints this help message
+    -r, --refresh     Force refresh cache
+    -c, --cache=CACHE Custom cache path
+
+Subcommands:
+    get    Gets an item using dmenu
+    create Creates an item using dmenu
 EOF
 }
 
-maybe_update_cache() {
-    last_modified=$([ -f $cache_file ] && stat -c "%Y" $cache_file || echo 0)
-    items=""
-    if [ $(($now-$last_modified)) -gt $cache_expiry_seconds ] || [ $refresh_cache = true ]; then
-        source ~/.bitwardenenv
-        export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD | grep export | cut -d'"' -f 2)
-        items=$(bw list items)
-        echo $items > $cache_file
-        notify-send -a $program_name "Updated bitwarden cache"
-    else
-        items=$(cat $cache_file)
-    fi
-
-    info=$(echo $items | jq -j 'map([.name,.login.username,.login.password,.id] | join(",")) | join("\n")')
+unlock_bitwarden() {
+    source ~/.bitwardenenv
+    export BW_SESSION=$(
+        bw unlock --passwordenv BW_PASSWORD |\
+        grep export |\
+        cut -d'"' -f 2
+    )
 }
 
-try_insert_item() {
+send_notification() {
+    notify-send -a $progname "$1"
+}
+
+add_item_to_map() {
     name=$1
     value=$2
     num=0
@@ -54,7 +55,28 @@ try_insert_item() {
     map["$key"]=$value
 }
 
-parse_results() {
+get_item() {
+    last_modified=$(
+        [ -f $cache_file ] &&\
+        stat -c "%Y" $cache_file ||\
+        echo 0
+    )
+    items=""
+    if [ $(($now-$last_modified)) -gt $cache_expiry_seconds ] ||\
+        [ $refresh_cache = true ]; then
+        unlock_bitwarden
+        items=$(bw list items)
+        echo $items > $cache_file
+        send_notification "Updated bitwarden cache"
+    else
+        items=$(cat $cache_file)
+    fi
+
+    info=$(
+        echo $items |\
+        jq -j 'map([.name,.login.username,.login.password,.id] | join(",")) | join("\n")'
+    )
+
     while IFS= read -r line; do
         title=$(echo $line | awk -F ',' '{print $1}')
         username=$(echo $line | awk -F ',' '{print $2}')
@@ -64,35 +86,70 @@ parse_results() {
         key="${title}||${username}"
         value="$username $password"
 
-        try_insert_item "$key" "$value"
+        add_item_to_map "$key" "$value"
     done <<< $info
 
     output=""
-}
-
-send_results_to_dmenu() {
     for key in "${!map[@]}"; do
         output="$key\n$output"
     done
 
     selection=$(echo -e $output | dmenu -i -p "Select an item" -l 5)
-    [ ! -v map["$selection"] ] && notify-send -a $program_name "Failed to retrieve data." && exit 1
 
-    operation=$(echo -e "username\npassword" | dmenu -i -p "Get")
+    [ -z $selection ] &&\
+        send_notification "Operation canceled by user." &&\
+        exit
+
+    [ ! -v map["$selection"] ] &&\
+        send_notification "Failed to retrieve data." &&\
+        exit 1
+
+    data_to_retrieve=$(
+        echo -e "username\npassword" |\
+        dmenu -i -p "Get"
+    )
     command=""
 
-    case $operation in
+    # TODO: Uncancer this and get more options
+    case $data_to_retrieve in
         username) command='{print $1}';;
         password) command='{print $2}';;
         *) command='{print $1}';;
     esac
 
-    echo ${map["$selection"]} | awk "$command" | xclip -sel clip
-    notify-send -a $program_name "Password copied successfully."
+    echo ${map["$selection"]} |\
+        awk "$command" |\
+        xclip -sel clip
+    send_notification "Password copied successfully."
 }
 
-args=$(getopt -a -n $progname -o 'hrc:' --long help,refresh,cache: -- "$@")
-eval set -- $args
+
+create_item() {
+    unlock_bitwarden
+
+    name=$(echo | dmenu -i -p "Name:")
+    uri=$(echo | dmenu -i -p "URI:")
+    username=$(echo | dmenu -i -p "Username:")
+    password_flags=$(echo | dmenu -i -p "Password flags:")
+    # If blank, set default flags
+    password_flags=$([ -n $password_flags ] && $password_flags || "-ulns --length 16")
+    password=$(bw generate $password_flags)
+
+    # Copy the password first and say that we've done so since saving can
+    # take some time
+    echo $password | xclip -sel clip
+    send_notification "Password saved to clipboard."
+
+    bw get template item |\
+        jq ".name=\"$name\"|.login=$(bw get template item.login |\
+        jq ".username=\"$username\"|.password=\"$password\"|.totp=\"\"|.uris=[\"$uri\"]")|.notes=\"\"" |\
+        bw encode |\
+        bw create item || send_notification "Item wasn't saved."
+}
+# }}}
+
+# Start program {{{
+eval set -- $(getopt -a -n $progname -o 'hrc:' --long help,refresh,cache: -- "$@")
 
 while :;do
     case $1 in
@@ -115,7 +172,21 @@ while :;do
     esac
 done
 
-maybe_update_cache
-parse_results
-send_results_to_dmenu
+while [ $# -gt 0 ]; do
+    case $1 in
+        get)
+            get_item
+            shift
+            ;;
+        create)
+            create_item
+            shift
+            ;;
+        *)
+            help_text
+            exit 1
+            ;;
+    esac
+done
+# }}}
 

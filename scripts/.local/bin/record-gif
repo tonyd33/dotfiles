@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+
+echo "TODO: Implement this shit"
+exit
+
+# Don't run this in dmenu, I don't know how to stop it
+progname=${0##/*}
+filename="$HOME/menyoki/$([ "$1" ] && echo "${1%%.*}.gif" || echo "rec.gif")"
+
+menyoki record --action-keys "LAlt-Enter" --cancel-keys "LAlt-D" --select --size $(slop) gif save "$filename" && notify-send -a $progname "Saved recording to $filename" || notify-send -a $progname "Operation canceled or failed"

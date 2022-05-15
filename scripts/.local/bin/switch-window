@@ -1,13 +1,18 @@
 #!/bin/sh
 
 # Search through open programs and switch to their tag
+echo "$(PATH)" > ~/.logs/switch-window
+echo "$(lsi3 -a window_class name window)" >> ~/.logs/switch-window
+open_windows=$(
+# List all running programs
+lsi3 -a window_class name window |\
+# First line is always just for tables
+tail -n +2
+)
 application=$(
-	# List all running programs
-	lsi3 -a window_class name window |\
-      # First line is always just for tables
-      tail -n +2 |\
-	# Pipe to dmenu ($@ to include font settings from dwm/config.h)
-	dmenu -i -p "Switch to" $@
+echo -e "$open_windows" |\
+# Pipe to dmenu ($@ to include font settings from dwm/config.h)
+dmenu -i -p "Switch to" $@
 )
 
 # Change 4 to whichever attribute window is +1

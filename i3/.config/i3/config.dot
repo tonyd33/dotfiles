@@ -103,9 +103,9 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+Ctrl+s layout stacking
+bindsym $mod+Ctrl+w layout tabbed
+bindsym $mod+Ctrl+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -132,8 +132,8 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-bindsym $mod+shift+greater move workspace to output right
-bindsym $mod+shift+less    move workspace to output left
+bindsym $mod+Shift+greater move workspace to output right
+bindsym $mod+Shift+less    move workspace to output left
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -222,12 +222,6 @@ for_window [class="discord"] border pixel 1
 exec --no-startup-id discord
 bindsym $mod+o [class="discord"] scratchpad show; [class="discord"] move position center
 
-# marks
-# read 1 character and mark the current window with this character
-bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-
-# read 1 character and go to the window with the character (')
-bindcode $mod+48 exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 
 for_window [all] title_window_icon padding 5px
 
@@ -238,3 +232,12 @@ exec --no-startup-id $$scripts_dir$$/xstart
 # other binds
 bindsym $mod+z exec flameshot gui
 
+# the script depends on one of my scripts
+bindsym $mod+s exec export PATH=$PATH:$$scripts_dir$$ && $$scripts_dir$$/switch-window
+
+# marks
+# read 1 character and mark the current window with this character
+bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+
+# read 1 character and go to the window with the character (')
+bindcode $mod+48 exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '

@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+sink="alsa_input.usb-Generic_Blue_Microphones_LT_2104190904269D02003B_111000-00.analog-stereo"
+
+pactl set-source-mute $sink toggle

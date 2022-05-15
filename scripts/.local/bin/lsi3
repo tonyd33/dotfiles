@@ -3,6 +3,11 @@ from i3ipc import Connection
 import argparse
 import sys
 
+"""
+Program to list attributes of container nodes of i3 in python because I can't
+be arsed to do it in shell
+"""
+
 i3con_attrs = [
     "border",
     "current_border_width",
