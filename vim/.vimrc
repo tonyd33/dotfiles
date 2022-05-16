@@ -174,6 +174,36 @@ endfunction
 autocmd BufWinEnter *.dot :call s:ChangeDotFileType()
 " }}}
 
+" command aliases {{{
+function! SetupCommandAlias(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+" }}}
+
+" toggleable autocmd {{{1
+
+" python file format {{{
+let g:toggleBlack = 0
+function! ToggleBlack(...)
+    " toggle
+    if a:0 == 1
+        let g:toggleBlack = 1 - g:toggleBlack
+    endif
+
+    if g:toggleBlack == 0
+        silent! !black '%:p'
+        " reload file
+        execute ":e!"
+    endif
+endfunction
+
+autocmd BufWritePost *.py call ToggleBlack()
+" }}}
+
+" 1}}}
+
 " numbered tab lines {{{
 " credit: https://vim.fandom.com/wiki/Show_tab_number_in_your_tab_line
 if exists("+showtabline")

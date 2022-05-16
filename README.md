@@ -3,9 +3,9 @@
 This README is for me in the future, who will inevitably forget how to set
 everything back up.
 
-`PKGLIST` contains all of the packages that I _manually_ installed, but not
-all that are installed as dependencies. Use it with `pacman` at your own
-disgression to figure what you want to keep.
+`PKGLIST` contains all of the packages that I _manually_ installed,
+using `pacman -Qeq` but not all that are installed as dependencies.
+Use it with `pacman` at your own disgression to figure what you want to keep.
 
 We used [GNU Stow](https://www.gnu.org/software/stow/) to manage easy
 packing/unpacking of configuration files. `make` will install everything for

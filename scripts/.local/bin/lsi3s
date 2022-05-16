@@ -1,0 +1,164 @@
+#!/bin/sh
+
+# TODO: Implement -h, -s with getopts
+
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done <<-EOF
+Usage:
+    ${0##*/} [OPTIONS...] [PROPERTIES...]
+
+Options:
+    -h, --help   Prints this help message
+    -s, --select Select certain nodes in JQ format (Not implemented)
+
+Properties:
+    border
+    current_border_width
+    floating
+    focus
+    focused
+    fullscreen_mode
+    id
+    layout
+    marks
+    name
+    num
+    orientation
+    percent
+    scratchpad_state
+    sticky
+    type
+    urgent
+    window
+    window_class
+    window_role
+    window_title
+EOF
+}
+
+select=""
+inner=""
+while [ $# -gt 0 ]; do
+    case $1 in
+        border)
+            select="${select} border"
+            inner="${inner}.border,"
+            shift
+            ;;
+        current_border_width)
+            select="${select} current_border_width"
+            inner="${inner}.current_border_width,"
+            shift
+            ;;
+        floating)
+            select="${select} floating"
+            inner="${inner}.floating,"
+            shift
+            ;;
+        focus)
+            select="${select} focus"
+            inner="${inner}.focus,"
+            shift
+            ;;
+        focused)
+            select="${select} focused"
+            inner="${inner}.focused,"
+            shift
+            ;;
+        fullscreen_mode)
+            select="${select} fullscreen_mode"
+            inner="${inner}.fullscreen_mode,"
+            shift
+            ;;
+        id)
+            select="${select} id"
+            inner="${inner}.id,"
+            shift
+            ;;
+        layout)
+            select="${select} layout"
+            inner="${inner}.layout,"
+            shift
+            ;;
+        marks)
+            select="${select} marks"
+            inner="${inner}.marks,"
+            shift
+            ;;
+        name)
+            select="${select} name"
+            inner="${inner}.name,"
+            shift
+            ;;
+        num)
+            select="${select} num"
+            inner="${inner}.num,"
+            shift
+            ;;
+        orientation)
+            select="${select} orientation"
+            inner="${inner}.orientation,"
+            shift
+            ;;
+        percent)
+            select="${select} percent"
+            inner="${inner}.percent,"
+            shift
+            ;;
+        scratchpad_state)
+            select="${select} scratchpad_state"
+            inner="${inner}.scratchpad_state,"
+            shift
+            ;;
+        sticky)
+            select="${select} sticky"
+            inner="${inner}.sticky,"
+            shift
+            ;;
+        type)
+            select="${select} type"
+            inner="${inner}.type,"
+            shift
+            ;;
+        urgent)
+            select="${select} urgent"
+            inner="${inner}.urgent,"
+            shift
+            ;;
+        window)
+            select="${select} window"
+            inner="${inner}.window,"
+            shift
+            ;;
+        window_class)
+            select="${select} window_class"
+            inner="${inner}.window_properties.class,"
+            inner="if .window_properties.class ? then . else .window_properties.class=\"none\" end | ${inner}"
+            shift
+            ;;
+        window_role)
+            select="${select} window_role"
+            inner="${inner}.window_properties.window_role,"
+            inner="if .window_properties.window_role ? then . else .window_properties.window_role=\"none\" end | ${inner}"
+            shift
+            ;;
+        window_title)
+            select="${select} window_title"
+            inner="${inner}.window_properties.title,"
+            inner="if .window_properties.title ? then . else .window_properties.title=\"none\" end | ${inner}"
+            shift
+            ;;
+        *) help_text; exit 1;;
+    esac
+done
+
+inner=$(echo "$inner" | sed 's/,$//')
+msg=$(echo "$select" | sed 's/^ //')
+flattened_nodes=$(i3-msg -t get_tree | jq '[recurse(.nodes[]) | del(.nodes)]')
+
+echo $msg
+echo $flattened_nodes |\
+    jq -j "map(select(.type != \"dockarea\" and .type != \"workspace\" and .type != \"root\" and .type != \"output\" and .window_properties.class?)) | map([$inner] | join(\" \")) | join(\"\n\")"
+

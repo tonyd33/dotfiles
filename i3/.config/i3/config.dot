@@ -38,7 +38,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 set $bg-color            $$background$$
 set $inactive-bg-color   $$black_secondary$$
 set $text-color          $$foreground$$
-set $inactive-text-color $$yellow_secondary$$
+set $inactive-text-color $$gray_600$$
 set $urgent-bg-color     $$red$$
 set $indicator-color     $$blue$$
 
@@ -49,6 +49,7 @@ client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-col
 client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $indicator-color
 
 title_align center
+default_border normal 0
 
 hide_edge_borders both
 
@@ -200,25 +201,21 @@ gaps outer 25
 gaps inner 25
 gaps horizontal 10
 
+# floating defaults
+for_window [class="Sxiv|ColorPicker|mpv"] floating enable
+
 # dropdowns
-for_window [class="dropdown"] floating enable
-for_window [class="dropdown"] resize set 1600 900
-for_window [class="dropdown"] move scratchpad
-for_window [class="dropdown"] border pixel 1
+for_window [class="dropdown|music|discord"] floating enable
+for_window [class="dropdown|music|discord"] resize set 1600 900
+for_window [class="dropdown|music|discord"] move scratchpad
+for_window [class="dropdown|music|discord"] border pixel 1
+
 exec --no-startup-id kitty --class kitty-dropdown sh -c "tmux new -s dropdown || tmux a -t dropdown"
 bindsym $mod+u [class="dropdown"] scratchpad show; [class="dropdown"] move position center
 
-for_window [class="music"] floating enable
-for_window [class="music"] resize set 1600 900
-for_window [class="music"] move scratchpad
-for_window [class="music"] border pixel 1
 exec --no-startup-id kitty --class music sh -c "ncmpcpp"
 bindsym $mod+i [class="music"] scratchpad show; [class="music"] move position center
 
-for_window [class="discord"] floating enable
-for_window [class="discord"] resize set 1600 900
-for_window [class="discord"] move scratchpad
-for_window [class="discord"] border pixel 1
 exec --no-startup-id discord
 bindsym $mod+o [class="discord"] scratchpad show; [class="discord"] move position center
 

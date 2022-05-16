@@ -12,7 +12,7 @@ tail -n +2
 application=$(
 echo -e "$open_windows" |\
 # Pipe to dmenu ($@ to include font settings from dwm/config.h)
-dmenu -i -p "Switch to" $@
+dmenu -i -l 10 -p "Switch to" $@
 )
 
 # Change 4 to whichever attribute window is +1

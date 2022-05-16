@@ -62,8 +62,8 @@ enable-ipc = true
 [bar/top]
 inherit = bar/all
 
-modules-left = xwindow
-modules-center = mpd
+modules-left = mpd
+modules-center = xwindow
 modules-right = weather
 
 tray-position = none
@@ -242,10 +242,19 @@ interval = 960
 [module/mpd]
 type = internal/mpd
 host = 127.0.0.1
+
 port = 6600
 interval = 2
+
 label-song = %title%
-label-offline = "🎜 mpd is offline"
+label-offline = "mpd is offline"
+
+format-online = <toggle> <label-song>
+icon-play = 
+icon-pause = 
+icon-stop = 
+icon-prev = 
+icon-next = 
 
 [settings]
 screenchange-reload = true

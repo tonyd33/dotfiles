@@ -1,0 +1,93 @@
+#!/bin/sh
+
+download_directory=~/music/media
+queue_file=~/music/.queue
+queue=false
+dequeue=false
+clear_queue=false
+ytdl_args=""
+progname=${0##*/}
+
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done <<-EOF
+Usage:
+    ${progname} [OPTIONS...] [LINKS...] -- [ytdl arguments]
+
+Options:
+    -h, --help    Prints this help message
+    -q, --queue   Queues the following links rather than downloading them immediately
+    -d, --dequeue Downloads all the links from the queue
+    -c, --clear   Clears the queue
+EOF
+}
+
+declare -a links=()
+read_links() {
+    # [[ is not POSIX compliant
+    while (($#)) && echo $1 | grep '^-*$'; do
+        links+=($1)
+        shift
+    done
+}
+
+queue_links() {
+    printf "%s\n" "${links[@]}" >> $queue_file
+    echo "Queued ${#links[@]} links"
+}
+
+do_clear_queue() {
+    echo "" > $queue_file
+}
+
+declare -a dl_links=()
+add_download_links() {
+    while read -r link; do
+        dl_links+=($link)
+    done < $queue_file
+    do_clear_queue
+    echo "Dequeueing ${#dl_links[@]} links"
+    ytdl_args="$ytdl_args $(printf "%s " "${dl_links[@]}")"
+}
+
+# not sure how to make getopt work well with parsing --
+while (($#)); do
+    case $1 in
+        -q | --queue)
+            queue=true
+            shift
+            read_links $@
+            shift ${#links[@]}
+            ;;
+        -d | --dequeue)
+            dequeue=true
+            shift
+            ;;
+        -c | --clear)
+            clear_queue=true
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+ytdl_args=$@
+
+[ $clear_queue = true ] && do_clear_queue && exit
+[ $queue = true ] && queue_links && exit
+
+[ $dequeue = true ] && add_download_links
+
+[ ! -d $download_directory ] &&\
+    echo "Media directory not found." &&\
+    exit 1
+
+cd $download_directory &&\
+    yt-dlp --config-location ~/.config/yt-dlp/music.conf $ytdl_args

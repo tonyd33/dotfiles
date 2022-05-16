@@ -112,8 +112,6 @@ export MPD_PORT=6600
 
 export LIBVIRT_DEFAULT_URI="qemu:///system"
 
-alias dl-music="yt-dlp --config-location ~/.config/yt-dlp/music.conf"
-
 export EDITOR=nvim
 export VISUAL=$EDITOR
 
