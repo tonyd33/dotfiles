@@ -1,4 +1,4 @@
-currency = "USD"
+currency = "SATS"
 default_view = "default"
 default_chart_range = "1Y"
 api = "coingecko"

@@ -1,18 +1,99 @@
 #!/bin/sh
 
-function build () {
-  directory=`dirname $1`
-  filename=`basename $1`
-  file_ext=${filename##*.}
-  [ $file_ext != 'dot' ] && exit # ignore non .dot files
-  built="$directory/${filename::-4}"
-  dotpp.py -s lookup.json -t $1 -o $built
-  echo "built $path_to_file->$built"
+root_dir=/home/tony/git/dotfiles
+cache_file=$root_dir/.dotbuild_cache
+refresh_cache=false
+verbosity=1
+now=$(date +%s)
+
+progname=${0##*/}
+
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done <<-EOF
+Usage:
+    ${progname} [OPTIONS...]
+
+Options:
+    -h, --help            Prints this help message
+    -r, --refresh         Force refresh cache
+    -c, --cache=CACHE     Custom cache path
+    -v, --verbosity=0,1,2 Verbosity level. Defaults to 1. 0 is silent.
+EOF
 }
 
-# export this for find subshell to pick it up
-export -f build
+build() {
+    directory=$(dirname $1)
+    filename=$(basename $1)
+    file_ext=${filename##*.}
 
-cd /home/tony/git/dotfiles
+    [ $file_ext != 'dot' ] && exit # ignore non .dot files
+
+    search=$(grep "$1" $cache_file)
+    if (($?)); then
+        echo "$1 $now" >> $cache_file
+        [ $verbosity -ge 2 ] &&\
+            echo "$1 added to cache"
+    else
+        last_built=$(echo $search | awk '{print $2}')
+        last_modified=$(stat -c "%Y" $1)
+        if [ $(($last_modified-$last_built)) -lt 0 ]; then
+            [ $verbosity -ge 2 ] &&\
+                echo "Skipping $1..."
+            exit
+        else
+            [ $verbosity -ge 2 ] &&\
+                echo "Updating $1..."
+            sed -i "s@$search@$1 $now@" $cache_file
+        fi
+    fi
+
+    built="$directory/${filename::-4}"
+    dotpp -s lookup.json -t $1 -o $built
+    [ $verbosity -ge 1 ] &&\
+        echo "built $path_to_file->$built"
+}
+
+[ ! -f $cache_file ] && touch $cache_file
+
+eval set -- $(getopt -a -n $progname -o 'hrc:v:' --long help,refresh,cache:,verbosity: -- "$@")
+
+while :;do
+    case $1 in
+        -r | --refresh)
+            refresh_cache=true
+            shift
+            ;;
+        -c | --cache)
+            cache_file=$2
+            shift 2
+            ;;
+        -v | --verbosity)
+            verbosity=$2
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            help_text
+            exit 1
+            ;;
+    esac
+done
+
+[ $refresh_cache = true ] &&\
+    echo "" > $cache_file
+
+
+cd $root_dir
+
+# export these for find subshell to pick it up
+export -f build
+export cache_file
+export verbosity
+export now
 
 find . -type f -exec bash -c 'build "{}"' \;

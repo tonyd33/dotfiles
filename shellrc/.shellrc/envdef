@@ -1,0 +1,7 @@
+export MPD_HOST=localhost
+export MPD_PORT=6600
+
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+export EDITOR=nvim
+export VISUAL=$EDITOR

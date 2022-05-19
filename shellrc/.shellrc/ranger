@@ -6,10 +6,17 @@ function ranger {
         ranger
         --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
     )
-    
+
     ${ranger_cmd[@]} "$@"
     if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
         cd -- "$(cat "$tempfile")" || return
     fi
     command rm -f -- "$tempfile" 2>/dev/null
 }
+
+alias ranger=". ranger"
+
+# Bind key for zsh
+echo $0 | grep 'zsh' > /dev/null 2>&1 && bindkey -s '^o' 'ranger^M'
+
+# TODO: Bind key for other shells

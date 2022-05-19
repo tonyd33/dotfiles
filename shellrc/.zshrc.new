@@ -1,0 +1,30 @@
+# TODO: Migrate off of omz (big bloat)
+source ~/.shellrc/envdef
+source ~/.shellrc/git-prompt-info
+source ~/.shellrc/ranger
+# source ~/.shellrc/theme
+source ~/.bitwardenenv
+
+# Enable colors and change prompt
+autoload -U colors && colors
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+# Basic auto/tab complete:
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
+
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+RPROMPT=\$vcs_info_msg_0_
+zstyle ':vcs_info:git:*' formats '%F{240}(%b)%r%f'
+zstyle ':vcs_info:*' enable git
+
+#
+# This has a lot of overhead, so only load this if we need it
+alias nvmsrc="source ~/.shellrc/nvm"
+

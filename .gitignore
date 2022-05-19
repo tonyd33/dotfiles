@@ -23,3 +23,5 @@ calcurse/.config/calcurse/caldav/config
 dunst/.config/dunst/dunstrc
 
 polybar/.config/polybar/config.ini
+
+.dotbuild_cache
