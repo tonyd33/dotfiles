@@ -10,9 +10,7 @@ source $ZSH/oh-my-zsh.sh
 # source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source ~/.bitwardenenv
 source ~/.shellrc/ranger
+bindkey -s '^o' 'ranger^M'
 source ~/.shellrc/envdef
 
 alias nvmsrc="source ~/.shellrc/nvm"
-
-SCRIPTS_PATH=/home/tony/.local/bin
-PATH=$PATH:$SCRIPTS_PATH

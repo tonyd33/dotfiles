@@ -1,0 +1,40 @@
+#!/bin/sh
+
+echo "TODO: Implement this"
+exit 1
+
+monitor1=false
+monitor1_name="HDMI-0"
+monitor2_name="DP-0"
+
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done << EOF
+Usage:
+    ${0##*/} [MONITORS...]
+
+Options:
+    -1
+    -2
+EOF
+}
+
+while getopts '12' OPT; do
+    case $OPT in
+        1) monitor1=true;;
+        2) monitor2=true;;
+        *) help_text; exit 1;;
+    esac
+done
+
+[ "$monitor1" = false ] && [ "$monitor2" = false ] &&\
+    monitor1=true && monitor2=true
+
+args=""
+
+if [ "$monitor1" = true ]; then
+    args="$args --output $monitor1_name --mode "
+fi
+xrandr
+

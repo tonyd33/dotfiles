@@ -1,0 +1,3 @@
+[submodule "dotpreprocessor"]
+    path = dotpreprocessor
+    url = git@github.com:tonyd33/dotpreprocessor.git

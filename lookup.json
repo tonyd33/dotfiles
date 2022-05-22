@@ -23,5 +23,15 @@
   "selection_background": "#fffacd",
   "url_color": "#0087bd",
   "disabled": "#a6b2c8",
-  "scripts_dir": "/home/tony/.local/bin"
+  "gray": "#888888",
+  "gray100": "#717171",
+  "gray200": "#616161",
+  "gray300": "#555555",
+  "gray400": "#4c4c4c",
+  "gray500": "#3e3e3e",
+  "gray600": "#393939",
+  "gray700": "#353535",
+  "gray800": "#323232",
+  "gray900": "#303030",
+  "scripts_dir": "/home/tony/.scripts"
 }

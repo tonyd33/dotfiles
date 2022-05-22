@@ -32,15 +32,16 @@ EOF
 
 unlock_bitwarden() {
     source ~/.bitwardenenv
-    export BW_SESSION=$(
+    BW_SESSION="$(
         bw unlock --passwordenv BW_PASSWORD |\
         grep export |\
         cut -d'"' -f 2
-    )
+    )"
+    export BW_SESSION
 }
 
 send_notification() {
-    notify-send -a $progname "$1"
+    notify-send -a "$progname" "$1"
 }
 
 add_item_to_map() {
@@ -132,7 +133,11 @@ create_item() {
     username=$(echo | dmenu -i -p "Username:")
     password_flags=$(echo | dmenu -i -p "Password flags:")
     # If blank, set default flags
-    password_flags=$([ -n $password_flags ] && $password_flags || "-ulns --length 16")
+    password_flags=$(
+        [ -n "$password_flags "] &&\
+        echo "$password_flags" ||\
+        "-ulns --length 16"
+    )
     password=$(bw generate $password_flags)
 
     # Copy the password first and say that we've done so since saving can

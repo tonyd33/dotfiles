@@ -16,6 +16,6 @@ dmenu -i -l 10 -p "Switch to" $@
 )
 
 # Change 4 to whichever attribute window is +1
-window_id=`echo $application | cut -d '[' -f 4 | sed 's/\]//'`
+window_id=$(echo $application | cut -d '[' -f 4 | sed 's/\]//')
 i3-msg "[id=$window_id] focus"
 

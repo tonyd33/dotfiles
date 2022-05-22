@@ -1,0 +1,13 @@
+#!/bin/sh
+
+normal_background=$(jq -r '.black' ~/git/dotfiles/lookup.json)
+normal_foreground=$(jq -r '.white' ~/git/dotfiles/lookup.json)
+selected_background=$(jq -r '.blue' ~/git/dotfiles/lookup.json)
+selected_foreground=$(jq -r '.white' ~/git/dotfiles/lookup.json)
+
+dmenu_run -i\
+    -fn "Cartograph Mono CF:size=18"\
+    -nb "$normal_background"\
+    -nf "$normal_foreground"\
+    -sb "$selected_background"\
+    -sf "$selected_foreground"

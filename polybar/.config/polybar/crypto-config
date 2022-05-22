@@ -1,6 +1,6 @@
 [general]
 base_currency = USD
-display = both
+display = price
 
 [bitcoin]
 icon = 

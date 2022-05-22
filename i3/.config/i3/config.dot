@@ -32,24 +32,27 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-# exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet
 
 # colors
-set $bg-color            $$background$$
-set $inactive-bg-color   $$black_secondary$$
-set $text-color          $$foreground$$
-set $inactive-text-color $$gray_600$$
-set $urgent-bg-color     $$red$$
-set $indicator-color     $$blue$$
+set $bg-color              $$black$$
+set $border-color          $$blue$$
+set $inactive-border-color $$black$$
+set $inactive-bg-color     $$black_secondary$$
+set $text-color            $$white$$
+set $inactive-text-color   $$gray$$
+set $urgent-bg-color       $$red$$
+set $indicator-color       $$green$$
 
-# selector              border             background         text                 indicator
-client.focused          $bg-color          $bg-color          $text-color          $indicator-color
-client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
-client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $indicator-color
+# background is set to border purposefully.
+# selector              border                 background             text                 indicator
+client.focused          $border-color          $border-color          $text-color          $indicator-color
+client.unfocused        $inactive-border-color $inactive-border-color $inactive-text-color $indicator-color
+client.focused_inactive $inactive-border-color $inactive-bg-color     $inactive-text-color $indicator-color
+client.urgent           $urgent-bg-color       $urgent-bg-color       $text-color          $indicator-color
 
 title_align center
-default_border normal 0
+default_border pixel 3
 
 hide_edge_borders both
 
@@ -94,11 +97,8 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-bindsym $mod+b split h
-
-# split in vertical orientation
-bindsym $mod+v split v
+# toggle split mode
+bindsym $mod+t split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -193,8 +193,6 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-
-for_window [class="kitty"] border none
 
 # gaps
 gaps outer 25

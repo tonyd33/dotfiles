@@ -15,8 +15,3 @@ function ranger {
 }
 
 alias ranger=". ranger"
-
-# Bind key for zsh
-echo $0 | grep 'zsh' > /dev/null 2>&1 && bindkey -s '^o' 'ranger^M'
-
-# TODO: Bind key for other shells
