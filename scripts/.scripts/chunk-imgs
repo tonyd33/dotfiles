@@ -1,0 +1,42 @@
+#!/bin/python
+import os
+import sys
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="dedupimg", add_help=False)
+    parser.add_argument("-p", "--path", type=str, action="store", required=True)
+    parser.add_argument(
+        "-s", "--chunk-size", type=int, action="store", required=True
+    )
+
+    args = parser.parse_args()
+    path = args.path
+    chunk_size = args.chunk_size
+
+    files_to_remove = []
+
+    files = os.listdir(path)
+    chunked_files = [
+        files[i : i + chunk_size] for i in range(0, len(files), chunk_size)
+    ]
+    for chunk in chunked_files:
+        chunk_str = " ".join((f"'{file}'" for file in chunk))
+        to_remove = (
+            os.popen(f"sxiv -to -g 1920x1080 {chunk_str}").read().split("\n")
+        )
+        to_remove = to_remove[:len(files_to_remove) - 1]
+        for f in to_remove:
+            if os.path.isfile(f):
+                os.remove(f)
+            else:
+                sys.stderr.write(f"Error removing {f}")
+        files_to_remove.extend(to_remove)
+
+    outstr = '\n'.join(files_to_remove)
+    sys.stdout.write(outstr)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,191 @@
+#!/usr/bin/python3.8
+from imagededup.methods import PHash
+import json
+import os
+import argparse
+import sys
+from PIL import Image
+
+# See https://idealo.github.io/imagededup/methods/hashing/#class-phash
+hash_methods = ["phash", "ahash", "dhash", "whash"]
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="dedupimg")
+    parser.add_argument("-p", "--path", type=str, action="store", required=True)
+    parser.add_argument(
+        "-m",
+        "--hash-method",
+        type=str,
+        action="store",
+        choices=hash_methods,
+        default="phash",
+    )
+    parser.add_argument(
+        "-d", "--distance-threshold", type=int, action="store", default=0
+    )
+    parser.add_argument(
+        "-i", "--interactive", action="store_true", default=False
+    )
+
+    args = parser.parse_args()
+
+    path = args.path
+    opts = {}
+    opts["hash_method"] = args.hash_method
+    opts["distance_threshold"] = args.distance_threshold
+    interactive = args.interactive
+
+    if not os.path.exists(path):
+        sys.stdout.write(f"Path does not exist, terminating...\n")
+        sys.exit(1)
+    duplicates = find_duplicates(path, opts)
+
+    deduplicate = Deduplicate(path, duplicates, interactive)
+    deduplicate.make_groups()
+    deduplicate.get_worse_images()
+    deduplicate.remove_duplicates()
+
+
+def find_duplicates(path, opts):
+    hash_method = opts.get("hash_method", "phash")
+    distance_threshold = opts.get("distance_threshold", 0)
+    sys.stdout.write(
+        f"Using hash method {hash_method} with distance threshold {distance_threshold}\n"
+    )
+
+    hasher = None
+    if hash_method == "phash":
+        hasher = PHash()
+    elif hash_method == "ahash":
+        hasher = AHash()
+    elif hash_method == "dhash":
+        hasher = DHash()
+    elif hash_method == "whash":
+        hasher = WHash()
+    else:
+        hasher = PHash()
+
+    encodings = hasher.encode_images(image_dir=path)
+    return hasher.find_duplicates(
+        encoding_map=encodings,
+        max_distance_threshold=distance_threshold
+    )
+
+
+class Deduplicate:
+    def __init__(self, path, duplicates, interactive):
+        self.path = path
+        self.duplicates = duplicates
+        self.cached_image_dims = {}
+        self.cached_image_exists = {}
+        self.cached_image_types_precedent = {}
+        self.groups_best = {}
+        self.groups_lookup = {}
+        self.interactive = interactive
+
+    def verify_exist(self, image):
+        if image in self.cached_image_exists:
+            return self.cached_image_exists[image]
+        exists = os.path.exists(image)
+        self.cached_image_exists[image] = exists
+        return exists
+
+    def get_dims(self, image):
+        if image in self.cached_image_dims:
+            return self.cached_image_dims[image]
+        width, height = 0, 0
+        try:
+            with Image.open(file) as img:
+                width, height = img.size
+            self.cached_image_dims[image] = (width, height)
+            return width, height
+        except:
+            return 0, 0
+
+    def image_precedent(self, types):
+        if "png" in types:
+            return 10
+        if "jpg" in types:
+            return 9
+        return 0
+
+    def get_image_type_precedent(self, image):
+        if image in self.cached_image_types_precedent:
+            return self.cached_image_types_precedent[image]
+        file_type = ''
+        try:
+            with Image.open(file) as img:
+                precedent = self.image_precedent(img.format.lower())
+                self.cached_image_types_precedent[image] = precedent
+                return precedent
+        except:
+            return 0
+
+    def get_worse_images_from_set(self, similar_images):
+        best_image = None
+        for image in similar_images:
+            if best_image == None:
+                best_image = image
+                continue
+            width, height = self.get_dims(image)
+            px = width * height
+            best_width, best_height = self.get_dims(best_image)
+            best_px = best_width * best_height
+
+            #  image_precedent = self.get_image_type_precedent(image)
+            #  best_image_precedent = self.get_image_type_precedent(best_image)
+
+            if px > best_px:
+                best_image = image
+            #  elif px == best_px and image_precedent > best_image_precedent:
+                #  best_image = image
+        similar_images.sort()
+        lookup = '\n'.join(similar_images)
+        self.groups_best[lookup] = best_image
+
+    def make_groups(self):
+        for image, array in self.duplicates.items():
+            array.append(image)
+            array.sort()
+            lookup = '\n'.join(array)
+            if lookup not in self.groups_lookup:
+                self.groups_lookup[lookup] = array
+
+    def get_worse_images(self):
+        current = 0
+        total = len(self.duplicates)
+        for group in self.groups_lookup.values():
+            self.get_worse_images_from_set(group)
+            current += 1
+            sys.stdout.write(
+                f"{current} / {total} ({round(current * 100 / total, 2)}%)\n"
+            )
+
+    def remove_duplicates(self):
+        i = 0
+        for lookup, best in self.groups_best.items():
+            i += 1
+            sys.stdout.write(f"{i} / {len(self.groups_best)}\n")
+            images_to_remove = self.groups_lookup[lookup]
+            images_to_remove.remove(best)
+            if len(images_to_remove) == 0:
+                continue
+            reasons = ' '.join([f"'{i}'" for i in images_to_remove])
+            sys.stdout.write(f"Keeping {best}, removing {reasons}\n")
+            if self.interactive:
+                ok = os.popen(f"sxiv -optg 1920x1080 '{best}' {reasons}").read()
+                if len(ok.replace(" ", "")) > 0:
+                    sys.stdout.write(f"Skipping {best}\n")
+                    continue
+
+            try:
+                for im in images_to_remove:
+                    sys.stdout.write(f"Removing {im}\n")
+                    os.remove(os.path.join(self.path, im))
+            except FileNotFoundError:
+                continue
+
+
+if __name__ == "__main__":
+    main()

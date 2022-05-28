@@ -1,12 +1,31 @@
 #!/bin/sh
 
+help_text() {
+    while IFS= read -r line; do
+        printf "%s\n" "$line"
+    done <<-EOF
+Usage:
+    ${progname} [sail|anchor]
+
+EOF
+}
+
 cd /home/tony/git/dotfiles || exit 1
 
-[ "$1" = sail ] && stow --verbose --target="$HOME" --ignore='.*.dot' --restow $(ls -d */ | grep -v -f .stowignore) && exit
+[ "$1" = sail ] &&\
+    stow \
+    --verbose \
+    --no-folding \
+    --target="$HOME" \
+    --ignore='.*\.dot' \
+    --restow $(ls -d */ | grep -v -f .stowignore) && \
+    exit
 
-[ "$1" = anchor ] && stow --verbose --target="$HOME" --delete */ && exit
+[ "$1" = anchor ] &&\
+    stow \
+    --verbose \
+    --target="$HOME" \
+    --delete */ && \
+    exit
 
-echo 'Unknown command.'
-echo 'Usage:'
-echo '  ship [sail|anchor]'
-echo ''
+help_text

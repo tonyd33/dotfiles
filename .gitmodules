@@ -1,3 +1,6 @@
 [submodule "dotpreprocessor"]
     path = dotpreprocessor
     url = git@github.com:tonyd33/dotpreprocessor.git
+[submodule "glass-theme"]
+	path = glass-theme
+	url = git@github.com:tonyd33/glass-theme.git

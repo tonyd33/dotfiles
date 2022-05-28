@@ -24,4 +24,6 @@ dunst/.config/dunst/dunstrc
 
 polybar/.config/polybar/config.ini
 
+vim/.vim/colors/glass.vim
+
 .dotbuild_cache

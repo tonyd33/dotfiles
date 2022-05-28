@@ -1,0 +1,42 @@
+#!/bin/python
+from PIL import Image, UnidentifiedImageError
+import os
+import sys
+import argparse
+
+
+def is_good_img(width, height, good_width, good_height, total):
+    if total:
+        return width * height >= good_width * good_height
+    return width >= good_width and height >= good_height
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="dedupimg", add_help=False)
+    parser.add_argument("-p", "--path", type=str, action="store", required=True)
+    parser.add_argument("-w", "--width", type=int, action="store", default=200)
+    parser.add_argument("-h", "--height", type=int, action="store", default=200)
+    parser.add_argument("-t", "--total", action="store_true", default=False)
+
+    args = parser.parse_args()
+    path = args.path
+    good_width = args.width
+    good_height = args.height
+    total = args.total
+
+    for file in os.listdir(path):
+        try:
+            if not os.path.isfile(file):
+                continue
+            with Image.open(file) as img:
+                width, height = img.size
+                if not is_good_img(
+                    width, height, good_width, good_height, total
+                ):
+                    sys.stdout.write(f"'{file}'\n")
+        except UnidentifiedImageError:
+            continue
+
+
+if __name__ == "__main__":
+    main()

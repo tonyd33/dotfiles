@@ -32,6 +32,10 @@ Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 " }}}
 
+" own colorschemes {{{
+source ~/.vim/colors/glass.vim
+" }}}
+
 
 " misc {{{
 let mapleader = " "
@@ -149,7 +153,6 @@ nnoremap <leader><leader>cwd :lcd %:p:h<CR>
 " }}}
 
 " theming {{{
-colorscheme onehalfdark
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
