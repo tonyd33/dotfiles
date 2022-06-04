@@ -75,7 +75,7 @@ inherit = bar/all
 bottom = true
 
 modules-left = i3
-modules-right = filesystem pulseaudio xkeyboard memory cpu eth date
+modules-right = check-mic filesystem pulseaudio xkeyboard memory cpu eth date
 
 tray-position = ${env:TRAY_POSITION:right}
 tray-scale = 1.0
@@ -250,7 +250,7 @@ interval = 2
 label-song = %title%
 label-offline = "mpd is offline"
 
-format-online = <toggle> <label-song>
+format-online = %{F$$yellow$$}<toggle>%{F-} <label-song>
 icon-play = 
 icon-pause = 
 icon-stop = 
@@ -261,6 +261,14 @@ icon-next = 
 type = custom/script
 interval = 300
 exec = $$scripts_dir$$/crypto.py
+
+[module/check-mic]
+type = custom/script
+tail = true
+exec = $$scripts_dir$$/check-mic
+click-left = $$scripts_dir$$/toggle-mic
+format = <label>
+label= %{F$$yellow$$}%output%%{F-}
 
 
 [settings]

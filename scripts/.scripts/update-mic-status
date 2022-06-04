@@ -1,0 +1,20 @@
+#!/bin/sh
+
+output=/tmp/check-mic-output
+
+status=$(
+    pactl get-source-mute @DEFAULT_SOURCE@ |\
+    awk '{print $2}'
+)
+out=""
+case $status in
+    yes) out="" ;;
+    no) out="" ;;
+    *) out=""
+esac
+
+
+echo "$out" >> "$output"
+if [ "$(du "$output" | awk '{print $1}')" -gt 4 ]; then
+    truncate --size=4k "$output"
+fi

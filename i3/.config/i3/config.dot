@@ -203,10 +203,7 @@ gaps horizontal 10
 for_window [class="Sxiv|ColorPicker|mpv"] floating enable
 
 # dropdowns
-for_window [class="dropdown|music|discord"] floating enable
-for_window [class="dropdown|music|discord"] resize set 1600 900
-for_window [class="dropdown|music|discord"] move scratchpad
-for_window [class="dropdown|music|discord"] border pixel 1
+for_window [class="dropdown|music|discord"] floating enable, resize set 1600 900, move scratchpad, border pixel 1
 
 exec --no-startup-id kitty --class kitty-dropdown sh -c "tmux new -s dropdown || tmux a -t dropdown"
 bindsym $mod+u [class="dropdown"] scratchpad show; [class="dropdown"] move position center
@@ -236,3 +233,5 @@ bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
 
 # read 1 character and go to the window with the character (')
 bindcode $mod+48 exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+bindcode 107 exec $$scripts_dir$$/toggle-mic

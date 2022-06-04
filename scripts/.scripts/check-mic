@@ -1,0 +1,8 @@
+#!/bin/sh
+
+output=/tmp/check-mic-output
+
+# We're truncating this file which gives an error when it happens...
+# ignore it.
+tail -n 1 -f "$output" 2>/dev/null
+

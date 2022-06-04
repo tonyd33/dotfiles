@@ -4,3 +4,6 @@
 [submodule "glass-theme"]
 	path = glass-theme
 	url = git@github.com:tonyd33/glass-theme.git
+[submodule "onehalf"]
+	path = onehalf
+	url = git@github.com:tonyd33/onehalf.git
