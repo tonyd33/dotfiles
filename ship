@@ -10,7 +10,7 @@ Usage:
 EOF
 }
 
-cd /home/tony/git/dotfiles || exit 1
+cd ~/git/dotfiles || exit 1
 
 [ "$1" = sail ] &&\
     stow \
@@ -21,7 +21,7 @@ cd /home/tony/git/dotfiles || exit 1
     --ignore='.config/mpd/db' \
     --ignore='.*\.pyc' \
     --ignore='.*\.dot' \
-    --restow $(ls -d */ | grep -v -f .stowignore) && \
+    --restow $(cat .stowallow) && \
     exit
 
 [ "$1" = anchor ] &&\

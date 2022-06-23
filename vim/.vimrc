@@ -29,16 +29,18 @@ Plug 'preservim/nerdtree'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " themes
-Plug '~/git/dotfiles/onehalf', { 'rtp': 'vim' }
-Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+Plug 'catppuccin/vim', {'as': 'catppuccin'}
+Plug 'vim-airline/vim-airline-themes'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 call plug#end()
 " }}}
 
-" own colorschemes {{{
-source ~/.vim/colors/glass.vim
-" let g:catppuccin_flavour="frappe"
-" colorscheme catppuccin
-" }}}
+if has('nvim')
+    let g:catppuccin_flavour = "mocha"
+    colorscheme catppuccin
+else
+    colorscheme catppuccin_mocha
+endif
 
 
 " misc {{{
@@ -83,7 +85,8 @@ nmap ga <Plug>(EasyAlign)
 
 " airline {{{
 let g:airline_powerline_fonts = 1
-let g:airline_theme='glass'
+" Good enough of a replacement
+let g:airline_theme='onehalfdark'
 " }}}
 
 " vim-sandwich {{{

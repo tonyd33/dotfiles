@@ -1,6 +1,6 @@
 #!/bin/bash
 
-root_dir=/home/tony/git/dotfiles
+root_dir=~/git/dotfiles
 cache_file="$root_dir/.dotbuild_cache"
 refresh_cache=false
 is_default_verbosity=true
