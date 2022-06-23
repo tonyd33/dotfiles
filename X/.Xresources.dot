@@ -1,7 +1,7 @@
 ! special
-*.foreground:   #a0a0a0
-*.background:   #232323
-*.cursorColor:  #a0a0a0
+*.foreground:   $$white$$
+*.background:   $$black_primary$$
+*.cursorColor:  $$white$$
 
 ! black
 *.color0:       $$black_primary$$

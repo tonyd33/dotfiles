@@ -1,0 +1,8 @@
+#!/bin/sh
+
+input=$1
+
+temp_file=$(mktemp /tmp/qrXXX.png)
+segno --output="$temp_file" --scale=10 "$input" 
+
+sxiv -s f "$temp_file"

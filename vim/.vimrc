@@ -22,18 +22,22 @@ Plug 'tpope/vim-fugitive'
 Plug 'adelarsq/vim-matchit'
 Plug 'preservim/nerdcommenter'
 Plug 'vimwiki/vimwiki'
+Plug 'tonyd33/fzf.vim'
+Plug 'preservim/nerdtree'
 
 " ⚠ bloat ⚠
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " themes
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'vim-airline/vim-airline-themes'
+Plug '~/git/dotfiles/onehalf', { 'rtp': 'vim' }
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 call plug#end()
 " }}}
 
 " own colorschemes {{{
 source ~/.vim/colors/glass.vim
+" let g:catppuccin_flavour="frappe"
+" colorscheme catppuccin
 " }}}
 
 
@@ -79,7 +83,7 @@ nmap ga <Plug>(EasyAlign)
 
 " airline {{{
 let g:airline_powerline_fonts = 1
-let g:airline_theme='onehalfdark'
+let g:airline_theme='glass'
 " }}}
 
 " vim-sandwich {{{
@@ -98,7 +102,7 @@ function s:CssColorInit(typ, keywords, groups)
     call css_color#init(a:typ, a:keywords, a:groups)
   catch /^Vim\%((\a\+)\)\=:E117/
     echom 'ap/vim-css-color not yet installed.'
-  endtry 
+  endtry
 endfunction
 
 augroup CssColorCustomFiletypes
@@ -130,6 +134,11 @@ let g:coc_start_at_startup = v:false
 nnoremap <silent> <leader>bs :call CocEnableAndStart()<CR>
 " or not
 nnoremap <leader>bd :CocDisable<CR>
+" }}}
+
+" {{{
+nnoremap <leader>gf :Files<CR>
+nnoremap <leader>gF :Ag<CR>
 " }}}
 
 " 1}}}

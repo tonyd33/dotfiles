@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# status bar
-launch-polybar &
+# status bar (moved to i3 config)
+# launch-polybar &
 # wallpaper
 nitrogen --restore &
 # pipewire

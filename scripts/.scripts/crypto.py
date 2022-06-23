@@ -23,9 +23,8 @@ base_currency = config["general"]["base_currency"]
 params = {"convert": base_currency}
 
 font_number = 4
-icon_color = json.load(open(expanduser("~/git/dotfiles/lookup.json"), "r"))[
-    "yellow"
-]
+lookup = open(expanduser("~/git/dotfiles/lookup.json"), "r")
+icon_color = json.load(lookup)["polybar_hl"]
 
 for currency in currencies:
     try:

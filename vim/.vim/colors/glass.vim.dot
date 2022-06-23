@@ -29,16 +29,16 @@ let s:white       = { "gui": "$$white$$", "cterm": "188" }
 let s:fg          = s:white
 let s:bg          = s:black
 
-let s:comment_fg  = { "gui": "$$offgray_light$$", "cterm": "241" }
-let s:gutter_bg   = { "gui": "$$offgray_darkest$$", "cterm": "236" }
-let s:gutter_fg   = { "gui": "$$offgray_lighter$$", "cterm": "247" }
-let s:non_text    = { "gui": "$$offgray_darker$$", "cterm": "239" }
+let s:comment_fg  = { "gui": "$$comment_fg$$", "cterm": "241" }
+let s:gutter_bg   = { "gui": "$$gutter_bg$$", "cterm": "236" }
+let s:gutter_fg   = { "gui": "$$gutter_fg$$", "cterm": "247" }
+let s:non_text    = { "gui": "$$non_text$$", "cterm": "239" }
 
-let s:cursor_line = { "gui": "$$offgray_dark$$", "cterm": "237" }
-let s:color_col   = { "gui": "$$offgray_dark$$", "cterm": "237" }
+let s:cursor_line = { "gui": "$$cursor_line$$", "cterm": "237" }
+let s:color_col   = { "gui": "$$color_col$$", "cterm": "237" }
 
-let s:selection   = { "gui": "$$offgray$$", "cterm": "239" }
-let s:vertsplit   = { "gui": "$$offgray_dark$$", "cterm": "237" }
+let s:selection   = { "gui": "$$selection$$", "cterm": "239" }
+let s:vertsplit   = { "gui": "$$vertsplit$$", "cterm": "237" }
 
 
 function! s:h(group, fg, bg, attr)

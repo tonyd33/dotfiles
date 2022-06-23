@@ -1,11 +1,23 @@
 #!/bin/bash
 
 root_dir=/home/tony/git/dotfiles
-cache_file=$root_dir/.dotbuild_cache
+cache_file="$root_dir/.dotbuild_cache"
 refresh_cache=false
-verbosity=1
+is_default_verbosity=true
+default_verbosity=1
+verbosity=0
 rebuild_gtk=false
+restow=false
 now=$(date +%s)
+shvar=$(mktemp /tmp/builddotsXXX.tmp)
+
+export cache_file
+export verbosity
+export now
+export shvar
+export root_dir
+
+. /home/tony/.scripts/lib/logv
 
 progname=${0##*/}
 
@@ -19,10 +31,46 @@ Usage:
 Options:
     -r, --refresh         Force refresh cache
     -c, --cache=CACHE     Custom cache path
-    -v, --verbosity=0,1,2 Verbosity level. Defaults to 1. 0 is silent.
+    -v, --verbosity=N     Verbosity level. Defaults to 1. 0 is silent.
     --gtk                 Also rebuild gtk theme
+    -s, --restow          Restow after build
     -h, --help            Prints this help message
 EOF
+}
+
+init_shvar() {
+    printf "%s\n%s\n%s" 0 0 0 > "${shvar}"
+}
+
+get_shvar_line() {
+    case "$1" in
+        num_built) line=1 ;;
+        num_skipped) line=2 ;;
+        num_new) line=3 ;;
+        *) exit 1 ;;
+    esac
+    echo "$line"
+}
+export -f get_shvar_line
+
+get_shvar_val() {
+    line=$(get_shvar_line "$1")
+    curr=$(sed -n "${line}p" "${shvar}")
+    echo "$curr"
+}
+export -f get_shvar_val
+
+increment_shvar() {
+    line=$(get_shvar_line "$1")
+    curr=$(get_shvar_val "$1")
+    ((curr++))
+    sed -i "${line}s/.*/${curr}/" "${shvar}"
+}
+export -f increment_shvar
+
+close_shvar() {
+    logv debug "Removing $shvar"
+    rm "$shvar"
 }
 
 build() {
@@ -35,40 +83,40 @@ build() {
     search=$(grep "$1" $cache_file)
     if [ "$?" -eq 1 ]; then
         echo "$1 $now" >> $cache_file
-        [ $verbosity -ge 2 ] &&\
-            echo "$1 added to cache"
+        logv debug "$1 added to cache"
+        increment_shvar num_new
     else
         last_built=$(echo "$search" | awk '{print $2}')
         last_modified=$(stat -c "%Y" "$1")
         if [ $((last_modified-last_built)) -lt 0 ]; then
-            [ $verbosity -ge 2 ] &&\
-                echo "Skipping $1..."
+            logv debug "Skipping $1"
+            increment_shvar num_skipped
             exit
         else
-            [ $verbosity -ge 2 ] &&\
-                echo "Updating $1..."
+            logv debug "Updating $1"
             sed -i "s@$search@$1 $now@" $cache_file
         fi
     fi
 
     built="$directory/${filename::-4}"
-    dotpp -s lookup.json -t "$1" -o "$built"
-    [ $verbosity -ge 1 ] &&\
-        echo "built $1->$built"
+    dotpp -s "${root_dir}/lookup.json" -t "$1" -o "$built"
+    logv info "built $1 -> $built"
+    increment_shvar num_built
 
     # Warn if there's still something unmatched
-    if [ "$verbosity" -ge 1 ] && grep '$$.*$$' "$built"; then
-        echo "$built has unmatched expressions."
+    if grep '$$.*$$' "$built"; then
+        logv warn "$built has unmatched expressions."
     fi
 }
+export -f build
 
 [ ! -f $cache_file ] && touch $cache_file
 
 eval set -- $(
     getopt \
     -an "$progname" \
-    -o 'hrc:v' \
-    --long 'help,refresh,cache:,verbosity:,gtk' \
+    -o 'hrc:vs' \
+    --long 'help,refresh,cache:,verbosity:,gtk,restow' \
     -- "$@"
 )
 
@@ -84,14 +132,20 @@ while :;do
             ;;
         --verbosity)
             verbosity=$2
+            is_default_verbosity=false
             shift 2
             ;;
         -v)
             verbosity=$((verbosity+1))
+            is_default_verbosity=false
             shift
             ;;
         --gtk)
             rebuild_gtk=true
+            shift
+            ;;
+        -s | --restow)
+            restow=true
             shift
             ;;
         --)
@@ -105,21 +159,28 @@ while :;do
     esac
 done
 
+init_shvar
+
 [ "$refresh_cache" = true ] &&\
     echo "" > "$cache_file"
 
+[ "$is_default_verbosity" = true ] && verbosity="$default_verbosity"
 
 cd $root_dir || exit 1
-
-# export these for find subshell to pick it up
-export -f build
-export cache_file
-export verbosity
-export now
 
 find . -type f -iname '*.dot' -exec bash -c 'build "{}"' \;
 
 if [ "$rebuild_gtk" = true ]; then
     cd "$root_dir/glass-theme" || exit 1
     meson install -C build
+fi
+
+logv info "built: $(get_shvar_val num_built), skipped: $(get_shvar_val num_skipped), new: $(get_shvar_val num_new)"
+
+close_shvar
+
+if [ "$restow" = true ]; then
+    ship sail >/dev/null 2>&1
+    success=$?
+    [ "$success" -eq 0 ] && logv info "Restowed successfully"
 fi

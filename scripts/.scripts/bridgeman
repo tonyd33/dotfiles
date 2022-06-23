@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# There's gotta be a better way to do this with a configuration file!
+# I can't figure out how it's done with connman though, so this'll have to do.
+
+bridge_name=br0
+interface=eth0
+
+# copy routes first
+routes="[]"
+while read -r line; do
+    read -r dest gateway genmask flags metric rest <<< $line
+    routes=$(
+        jq \
+        --arg dest "$dest" \
+        --arg gateway "$gateway" \
+        --arg genmask "$genmask" \
+        --arg flags "$flags" \
+        --arg metric "$metric" \
+        '.+=[{
+                dest: $dest,
+                gateway: $gateway,
+                genmask: $genmask,
+                flags: $flags,
+                metric: $metric
+            }]
+        ' <<< $routes
+    )
+done < <(route -n | grep $interface) # https://stackoverflow.com/a/10752407
+
+brctl addbr $bridge_name
+brctl addif $bridge_name $interface
+
+ip link set dev $bridge_name up
+
+# steal current interface's ip address lol (this can't be right)
+ipv4_addr=$(
+    ip addr show dev $interface |\
+    grep "^\s*inet.*\s$interface" |\
+    awk '{print $2}'
+)
+ip addr del $ipv4_addr dev $interface
+ip addr add dev $bridge_name $ipv4_addr
+
+# https://stackoverflow.com/a/43192740
+# https://www.linuxquestions.org/questions/showthread.php?p=6283602#post6283602
+echo $routes |\
+jq -r '.[]|[.dest, .gateway, .genmask, .flags, .metric]|@tsv' |\
+while IFS=$'\t' read -r dest gateway genmask flags metric; do
+    echo "route del -net $dest"
+    echo "route add -net $dest gw $gateway netmask $genmask metric $metric dev $bridge_name"
+done

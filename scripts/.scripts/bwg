@@ -2,7 +2,7 @@
 # arrays/maps/declare is not POSIX compliant. Use bash
 
 # Variable declarations {{{
-cache_expiry_seconds=86400 # 24 hours
+cache_expiry_seconds=604800 # 1 week
 progname=${0##*/}
 refresh_cache=false
 cache_file="$HOME/.bwcache"
@@ -106,10 +106,11 @@ get_item() {
         send_notification "Failed to retrieve data." &&\
         exit 1
 
-    data_to_retrieve=$(
-        echo -e "username\npassword" |\
-        dmenu -i -p "Get"
-    )
+    data_to_retrieve=password
+    # data_to_retrieve=$(
+        # echo -e "username\npassword" |\
+        # dmenu -i -p "Get"
+    # )
     command=""
 
     # TODO: Uncancer this and get more options

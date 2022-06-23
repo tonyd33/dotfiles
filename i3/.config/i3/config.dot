@@ -32,7 +32,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+# exec --no-startup-id nm-applet
 
 # colors
 set $bg-color              $$black$$
@@ -195,24 +195,28 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # gaps
-gaps outer 25
-gaps inner 25
-gaps horizontal 10
+gaps outer 10
+gaps inner 10
+gaps horizontal 5
+smart_gaps on
 
 # floating defaults
 for_window [class="Sxiv|ColorPicker|mpv"] floating enable
 
 # dropdowns
-for_window [class="dropdown|music|discord"] floating enable, resize set 1600 900, move scratchpad, border pixel 1
+for_window [class="dropdown|music|discord|Caprine"] floating enable, resize set 1600 900, move scratchpad, border pixel 1
 
-exec --no-startup-id kitty --class kitty-dropdown sh -c "tmux new -s dropdown || tmux a -t dropdown"
+exec_always --no-startup-id kitty --class kitty-dropdown sh -c "tmux new -s dropdown || tmux a -t dropdown"
 bindsym $mod+u [class="dropdown"] scratchpad show; [class="dropdown"] move position center
 
-exec --no-startup-id kitty --class music sh -c "ncmpcpp"
+exec_always --no-startup-id kitty --class music sh -c "tmux new -s music ncmpcpp || tmux a -t music"
 bindsym $mod+i [class="music"] scratchpad show; [class="music"] move position center
 
 exec --no-startup-id discord
 bindsym $mod+o [class="discord"] scratchpad show; [class="discord"] move position center
+
+exec --no-startup-id caprine
+bindsym $mod+p [class="Caprine"] scratchpad show; [class="Caprine"] move position center
 
 
 for_window [all] title_window_icon padding 5px
@@ -220,6 +224,7 @@ for_window [all] title_window_icon padding 5px
 
 # startup
 exec --no-startup-id $$scripts_dir$$/xstart
+exec_always --no-startup-id $$scripts_dir$$/launch-polybar
 
 # other binds
 bindsym $mod+z exec flameshot gui

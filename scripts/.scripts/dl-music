@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 download_directory=~/music/media
 queue_file=~/music/.queue
@@ -25,8 +25,7 @@ EOF
 
 declare -a links=()
 read_links() {
-    # [[ is not POSIX compliant
-    while (($#)) && echo $1 | grep '^-*$'; do
+    while (($#)) && ! echo "$1" | grep '^-*$'; do
         links+=($1)
         shift
     done

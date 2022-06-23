@@ -1,0 +1,35 @@
+#!/bin/bash
+
+. /home/tony/.scripts/lib/colorslib
+
+logv() {
+    message_type=$1
+    shift
+    message="$@"
+    prefix="${bold}"
+
+    case "$message_type" in
+        debug)
+            [ "$verbosity" -lt 3 ] && return
+            prefix="${prefix}${fg_cyan}"
+            ;;
+        info)
+            [ "$verbosity" -lt 2 ] && return
+            prefix="${prefix}${fg_blue}"
+            ;;
+        warn)
+            [ "$verbosity" -lt 1 ] && return
+            prefix="${prefix}${fg_green}"
+            ;;
+        error)
+            [ "$verbosity" -lt 0 ] && return
+            prefix="${prefix}${fg_red}"
+            ;;
+        *) ;;
+    esac
+
+    echo -e "${prefix}[${message_type}]${reset} ${message}${reset}"
+}
+
+export -f logv
+

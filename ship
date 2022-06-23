@@ -17,6 +17,9 @@ cd /home/tony/git/dotfiles || exit 1
     --verbose \
     --no-folding \
     --target="$HOME" \
+    --ignore='.config/mpd/state' \
+    --ignore='.config/mpd/db' \
+    --ignore='.*\.pyc' \
     --ignore='.*\.dot' \
     --restow $(ls -d */ | grep -v -f .stowignore) && \
     exit
@@ -25,6 +28,10 @@ cd /home/tony/git/dotfiles || exit 1
     stow \
     --verbose \
     --target="$HOME" \
+    --ignore='.config/mpd/state' \
+    --ignore='.config/mpd/db' \
+    --ignore='.*\.pyc' \
+    --ignore='.*\.dot' \
     --delete */ && \
     exit
 

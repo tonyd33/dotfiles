@@ -14,3 +14,11 @@ bindkey -s '^o' 'ranger^M'
 source ~/.shellrc/envdef
 
 alias nvmsrc="source ~/.shellrc/nvm"
+
+alias nv="nvim"
+
+alias sshgs="ssh -tt tony@10.0.0.119"
+
+export FZF_DEFAULT_OPTS="--preview='bat --style=numbers --color=always {}' --color=bg+:black"
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+fze() { fzf | xargs -r $EDITOR }
