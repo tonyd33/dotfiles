@@ -1,5 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH="$PATH:/home/tony/.scripts:/home/tony/.local/bin"
+export PATH="$PATH:/Users/tony/.scripts"
 export MPD_HOST=localhost
 export MPD_PORT=6600
 
