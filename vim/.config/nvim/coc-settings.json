@@ -1,8 +1,16 @@
 {
-    "suggest.autoTrigger": "none",
+    "suggest.autoTrigger": "trigger",
     "suggest.maxCompleteItemCount": 5,
     "suggest.lowPrioritySourceLimit": 5,
     "suggest.highPrioritySourceLimit": 5,
     "diagnostic.enableMessage": "jump",
-    "signature.enable": false
+    "signature.enable": false,
+    "python.pythonPath": "/opt/homebrew/bin/python3",
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "/opt/homebrew/bin/black",
+    "python.formatting.blackArgs": ["-l", "80"],
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false,
+    "python.linting.flake8Path": "flake8",
+    "python.linting.enabled": false
 }

@@ -22,8 +22,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'adelarsq/vim-matchit'
 Plug 'preservim/nerdcommenter'
 Plug 'vimwiki/vimwiki'
-Plug 'tonyd33/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
+Plug 'lervag/vimtex'
+Plug 'wellle/context.vim'
 
 " ⚠ bloat ⚠
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -32,6 +35,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'catppuccin/vim', {'as': 'catppuccin'}
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 call plug#end()
 " }}}
 
@@ -117,20 +124,85 @@ augroup END
 
 " coc {{{
 
-if !exists("*CocEableAndStart")
+if !exists("*CocEnableAndStart")
     function CocEnableAndStart()
         :CocEnable
         :CocRestart
     endfunction
 endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
+" GoTo code navigation.
 nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gs :call CocAction('jumpDefinition', 'vsplit')<CR>
+nmap <silent> <leader>gt :call CocAction('jumpDefinition', 'tabnew')<CR>
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
 
 nnoremap <leader>sn :CocAction("showSignatureHelp")<CR>
 
 nnoremap <leader>rn <Plug>(coc-rename)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <leader>qf <Plug>(coc-fix-current)
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <leader>a  :<C-u>CocList diagnostics<cr>
+" Show commands.
+nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <leader>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
+
+nnoremap <leader>gp :call CocAction('format')<CR>
+
 " don't waste resources
 let g:coc_start_at_startup = v:false
 " unless necessary
@@ -139,16 +211,20 @@ nnoremap <silent> <leader>bs :call CocEnableAndStart()<CR>
 nnoremap <leader>bd :CocDisable<CR>
 " }}}
 
-" {{{
+" fzf {{{
 nnoremap <leader>gf :Files<CR>
 nnoremap <leader>gF :Ag<CR>
+" }}}
+
+" vimtex {{{
+let g:vimtex_view_method = 'zathura'
 " }}}
 
 " 1}}}
 
 " maps {{{
 " normal mode on escape
-tnoremap <Esc> <C-\><C-n>
+" tnoremap <Esc> <C-\><C-n>
 " clear search on enter
 nnoremap <silent> <CR> :noh<CR><Esc>
 " center on search
@@ -196,28 +272,6 @@ function! SetupCommandAlias(from, to)
         \ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfunction
 " }}}
-
-" toggleable autocmd {{{1
-
-" python file format {{{
-let g:toggleBlack = 0
-function! ToggleBlack(...)
-    " toggle
-    if a:0 == 1
-        let g:toggleBlack = 1 - g:toggleBlack
-    endif
-
-    if g:toggleBlack == 0
-        silent! !black '%:p'
-        " reload file
-        execute ":e!"
-    endif
-endfunction
-
-autocmd BufWritePost *.py call ToggleBlack()
-" }}}
-
-" 1}}}
 
 " numbered tab lines {{{
 " credit: https://vim.fandom.com/wiki/Show_tab_number_in_your_tab_line
