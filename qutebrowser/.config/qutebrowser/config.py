@@ -8,6 +8,8 @@ c.aliases["mdlq"] = (
     f"spawn --output-messages {scripts_dir}/dl-music -q " + "{url}"
 )
 c.aliases["mdld"] = f"spawn --output-messages {scripts_dir}/dl-music -d"
+
+c.aliases["toqr"] = f"spawn --output-messages {scripts_dir}/qrimg " + "{url}"
 # }}}
 
 # bindings {{{

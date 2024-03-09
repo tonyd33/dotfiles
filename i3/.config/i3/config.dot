@@ -201,7 +201,7 @@ gaps horizontal 5
 smart_gaps on
 
 # floating defaults
-for_window [class="Sxiv|ColorPicker|mpv"] floating enable
+for_window [class="Sxiv|ColorPicker|mpv|Bitwarden"] floating enable
 
 # dropdowns
 for_window [class="dropdown|music|discord|Caprine"] floating enable, resize set 1600 900, move scratchpad, border pixel 1

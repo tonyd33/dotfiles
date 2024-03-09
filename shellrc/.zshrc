@@ -14,11 +14,17 @@ bindkey -s '^o' 'ranger^M'
 source ~/.shellrc/envdef
 
 alias nvmsrc="source ~/.shellrc/nvm"
+alias condasrc="source ~/.shellrc/conda"
 
 alias nv="nvim"
-
-alias sshgs="ssh -tt tony@10.0.0.119"
 
 export FZF_DEFAULT_OPTS="--preview='bat --style=numbers --color=always {}' --color=bg+:black"
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 fze() { fzf | xargs -r $EDITOR }
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+alias clipin="xclip -selection clipboard"
+alias clipout="xclip -selection clipboard -o"

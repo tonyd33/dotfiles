@@ -1,4 +1,4 @@
-export PATH="$PATH:/home/tony/.scripts:/home/tony/.local/bin"
+export PATH="$PATH:/home/tony/.scripts:/home/tony/.scripts/onetime:/home/tony/.local/bin"
 export MPD_HOST=localhost
 export MPD_PORT=6600
 

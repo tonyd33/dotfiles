@@ -9,9 +9,9 @@ pipewire &
 pipewire-pulse &
 wireplumber &
 # compositor
-picom &
+# picom &
 # music player daemon
-mpd &
+# mpd &
 # recording keyboard
 screenkey --start-disabled &
 # draw on screen
@@ -22,3 +22,6 @@ dunst &
 emote &
 # faster typing speed
 xset r rate 150 30 &
+redshiftt -l 49:122 &
+# nextcloud &
+# bitwarden-desktop &

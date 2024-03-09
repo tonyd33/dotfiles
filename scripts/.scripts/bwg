@@ -67,7 +67,7 @@ get_item() {
     if [ $((now-last_modified)) -gt $cache_expiry_seconds ] ||\
         [ $refresh_cache = true ]; then
         unlock_bitwarden
-        items=$(bw list items)
+        items=$(bw list items --folderid null)
         echo "$items" > "$cache_file"
         send_notification "Updated bitwarden cache"
     else
@@ -80,6 +80,7 @@ get_item() {
     )
 
     while IFS= read -r line; do
+        # TODO: Just use read lol
         title=$(echo "$line" | awk -F ',' '{print $1}')
         username=$(echo "$line" | awk -F ',' '{print $2}')
         password=$(echo "$line" | awk -F ',' '{print $3}')

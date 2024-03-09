@@ -15,6 +15,13 @@ settings:
         tt: set-cmd-text -s :tab-take
   colors.completion.odd.bg:
     global: '#ff00ff'
+  completion.open_categories:
+    global:
+    - searchengines
+    - quickmarks
+    - bookmarks
+    - history
+    - filesystem
   content.notifications.enabled:
     https://www.facebook.com: false
   zoom.default:

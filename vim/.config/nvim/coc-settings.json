@@ -4,5 +4,6 @@
     "suggest.lowPrioritySourceLimit": 5,
     "suggest.highPrioritySourceLimit": 5,
     "diagnostic.enableMessage": "jump",
-    "signature.enable": false
+    "signature.enable": false,
+    "typescript.preferences.importModuleSpecifier": "relative"
 }

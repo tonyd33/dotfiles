@@ -6,17 +6,20 @@ polybar --list-monitors | grep $tray_output || tray_output=DP-0
 
 killall polybar
 
+# polybar top &
+# polybar bottom &
+
 if type "xrandr"; then
-  for m in $(polybar --list-monitors | cut -d":" -f1); do
-    export TRAY_POSITION=none
-    export MONITOR=$m 
-    if [[ $m == $tray_output ]]; then
-        TRAY_POSITION=right
-    fi
+    for m in $(polybar --list-monitors | cut -d":" -f1); do
+      export TRAY_POSITION=none
+      export MONITOR=$m
+      if [[ $m == $tray_output ]]; then
+          TRAY_POSITION=right
+      fi
+      polybar top &
+      polybar bottom &
+    done
+else
     polybar top &
     polybar bottom &
-  done
-else
-  polybar top &
-  polybar bottom &
 fi
