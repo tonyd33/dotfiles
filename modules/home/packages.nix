@@ -1,6 +1,9 @@
 { flake, inputs, pkgs, ... }:
 let
   inherit (flake) inputs;
+  system = pkgs.system;
+  isDarwin = builtins.match ".*-darwin" system != null;
+  isLinux = builtins.match ".*-linux" system != null;
 in
 {
   # Nix packages to install to $HOME
@@ -15,36 +18,31 @@ in
 
     # util
     less
-    htop
+    jq
     yq
+    btop
     fzf
     ripgrep
     fd
     tree
     gnumake
     ncdu
+    bash
 
     # applications
-    imv
     mpv
     ncmpcpp
     restish
+    bitwarden-cli
+  ]
+  ++
+  (if isLinux then [
+    imv
     obs-studio
     tofi
-    ghostty
-  ];
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+  ] else [])
+  ++
+  (if isDarwin then [
 
-  # Programs natively supported by home-manager.
-  # They can be configured in `programs.*` instead of using home.packages.
-  programs = {
-    jq.enable = true;
-    # Install btop https://github.com/aristocratos/btop
-    btop.enable = true;
-    # Tmate terminal sharing.
-    tmate = {
-      enable = true;
-      #host = ""; #In case you wish to use a server other than tmate.io
-    };
-  };
+  ] else []);
 }

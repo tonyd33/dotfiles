@@ -1,3 +1,9 @@
+{ flake, pkgs, ... }:
+let
+  inherit (flake) inputs;
+  inherit (inputs) self;
+  inherit (flake.config) me;
+in
 {
   programs.ghostty = {
     enable = true;

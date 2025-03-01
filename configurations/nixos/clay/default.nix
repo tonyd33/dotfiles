@@ -16,6 +16,6 @@ in
 
   # Enable home-manager for our user
   home-manager.users."${me.username}" = {
-    imports = [ (self + /configurations/home/${me.username}.nix) ];
+    imports = [ (self + /configurations/home/${me.username} + "@clay.nix") ];
   };
 }

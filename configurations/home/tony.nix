@@ -5,10 +5,6 @@ let
   inherit (flake.config) me;
 in
 {
-  imports = [
-    self.homeModules.default
-  ];
-
   # To use the `nix` from `inputs.nixpkgs` on templates using the standalone `home-manager` template
 
   # `nix.package` is already set if on `NixOS` or `nix-darwin`.
@@ -22,3 +18,4 @@ in
   home.homeDirectory = lib.mkDefault "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${me.username}";
   home.stateVersion = "24.11";
 }
+

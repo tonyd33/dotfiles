@@ -3,7 +3,6 @@ let
   inherit (flake.config) me;
 in
 {
-  # https://nixos.asia/en/git
   programs = {
     git = {
       enable = true;
@@ -13,6 +12,11 @@ in
       extraConfig = {
         init.defaultBranch = "master";
         # pull.rebase = "false";
+      };
+      signing = {
+        format = "ssh";
+        key = "~/.ssh/id_rsa.pub";
+        signByDefault = true;
       };
     };
   };
