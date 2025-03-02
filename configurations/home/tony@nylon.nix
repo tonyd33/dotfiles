@@ -10,7 +10,6 @@ in
     direnv
     gc
     git
-    gpg
     kitty
     nix-index
     nixvim

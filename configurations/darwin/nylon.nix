@@ -15,8 +15,8 @@ in
   nixpkgs.hostPlatform = "aarch64-darwin";
   networking = {
     hostName = "nylon";
-    dns = ["10.0.123.123"];
-    knownNetworkServices = ["Wi-Fi" "Thunderbolt Bridge"];
+    dns = [ "10.0.123.123" ];
+    knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
   };
 
 

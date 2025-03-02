@@ -4,7 +4,7 @@
     enable = true;
     enableCompletion = true;
     # autosuggestion.enable = true;
-    # syntaxHighlighting.enable = true;
+    syntaxHighlighting.enable = true;
 
     oh-my-zsh = {
       enable = true;
@@ -13,12 +13,11 @@
         "colored-man-pages"
         "colorize"
         "fzf" # cmd history
+        "kubectl"
       ];
     };
 
     envExtra = ''
-      EDITOR=nvim
-      VISUAL=nvim
     '';
     profileExtra = ''
     '';
@@ -29,6 +28,7 @@
         file = "share/fzf-tab/fzf-tab.plugin.zsh";
         src = pkgs.zsh-fzf-tab;
       }
+      # Automatically activate zsh in temporary shells
       {
         name = "zsh-nix-shell";
         file = "nix-shell.plugin.zsh";

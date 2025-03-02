@@ -34,15 +34,16 @@ in
     ncmpcpp
     restish
     bitwarden-cli
+    localsend
   ]
   ++
   (if isLinux then [
     imv
     obs-studio
     tofi
-  ] else [])
+  ] else [ ])
   ++
   (if isDarwin then [
 
-  ] else []);
+  ] else [ ]);
 }

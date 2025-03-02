@@ -6,6 +6,7 @@ in
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
   programs.nixvim = {
     enable = true;
+    defaultEditor = true;
     globals = {
       mapleader = " ";
     };
@@ -219,6 +220,11 @@ in
       {
         key = "<leader>tr";
         action = ":NvimTreeFindFile<cr>";
+        mode = [ "n" ];
+      }
+      {
+        key = "gp";
+        action = "`[v`]";
         mode = [ "n" ];
       }
       # Hack to write as superuser
