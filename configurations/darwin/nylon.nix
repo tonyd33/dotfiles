@@ -49,11 +49,21 @@ in
 
   homebrew = {
     enable = true;
-    brews = [ ];
+    brews = [
+      "helm"
+    ];
     casks = [
       "bitwarden"
       "zen-browser"
+      "discord"
+      "blender"
     ];
+    taps = [ ];
+    masApps = {
+      tailscale = 1475387142;
+      "fluent reader" = 1520907427;
+    };
+    onActivation.cleanup = "uninstall";
   };
 
   # Used for backwards compatibility, please read the changelog before changing.

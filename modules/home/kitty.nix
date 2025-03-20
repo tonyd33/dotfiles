@@ -6,7 +6,7 @@
       enableBashIntegration = true;
     };
     font = {
-      name = "Comic Code";
+      name = "Comic Code Ligatures";
       size = 16;
     };
     themeFile = "Catppuccin-Frappe";

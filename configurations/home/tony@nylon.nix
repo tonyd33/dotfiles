@@ -11,12 +11,14 @@ in
     gc
     git
     kitty
-    nix-index
+    k8s
     nixvim
     packages
     tmux
     yazi
+    zoxide
     zsh
+    fzf
   ]
   ++
   [

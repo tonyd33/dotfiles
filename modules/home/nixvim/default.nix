@@ -44,12 +44,47 @@ in
     };
 
     plugins = {
-      lualine.enable = true;
-      sandwich.enable = true;
+      # For some reason, this enables virtual text for diagnostics, which I
+      # don't like.
+      # distant.enable       = true;
+      # remote-nvim.enable  = true;
 
-      nvim-tree = {
+      # These have some finnicky behavior when using lsp move to new file
+      # action. Maybe try enabling in the future if I figure out why this
+      # happens or it's fixed.
+      # barbar.enable        = true;
+      # bufferline.enable    = true;
+
+      # Bloat
+      # neotest.enable       = true; # Easier test running
+
+      sandwich.enable      = true; # surround motions
+      fugitive.enable      = true; # git
+      fidget.enable        = true; # LSP Progress message
+      flash.enable         = true; # Better f/t/F/T
+      neoconf.enable       = true; # Local configuration
+      oil.enable           = true; # filesystem editing
+      hardtime.enable      = true; # make things harder, why not
+      twilight.enable      = true; # focus on current code
+      which-key.enable     = true; # too many keybinds sometimes
+      web-devicons.enable  = true; # soy icons
+      neoclip.enable       = true; # register management
+      nvim-tree.enable     = true; # file tree browser
+      glance.enable        = true; # navigation by reference
+      todo-comments.enable = true; # todo comments
+
+      refactoring = {
         enable = true;
-        autoClose = true;
+      };
+
+      zen-mode = {
+        enable = true;
+        settings = {
+          plugins.twilight.enabled = true;
+          plugins.tmux.enabled = true;
+          plugins.todo.enabled = true;
+          plugins.kitty.enabled = true;
+        };
       };
 
       treesitter = {
@@ -57,20 +92,71 @@ in
         folding = true;
       };
 
+      # Powerful structural editor
+      navbuddy = {
+        enable = true;
+        lsp.autoAttach = true;
+      };
+
+      # Breadcrumb stuff
+      navic = {
+        enable = true;
+        settings.lsp.auto_attach = true;
+      };
+
+      lualine = {
+        enable = true;
+        settings = {
+          winbar = {
+            lualine_c = [
+              {
+                __unkeyed-1 = "navic";
+              }
+            ];
+          };
+        };
+      };
+
+      cmp = {
+        enable = true;
+        autoEnableSources = true;
+        settings = {
+          sources = [
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
+          ];
+          # I only want manual trigger
+          completion.autocomplete = false;
+          mapping = {
+            __raw = ''
+              cmp.mapping.preset.insert({
+                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                ['<C-Space>'] = cmp.mapping.complete(),
+                ['<C-e>'] = cmp.mapping.abort(),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+              })
+            '';
+          };
+        };
+      };
+
       lsp = {
         enable = true;
         keymaps = {
           lspBuf = {
-            "gd" = "definition";
-            "gr" = "references";
-            "gt" = "type_definition";
-            "gi" = "implementation";
+            "gd"         = "definition";
+            "gr"         = "references";
+            "gi"         = "implementation";
+            "<leader>gt" = "type_definition";
             "<leader>rn" = "rename";
-            "<leader>a" = "code_action";
+            "<leader>a"  = "code_action";
+            "<leader>p"  = "format";
           };
           diagnostic = {
-            "<leader>j" = "goto_prev";
-            "<leader>k" = "goto_next";
+            "<leader>j" = "goto_next";
+            "<leader>k" = "goto_prev";
           };
         };
         servers = {
@@ -103,7 +189,7 @@ in
 
           ts_ls.enable = true;
           biome.enable = true;
-          denols.enable = true;
+          # denols.enable = true;
 
           # weird guys
           html.enable = true;
@@ -123,7 +209,6 @@ in
 
       mini = {
         enable = true;
-        mockDevIcons = true; # needed for telescope
 
         modules = {
           # basics.enable     = true; # this messes up things with autopairs
@@ -133,27 +218,6 @@ in
           icons.enable = true;
 
           trailspace.enable = true;
-
-          # idk how to use this but it seems useful
-          # pick.enable = true;
-          # visits.enable = true;
-
-          clue = {
-            enable = true;
-            triggers = [
-              { mode = "n"; keys = "<Leader>"; }
-              { mode = "n"; keys = "<C-w>"; }
-            ];
-            window = {
-              delay = 200;
-            };
-            clues = {
-              "__unkeyed-1__builtin_completion" = { __raw = "require('mini.clue').gen_clues.builtin_completion()"; };
-              "__unkeyed-2__windows" = { __raw = "require('mini.clue').gen_clues.windows()"; };
-              "__unkeyed-3__marks" = { __raw = "require('mini.clue').gen_clues.marks()"; };
-              "__unkeyed-4__g" = { __raw = "require('mini.clue').gen_clues.g()"; };
-            };
-          };
 
           comment = {
             enable = true;
@@ -184,8 +248,35 @@ in
         enable = true;
         keymaps = {
           "<leader>ff" = { action = "find_files"; };
-          "<leader>fs" = { action = "live_grep"; };
+          "<leader>fg" = { action = "live_grep"; };
           "<leader>fb" = { action = "buffers"; };
+          "<leader>fm" = { action = "marks"; };
+          "<leader>fj" = { action = "jumplist"; };
+          "<leader>fl" = { action = "loclist"; };
+          "<leader>fs" = { action = "lsp_workspace_symbols"; };
+          "<leader>fn" = { action = "neoclip"; };
+        };
+        settings = {
+          defaults = {
+            layout_strategy = "flex";
+            layout_config = {
+              width = 0.8;
+              height = 0.95;
+              anchor = "CENTER";
+              horizontal = {
+                preview_width = 0.5;
+              };
+              vertical = {
+                prompt_position = "top";
+                mirror = true;
+                preview_height = 0.5;
+                preview_cutoff = 0;
+              };
+            };
+            file_ignore_patterns = [
+              "^.git/"
+            ];
+          };
         };
       };
     };
@@ -207,11 +298,50 @@ in
     '';
 
     keymaps = [
+      # glance
+      {
+        key = "<leader>gD";
+        action = ":Glance definitions<cr>";
+        mode = [ "n" ];
+      }
+      {
+        key = "<leader>gR";
+        action = ":Glance references<cr>";
+        mode = [ "n" ];
+      }
+      {
+        key = "<leader>gY";
+        action = ":Glance type_definitions<cr>";
+        mode = [ "n" ];
+      }
+      {
+        key = "<leader>gM";
+        action = ":Glance implementations<cr>";
+        mode = [ "n" ];
+      }
+
+      # navbuddy
+      {
+        key = "<leader>es";
+        action = ":Navbuddy<cr>";
+        mode = [ "n" ];
+      }
+
+      # zenmode
+      {
+        key = "<leader>0";
+        action = ":ZenMode<cr>";
+        mode = [ "n" ];
+      }
+
+      # easymotion
       {
         key = "<leader>s";
         action = "<plug>(easymotion-prefix)s";
         mode = [ "n" ];
       }
+
+      # tree sitter
       {
         key = "<leader>tt";
         action = ":NvimTreeToggle<cr>";
@@ -222,6 +352,8 @@ in
         action = ":NvimTreeFindFile<cr>";
         mode = [ "n" ];
       }
+
+      # plugin-agnostic
       {
         key = "gp";
         action = "`[v`]";

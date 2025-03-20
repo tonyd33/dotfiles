@@ -1,4 +1,10 @@
-{ pkgs, ... }:
+{ flake, inputs, pkgs, ... }:
+let
+  inherit (flake) inputs;
+  system = pkgs.system;
+  isDarwin = builtins.match ".*-darwin" system != null;
+  isLinux = builtins.match ".*-linux" system != null;
+in
 {
   programs.zsh = {
     enable = true;
@@ -11,16 +17,24 @@
       theme = "fwalch";
       plugins = [
         "colored-man-pages"
-        "colorize"
         "fzf" # cmd history
-        "kubectl"
+        "kubectl" # completion
+        "kubectx"
       ];
     };
 
-    envExtra = ''
-    '';
     profileExtra = ''
-    '';
+    '' + (if isDarwin then ''
+      alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+      PATH="$PATH:/opt/homebrew/bin"
+    '' else "");
+
+    initExtra = ''
+      # Make kubecolor share same completion logic as kubectl
+      compdef kubecolor=kubectl
+      alias ls="ls --color=auto"
+      enable-fzf-tab
+    '' ;
 
     plugins = [
       {
