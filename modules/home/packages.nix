@@ -20,16 +20,17 @@ in
     bash watch less
     jq   yq    ripgrep
     fd   tree  ncdu
-    btop
+    btop entr
 
     # applications
     mpv       ncmpcpp
     restish
-    localsend gimp bitwarden-cli
+    localsend gimp # bitwarden-cli
 
-    # I'm practicing to purposely not install these system-wide and force
-    # myself to install this on a per-project basis so I don't miss
-    # dependencies.
+    # others
+    python3
+    typst
+
     # kubectl podman podman-compose
   ]
   ++

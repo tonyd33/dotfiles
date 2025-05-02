@@ -61,6 +61,9 @@
 
       # This is needed to enable C-a passthrough (jump to start of line)
       bind-key C-a send-keys C-a
+
+      # set default directory for new windows in this session to current directory
+      bind M-c attach-session -c "#{pane_current_path}"
     '';
   };
 }

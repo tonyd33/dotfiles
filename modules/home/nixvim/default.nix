@@ -9,6 +9,7 @@ in
     defaultEditor = true;
     globals = {
       mapleader = " ";
+      maplocalleader = "\\";
     };
 
     opts = {
@@ -28,10 +29,14 @@ in
       listchars = "tab:>~,nbsp:_,trail:.";
 
       shiftwidth = 2;
-      tabstop = 8;
+      tabstop = 4;
       softtabstop = 0;
       # smartindent  = true; # this messes things up with autopairs
       expandtab = true;
+
+      # this will get overridden by lsp
+      # TODO: How to fix?
+      # formatexpr = "v:lua.require'conform'.formatexpr()";
     };
 
     diagnostics = {
@@ -41,6 +46,12 @@ in
     colorschemes.catppuccin = {
       enable = true;
       settings.flavour = "frappe";
+    };
+
+    filetype = {
+      extension = {
+        purs = "purescript";
+      };
     };
 
     plugins = {
@@ -57,14 +68,12 @@ in
 
       # Bloat
       # neotest.enable       = true; # Easier test running
+      # fidget.enable        = true; # LSP Progress message
 
       sandwich.enable      = true; # surround motions
       fugitive.enable      = true; # git
-      fidget.enable        = true; # LSP Progress message
-      flash.enable         = true; # Better f/t/F/T
       neoconf.enable       = true; # Local configuration
       oil.enable           = true; # filesystem editing
-      hardtime.enable      = true; # make things harder, why not
       twilight.enable      = true; # focus on current code
       which-key.enable     = true; # too many keybinds sometimes
       web-devicons.enable  = true; # soy icons
@@ -72,17 +81,35 @@ in
       nvim-tree.enable     = true; # file tree browser
       glance.enable        = true; # navigation by reference
       todo-comments.enable = true; # todo comments
+      trouble.enable       = true; # diagnostics
 
-      refactoring = {
+      neorg = {
         enable = true;
+        telescopeIntegration.enable = true;
+        settings.load = {
+          "core.concealer" = {
+              config = {
+                icon_preset = "varied";
+              };
+            };
+            "core.defaults" = {
+              __empty = null;
+            };
+            "core.dirman" = {
+              config = {
+                workspaces = {
+                  home = "~/Documents/notes/home";
+                  work = "~/Documents/notes/work";
+                };
+              };
+            };
+        };
       };
 
       zen-mode = {
         enable = true;
         settings = {
           plugins.twilight.enabled = true;
-          plugins.tmux.enabled = true;
-          plugins.todo.enabled = true;
           plugins.kitty.enabled = true;
         };
       };
@@ -90,12 +117,20 @@ in
       treesitter = {
         enable = true;
         folding = true;
+        settings.auto_install = true;
+        settings.highlight.enable = true;
       };
 
-      # Powerful structural editor
+      # Powerful structural navigator
       navbuddy = {
         enable = true;
-        lsp.autoAttach = true;
+        lsp = {
+          autoAttach = true;
+          preference = [
+            "ts_ls"
+            "deno"
+          ];
+        };
       };
 
       # Breadcrumb stuff
@@ -117,6 +152,63 @@ in
         };
       };
 
+      lint = {
+        enable = true;
+        lintersByFt = {
+          clojure         = [ "clj-kondo" ];
+          dockerfile      = [ "hadolint" ];
+          inko            = [ "inko" ];
+          janet           = [ "janet" ];
+          json            = [ "jsonlint" ];
+          markdown        = [ "vale" ];
+          rst             = [ "vale" ];
+          ruby            = [ "ruby" ];
+          terraform       = [ "tflint" ];
+          text            = [ "vale" ];
+          typescript      = [ "eslint" ];
+          javascript      = [ "eslint" ];
+          typescriptreact = [ "eslint" ];
+          javascriptreact = [ "eslint" ];
+          deno            = [ "deno" "eslint"];
+          haskell         = [ "hlint"  ];
+          python          = [ "flake8" ];
+          yaml            = [ "ansible_lint" "yamllint" ];
+        };
+        autoCmd = {
+          # callback = {
+          #   __raw = ''
+          #     function()
+          #       require('lint').try_lint()
+          #     end
+          #   '';
+          # };
+          callback = null;
+          command = "silent! lua require('lint').try_lint()";
+          desc = "Try to lint buffer";
+          event = "BufWritePost";
+        };
+      };
+
+      conform-nvim = {
+        enable = true;
+        settings = {
+          # Map of filetype to formatters
+          formatters_by_ft = {
+              javascript = [ "eslint_d" ];
+              typescript = [ "eslint_d" ];
+              haskell    = [ "stylish-haskell" ];
+              nix        = [ "nixpkgs_fmt" ];
+          };
+          default_format_opts = {
+            lsp_format = "fallback";
+          };
+        };
+      };
+
+      # alternative completion engine
+      blink-cmp.enable = false;
+
+      lspkind.enable = true;
       cmp = {
         enable = true;
         autoEnableSources = true;
@@ -126,7 +218,13 @@ in
             { name = "path"; }
             { name = "buffer"; }
           ];
-          # I only want manual trigger
+          performance = {
+            # These values might be too low, negatively affecting performance.
+            debounce = 10;
+            throttle = 5;
+            max_view_entries = 10;
+          };
+          # Change this to false for manual trigger, null for auto
           completion.autocomplete = false;
           mapping = {
             __raw = ''
@@ -137,6 +235,18 @@ in
                 ['<C-e>'] = cmp.mapping.abort(),
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
               })
+            '';
+          };
+          enabled = {
+            __raw = ''
+              function()
+                local disabled = false
+                disabled = disabled or (vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt')
+                disabled = disabled or (vim.fn.reg_recording() ~= ''')
+                disabled = disabled or (vim.fn.reg_executing() ~= ''')
+                disabled = disabled or require('cmp.config.context').in_treesitter_capture('comment')
+                return not disabled
+              end
             '';
           };
         };
@@ -152,7 +262,8 @@ in
             "<leader>gt" = "type_definition";
             "<leader>rn" = "rename";
             "<leader>a"  = "code_action";
-            "<leader>p"  = "format";
+            # Also see the map with "<leader>p" to use conform
+            "<leader>P"  = "format";
           };
           diagnostic = {
             "<leader>j" = "goto_next";
@@ -160,7 +271,6 @@ in
           };
         };
         servers = {
-
           # standard
           gleam.enable = true;
           gopls.enable = true;
@@ -186,14 +296,33 @@ in
             # package         = pkgs.purescript;
             package = null;
           };
+          fsharp_language_server = {
+            enable = true;
+            package = null;
+          };
+          ocamllsp = {
+            enable = true;
+            package = null;
+          };
+          roc_ls = {
+            enable = true;
+            package = null;
+          };
+          unison = {
+            enable = true;
+            package = null;
+          };
 
           ts_ls.enable = true;
           biome.enable = true;
-          # denols.enable = true;
+          denols = {
+            enable = true;
+            package = null;
+          };
 
           # weird guys
           html.enable = true;
-          htmx.enable = true;
+          # htmx.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;
           cssls.enable = true;
@@ -303,21 +432,73 @@ in
         key = "<leader>gD";
         action = ":Glance definitions<cr>";
         mode = [ "n" ];
+        options.desc ="Definitions (Glance)";
+        options.unique = true;
       }
       {
         key = "<leader>gR";
         action = ":Glance references<cr>";
         mode = [ "n" ];
+        options.desc ="References (Glance)";
+        options.unique = true;
       }
       {
         key = "<leader>gY";
         action = ":Glance type_definitions<cr>";
         mode = [ "n" ];
+        options.desc ="Type definitions (Glance)";
+        options.unique = true;
       }
       {
         key = "<leader>gM";
         action = ":Glance implementations<cr>";
         mode = [ "n" ];
+        options.desc ="Implementations (Glance)";
+        options.unique = true;
+      }
+
+      # trouble
+      {
+        key = "<leader>xx";
+        action = ":Trouble diagnostics toggle<cr>";
+        mode = [ "n" ];
+        options.desc ="Diagnostics (Trouble)";
+        options.unique = true;
+      }
+      {
+        key = "<leader>xX";
+        action = ":Trouble diagnostics toggle filter.buf=0<cr>";
+        mode = [ "n" ];
+        options.desc ="Buffer Diagnostics (Trouble)";
+        options.unique = true;
+      }
+      {
+        key = "<leader>cs";
+        action = ":Trouble symbols toggle focus=false<cr>";
+        mode = [ "n" ];
+        options.desc ="Symbols (Trouble)";
+        options.unique = true;
+      }
+      {
+        key = "<leader>cl";
+        action = ":Trouble lsp toggle focus=false win.position=right<cr>";
+        mode = [ "n" ];
+        options.desc ="LSP Definitions / references / ... (Trouble)";
+        options.unique = true;
+      }
+      {
+        key = "<leader>xL";
+        action = ":Trouble loclist toggle<cr>";
+        mode = [ "n" ];
+        options.desc ="Location List (Trouble)";
+        options.unique = true;
+      }
+      {
+        key = "<leader>xQ";
+        action = ":Trouble qflist toggle<cr>";
+        mode = [ "n" ];
+        options.desc ="Quickfix List (Trouble)";
+        options.unique = true;
       }
 
       # navbuddy
@@ -325,6 +506,8 @@ in
         key = "<leader>es";
         action = ":Navbuddy<cr>";
         mode = [ "n" ];
+        options.desc ="Navbuddy";
+        options.unique = true;
       }
 
       # zenmode
@@ -332,25 +515,41 @@ in
         key = "<leader>0";
         action = ":ZenMode<cr>";
         mode = [ "n" ];
+        options.desc ="Toggle Zen (zenmode)";
+        options.unique = true;
       }
 
       # easymotion
       {
-        key = "<leader>s";
+        key = "S";
         action = "<plug>(easymotion-prefix)s";
         mode = [ "n" ];
+        options.desc ="Search by character (easymotion)";
+        options.unique = true;
       }
 
-      # tree sitter
+      # nvim tree
       {
         key = "<leader>tt";
         action = ":NvimTreeToggle<cr>";
         mode = [ "n" ];
+        options.desc ="Toggle tree sitter (nvim-tree)";
+        options.unique = true;
       }
       {
         key = "<leader>tr";
         action = ":NvimTreeFindFile<cr>";
         mode = [ "n" ];
+        options.desc ="Open tree sitter at current file (nvim-tree)";
+        options.unique = true;
+      }
+
+      # conform
+      {
+        key = "<leader>p";
+        action = ":lua require('conform').format({bufnr=0})<cr>";
+        mode = [ "n" ];
+        options.desc ="Format buffer (conform)";
       }
 
       # plugin-agnostic
@@ -358,12 +557,26 @@ in
         key = "gp";
         action = "`[v`]";
         mode = [ "n" ];
+        options.desc ="Select pasted range";
       }
       # Hack to write as superuser
       {
         key = "w!!";
         action = "w !sudo tee > /dev/null %";
         mode = [ "c" ];
+      }
+      # esc in terminal mode
+      {
+        key = "<esc>";
+        action = "<C-\\><C-n>";
+        mode = [ "t" ];
+      }
+      {
+        key = "<esc>";
+        action = ":noh<cr>";
+        mode = [ "n" ];
+        options.desc = "Turn off highlight search";
+        options.unique = true;
       }
     ];
   };

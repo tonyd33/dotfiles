@@ -15,6 +15,7 @@ in
   nixpkgs.hostPlatform = "aarch64-darwin";
   networking = {
     hostName = "nylon";
+    # FIXME: but this laptop can travel outside lan...
     dns = [ "10.0.123.123" ];
     knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
   };
@@ -57,6 +58,8 @@ in
       "zen-browser"
       "discord"
       "blender"
+      "kap"
+      "skim"
     ];
     taps = [ ];
     masApps = {

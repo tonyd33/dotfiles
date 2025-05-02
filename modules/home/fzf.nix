@@ -6,7 +6,8 @@
     enableZshIntegration = true;
     defaultOptions = [
       "--walker-skip .git,node_modules,target,.direnv"
-      "--preview 'test -f {} && bat -n --color=always {} || tree -C {}'"
+      # TODO: Make this check if the entry is even a directory
+      # "--preview 'test -f {} && bat -n --color=always {} || tree -C {}'"
     ];
 
     # Catppuccin colors
