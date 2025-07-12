@@ -39,7 +39,7 @@ in
       # formatexpr = "v:lua.require'conform'.formatexpr()";
     };
 
-    diagnostics = {
+    diagnostic.settings = {
       virtual_text = false;
     };
 
@@ -272,7 +272,10 @@ in
         };
         servers = {
           # standard
-          gleam.enable = true;
+          gleam = {
+            enable = true;
+            package = null;
+          };
           gopls.enable = true;
           hls = {
             enable = true;
@@ -404,7 +407,26 @@ in
             };
             file_ignore_patterns = [
               "^.git/"
+              "^.direnv/"
             ];
+            mappings = {
+              i = {
+                "<C-q><C-q>" = {
+                  __raw = "require('telescope.actions').send_selected_to_qflist + require('telescope.actions').open_qflist";
+                };
+                "<C-q><C-a>" = {
+                  __raw = "require('telescope.actions').send_to_qflist + require('telescope.actions').open_qflist";
+                };
+              };
+              n = {
+                "<C-q><C-q>" = {
+                  __raw = "require('telescope.actions').send_selected_to_qflist + require('telescope.actions').open_qflist";
+                };
+                "<C-q><C-a>" = {
+                  __raw = "require('telescope.actions').send_to_qflist + require('telescope.actions').open_qflist";
+                };
+              };
+            };
           };
         };
       };

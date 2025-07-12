@@ -16,7 +16,7 @@ in
   networking = {
     hostName = "nylon";
     # FIXME: but this laptop can travel outside lan...
-    dns = [ "10.0.123.123" ];
+    # dns = [ "10.0.123.123" ];
     knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
   };
 
@@ -60,6 +60,9 @@ in
       "blender"
       "kap"
       "skim"
+      "docker"
+      "musescore"
+      "autodesk-fusion"
     ];
     taps = [ ];
     masApps = {

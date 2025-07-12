@@ -29,7 +29,7 @@ in
       PATH="$PATH:/opt/homebrew/bin"
     '' else "");
 
-    initExtra = ''
+    initContent = ''
       # Make kubecolor share same completion logic as kubectl
       compdef kubecolor=kubectl
       alias ls="ls --color=auto"

@@ -58,6 +58,7 @@
       unbind a
       bind a copy-mode
       bind -T copy-mode-vi v send -X begin-selection
+      bind -T copy-mode-vi y send -X copy-selection
 
       # This is needed to enable C-a passthrough (jump to start of line)
       bind-key C-a send-keys C-a
