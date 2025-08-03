@@ -1,4 +1,9 @@
-{ flake, inputs, pkgs, ... }:
+{
+  flake,
+  inputs,
+  pkgs,
+  ...
+}:
 let
   inherit (flake) inputs;
   system = pkgs.system;
@@ -23,18 +28,24 @@ in
       ];
     };
 
-    profileExtra = ''
-    '' + (if isDarwin then ''
-      alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-      PATH="$PATH:/opt/homebrew/bin"
-    '' else "");
+    profileExtra =
+      ''''
+      + (
+        if isDarwin then
+          ''
+            alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+            PATH="$PATH:/opt/homebrew/bin"
+          ''
+        else
+          ""
+      );
 
     initContent = ''
       # Make kubecolor share same completion logic as kubectl
       compdef kubecolor=kubectl
       alias ls="ls --color=auto"
       enable-fzf-tab
-    '' ;
+    '';
 
     plugins = [
       {

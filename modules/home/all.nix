@@ -2,7 +2,7 @@
 {
   imports =
     with builtins;
-    map
-      (fn: ./${fn})
-      (filter (fn: fn != "default.nix") (attrNames (readDir ./.)));
+    map (fn: ./${fn}) (
+      filter (fn: fn != "all.nix" && !(hasSuffix ".host.nix")) (attrNames (readDir ./.))
+    );
 }

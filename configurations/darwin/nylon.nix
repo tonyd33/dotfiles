@@ -17,9 +17,11 @@ in
     hostName = "nylon";
     # FIXME: but this laptop can travel outside lan...
     # dns = [ "10.0.123.123" ];
-    knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
+    knownNetworkServices = [
+      "Wi-Fi"
+      "Thunderbolt Bridge"
+    ];
   };
-
 
   # For home-manager to work.
   # https://github.com/nix-community/home-manager/issues/4026#issuecomment-1565487545
@@ -30,7 +32,6 @@ in
     doc.enable = true;
     man.enable = true;
   };
-
 
   home-manager = {
     # Automatically move old dotfiles out of the way

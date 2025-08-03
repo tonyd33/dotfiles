@@ -8,7 +8,10 @@ in
       enable = true;
       userName = me.fullname;
       userEmail = me.email;
-      ignores = [ "*~" "*.swp" ];
+      ignores = [
+        "*~"
+        "*.swp"
+      ];
       extraConfig = {
         init.defaultBranch = "master";
         # pull.rebase = "false";

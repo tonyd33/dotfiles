@@ -1,4 +1,9 @@
-{ flake, inputs, pkgs, ... }:
+{
+  flake,
+  inputs,
+  pkgs,
+  ...
+}:
 let
   inherit (flake) inputs;
   system = pkgs.system;
@@ -9,40 +14,60 @@ in
   # Nix packages to install to $HOME
   #
   # Search for packages here: https://search.nixos.org/packages
-  home.packages = with pkgs; [
+  home.packages =
+    with pkgs;
+    [
 
-    # Nix dev
-    nil # Nix language server
-    nix-info
-    nixpkgs-fmt
+      # Nix dev
+      nil # Nix language server
+      nix-info
+      nixpkgs-fmt
 
-    # util
-    bash watch less
-    jq   yq    ripgrep
-    fd   tree  ncdu
-    btop entr
+      # util
+      bash
+      watch
+      less
+      jq
+      yq
+      ripgrep
+      fd
+      tree
+      ncdu
+      btop
+      entr
+      unzip
 
-    # applications
-    mpv       ncmpcpp
-    restish
-    localsend gimp # bitwarden-cli
+      # applications
+      mpv
+      ncmpcpp
+      restish
+      localsend
+      gimp # bitwarden-cli
 
-    # others
-    python3
-    typst
+      # others
+      python3
+      typst
 
-    # kubectl podman podman-compose
-  ]
-  ++
-  (if isLinux then [
-    imv
-    obs-studio
-    tofi
-    # on macOS, tailscale will be installed through app store
-    tailscale
-  ] else [ ])
-  ++
-  (if isDarwin then [
+      # kubectl podman podman-compose
+    ]
+    ++ (
+      if isLinux then
+        [
+          imv
+          obs-studio
+          tofi
+          # on macOS, tailscale will be installed through app store
+          tailscale
+        ]
+      else
+        [ ]
+    )
+    ++ (
+      if isDarwin then
+        [
 
-  ] else [ ]);
+        ]
+      else
+        [ ]
+    );
 }

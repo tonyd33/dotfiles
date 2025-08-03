@@ -15,9 +15,11 @@ in
   nixpkgs.hostPlatform = "aarch64-darwin";
   networking = {
     hostName = "vinyl";
-    knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
+    knownNetworkServices = [
+      "Wi-Fi"
+      "Thunderbolt Bridge"
+    ];
   };
-
 
   # For home-manager to work.
   # https://github.com/nix-community/home-manager/issues/4026#issuecomment-1565487545
@@ -28,7 +30,6 @@ in
     doc.enable = true;
     man.enable = true;
   };
-
 
   home-manager = {
     # Automatically move old dotfiles out of the way

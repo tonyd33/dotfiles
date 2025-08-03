@@ -70,39 +70,39 @@ in
       # neotest.enable       = true; # Easier test running
       # fidget.enable        = true; # LSP Progress message
 
-      sandwich.enable      = true; # surround motions
-      fugitive.enable      = true; # git
-      neoconf.enable       = true; # Local configuration
-      oil.enable           = true; # filesystem editing
-      twilight.enable      = true; # focus on current code
-      which-key.enable     = true; # too many keybinds sometimes
-      web-devicons.enable  = true; # soy icons
-      neoclip.enable       = true; # register management
-      nvim-tree.enable     = true; # file tree browser
-      glance.enable        = true; # navigation by reference
+      sandwich.enable = true; # surround motions
+      fugitive.enable = true; # git
+      neoconf.enable = true; # Local configuration
+      oil.enable = true; # filesystem editing
+      twilight.enable = true; # focus on current code
+      which-key.enable = true; # too many keybinds sometimes
+      web-devicons.enable = true; # soy icons
+      neoclip.enable = true; # register management
+      nvim-tree.enable = true; # file tree browser
+      glance.enable = true; # navigation by reference
       todo-comments.enable = true; # todo comments
-      trouble.enable       = true; # diagnostics
+      trouble.enable = true; # diagnostics
 
       neorg = {
         enable = true;
         telescopeIntegration.enable = true;
         settings.load = {
           "core.concealer" = {
-              config = {
-                icon_preset = "varied";
+            config = {
+              icon_preset = "varied";
+            };
+          };
+          "core.defaults" = {
+            __empty = null;
+          };
+          "core.dirman" = {
+            config = {
+              workspaces = {
+                home = "~/Documents/notes/home";
+                work = "~/Documents/notes/work";
               };
             };
-            "core.defaults" = {
-              __empty = null;
-            };
-            "core.dirman" = {
-              config = {
-                workspaces = {
-                  home = "~/Documents/notes/home";
-                  work = "~/Documents/notes/work";
-                };
-              };
-            };
+          };
         };
       };
 
@@ -155,24 +155,30 @@ in
       lint = {
         enable = true;
         lintersByFt = {
-          clojure         = [ "clj-kondo" ];
-          dockerfile      = [ "hadolint" ];
-          inko            = [ "inko" ];
-          janet           = [ "janet" ];
-          json            = [ "jsonlint" ];
-          markdown        = [ "vale" ];
-          rst             = [ "vale" ];
-          ruby            = [ "ruby" ];
-          terraform       = [ "tflint" ];
-          text            = [ "vale" ];
-          typescript      = [ "eslint" ];
-          javascript      = [ "eslint" ];
+          clojure = [ "clj-kondo" ];
+          dockerfile = [ "hadolint" ];
+          inko = [ "inko" ];
+          janet = [ "janet" ];
+          json = [ "jsonlint" ];
+          markdown = [ "vale" ];
+          rst = [ "vale" ];
+          ruby = [ "ruby" ];
+          terraform = [ "tflint" ];
+          text = [ "vale" ];
+          typescript = [ "eslint" ];
+          javascript = [ "eslint" ];
           typescriptreact = [ "eslint" ];
           javascriptreact = [ "eslint" ];
-          deno            = [ "deno" "eslint"];
-          haskell         = [ "hlint"  ];
-          python          = [ "flake8" ];
-          yaml            = [ "ansible_lint" "yamllint" ];
+          deno = [
+            "deno"
+            "eslint"
+          ];
+          haskell = [ "hlint" ];
+          python = [ "flake8" ];
+          yaml = [
+            "ansible_lint"
+            "yamllint"
+          ];
         };
         autoCmd = {
           # callback = {
@@ -194,10 +200,10 @@ in
         settings = {
           # Map of filetype to formatters
           formatters_by_ft = {
-              javascript = [ "eslint_d" ];
-              typescript = [ "eslint_d" ];
-              haskell    = [ "stylish-haskell" ];
-              nix        = [ "nixpkgs_fmt" ];
+            javascript = [ "eslint_d" ];
+            typescript = [ "eslint_d" ];
+            haskell = [ "stylish-haskell" ];
+            nix = [ "nixpkgs_fmt" ];
           };
           default_format_opts = {
             lsp_format = "fallback";
@@ -256,14 +262,14 @@ in
         enable = true;
         keymaps = {
           lspBuf = {
-            "gd"         = "definition";
-            "gr"         = "references";
-            "gi"         = "implementation";
+            "gd" = "definition";
+            "gr" = "references";
+            "gi" = "implementation";
             "<leader>gt" = "type_definition";
             "<leader>rn" = "rename";
-            "<leader>a"  = "code_action";
+            "<leader>a" = "code_action";
             # Also see the map with "<leader>p" to use conform
-            "<leader>P"  = "format";
+            "<leader>P" = "format";
           };
           diagnostic = {
             "<leader>j" = "goto_next";
@@ -384,14 +390,30 @@ in
       telescope = {
         enable = true;
         keymaps = {
-          "<leader>ff" = { action = "find_files"; };
-          "<leader>fg" = { action = "live_grep"; };
-          "<leader>fb" = { action = "buffers"; };
-          "<leader>fm" = { action = "marks"; };
-          "<leader>fj" = { action = "jumplist"; };
-          "<leader>fl" = { action = "loclist"; };
-          "<leader>fs" = { action = "lsp_workspace_symbols"; };
-          "<leader>fn" = { action = "neoclip"; };
+          "<leader>ff" = {
+            action = "find_files";
+          };
+          "<leader>fg" = {
+            action = "live_grep";
+          };
+          "<leader>fb" = {
+            action = "buffers";
+          };
+          "<leader>fm" = {
+            action = "marks";
+          };
+          "<leader>fj" = {
+            action = "jumplist";
+          };
+          "<leader>fl" = {
+            action = "loclist";
+          };
+          "<leader>fs" = {
+            action = "lsp_workspace_symbols";
+          };
+          "<leader>fn" = {
+            action = "neoclip";
+          };
         };
         settings = {
           defaults = {
@@ -459,28 +481,28 @@ in
         key = "<leader>gD";
         action = ":Glance definitions<cr>";
         mode = [ "n" ];
-        options.desc ="Definitions (Glance)";
+        options.desc = "Definitions (Glance)";
         options.unique = true;
       }
       {
         key = "<leader>gR";
         action = ":Glance references<cr>";
         mode = [ "n" ];
-        options.desc ="References (Glance)";
+        options.desc = "References (Glance)";
         options.unique = true;
       }
       {
         key = "<leader>gY";
         action = ":Glance type_definitions<cr>";
         mode = [ "n" ];
-        options.desc ="Type definitions (Glance)";
+        options.desc = "Type definitions (Glance)";
         options.unique = true;
       }
       {
         key = "<leader>gM";
         action = ":Glance implementations<cr>";
         mode = [ "n" ];
-        options.desc ="Implementations (Glance)";
+        options.desc = "Implementations (Glance)";
         options.unique = true;
       }
 
@@ -489,42 +511,42 @@ in
         key = "<leader>xx";
         action = ":Trouble diagnostics toggle<cr>";
         mode = [ "n" ];
-        options.desc ="Diagnostics (Trouble)";
+        options.desc = "Diagnostics (Trouble)";
         options.unique = true;
       }
       {
         key = "<leader>xX";
         action = ":Trouble diagnostics toggle filter.buf=0<cr>";
         mode = [ "n" ];
-        options.desc ="Buffer Diagnostics (Trouble)";
+        options.desc = "Buffer Diagnostics (Trouble)";
         options.unique = true;
       }
       {
         key = "<leader>cs";
         action = ":Trouble symbols toggle focus=false<cr>";
         mode = [ "n" ];
-        options.desc ="Symbols (Trouble)";
+        options.desc = "Symbols (Trouble)";
         options.unique = true;
       }
       {
         key = "<leader>cl";
         action = ":Trouble lsp toggle focus=false win.position=right<cr>";
         mode = [ "n" ];
-        options.desc ="LSP Definitions / references / ... (Trouble)";
+        options.desc = "LSP Definitions / references / ... (Trouble)";
         options.unique = true;
       }
       {
         key = "<leader>xL";
         action = ":Trouble loclist toggle<cr>";
         mode = [ "n" ];
-        options.desc ="Location List (Trouble)";
+        options.desc = "Location List (Trouble)";
         options.unique = true;
       }
       {
         key = "<leader>xQ";
         action = ":Trouble qflist toggle<cr>";
         mode = [ "n" ];
-        options.desc ="Quickfix List (Trouble)";
+        options.desc = "Quickfix List (Trouble)";
         options.unique = true;
       }
 
@@ -533,7 +555,7 @@ in
         key = "<leader>es";
         action = ":Navbuddy<cr>";
         mode = [ "n" ];
-        options.desc ="Navbuddy";
+        options.desc = "Navbuddy";
         options.unique = true;
       }
 
@@ -542,7 +564,7 @@ in
         key = "<leader>0";
         action = ":ZenMode<cr>";
         mode = [ "n" ];
-        options.desc ="Toggle Zen (zenmode)";
+        options.desc = "Toggle Zen (zenmode)";
         options.unique = true;
       }
 
@@ -551,7 +573,7 @@ in
         key = "S";
         action = "<plug>(easymotion-prefix)s";
         mode = [ "n" ];
-        options.desc ="Search by character (easymotion)";
+        options.desc = "Search by character (easymotion)";
         options.unique = true;
       }
 
@@ -560,14 +582,14 @@ in
         key = "<leader>tt";
         action = ":NvimTreeToggle<cr>";
         mode = [ "n" ];
-        options.desc ="Toggle tree sitter (nvim-tree)";
+        options.desc = "Toggle tree sitter (nvim-tree)";
         options.unique = true;
       }
       {
         key = "<leader>tr";
         action = ":NvimTreeFindFile<cr>";
         mode = [ "n" ];
-        options.desc ="Open tree sitter at current file (nvim-tree)";
+        options.desc = "Open tree sitter at current file (nvim-tree)";
         options.unique = true;
       }
 
@@ -576,7 +598,7 @@ in
         key = "<leader>p";
         action = ":lua require('conform').format({bufnr=0})<cr>";
         mode = [ "n" ];
-        options.desc ="Format buffer (conform)";
+        options.desc = "Format buffer (conform)";
       }
 
       # plugin-agnostic
@@ -584,7 +606,7 @@ in
         key = "gp";
         action = "`[v`]";
         mode = [ "n" ];
-        options.desc ="Select pasted range";
+        options.desc = "Select pasted range";
       }
       # Hack to write as superuser
       {
