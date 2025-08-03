@@ -331,6 +331,11 @@ in
           cssls.enable = true;
           docker_compose_language_service.enable = true;
           dockerls.enable = true;
+          prismals = {
+            enable = true;
+            package = null;
+            cmd = ["npx" "prisma-language-server" "--stdio"];
+          };
 
           # cloud/automation
           ansiblels.enable = true;
@@ -392,7 +397,7 @@ in
           defaults = {
             layout_strategy = "flex";
             layout_config = {
-              width = 0.8;
+              width = 0.99;
               height = 0.95;
               anchor = "CENTER";
               horizontal = {
