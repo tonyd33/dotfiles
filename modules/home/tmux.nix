@@ -7,6 +7,8 @@
     baseIndex = 1;
     escapeTime = 0;
 
+    terminal = "xterm-kitty";
+
     keyMode = "vi";
     mouse = true;
 

@@ -58,6 +58,7 @@ in
           tofi
           # on macOS, tailscale will be installed through app store
           tailscale
+          # darkman
         ]
       else
         [ ]
