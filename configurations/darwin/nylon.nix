@@ -53,6 +53,7 @@ in
     enable = true;
     brews = [
       "helm"
+      "pam-reattach"
     ];
     casks = [
       "bitwarden"
@@ -70,7 +71,7 @@ in
       tailscale = 1475387142;
       "fluent reader" = 1520907427;
     };
-    onActivation.cleanup = "uninstall";
+    # onActivation.cleanup = "uninstall";
   };
 
   system.primaryUser = "tony";

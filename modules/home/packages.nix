@@ -21,7 +21,7 @@ in
       # Nix dev
       nil # Nix language server
       nix-info
-      nixpkgs-fmt
+      nixfmt
 
       # util
       bash

@@ -198,10 +198,21 @@ in
       conform-nvim = {
         enable = true;
         settings = {
+          async = true;
           # Map of filetype to formatters
           formatters_by_ft = {
-            javascript = [ "eslint_d" ];
-            typescript = [ "eslint_d" ];
+            javascript = [
+              "eslint_d"
+              "biome"
+              "biome-check"
+              "biome-organize-imports"
+            ];
+            typescript = [
+              "eslint_d"
+              "biome"
+              "biome-check"
+              "biome-organize-imports"
+            ];
             haskell = [ "stylish-haskell" ];
             nix = [ "nixpkgs_fmt" ];
           };
@@ -340,7 +351,11 @@ in
           prismals = {
             enable = true;
             package = null;
-            cmd = ["npx" "prisma-language-server" "--stdio"];
+            cmd = [
+              "npx"
+              "prisma-language-server"
+              "--stdio"
+            ];
           };
 
           # cloud/automation
@@ -596,7 +611,7 @@ in
       # conform
       {
         key = "<leader>p";
-        action = ":lua require('conform').format({bufnr=0})<cr>";
+        action = ":lua require('conform').format({bufnr=0, async=true})<cr>";
         mode = [ "n" ];
         options.desc = "Format buffer (conform)";
       }
