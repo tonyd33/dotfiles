@@ -3,7 +3,7 @@
   programs.tmux = {
     enable = true;
 
-    shortcut = "a";
+    shortcut = "Space";
     baseIndex = 1;
     escapeTime = 0;
 

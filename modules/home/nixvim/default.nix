@@ -17,7 +17,7 @@ in
       compatible = false;
 
       wrap = false;
-      foldlevel = 2;
+      foldlevel = 99;
       cursorline = true;
       ignorecase = true;
       colorcolumn = "+1";
@@ -201,23 +201,37 @@ in
           async = true;
           # Map of filetype to formatters
           formatters_by_ft = {
-            javascript = [
-              "eslint_d"
+            sql = [ "sqruff" ];
+            javascriptreact = [
               "biome"
               "biome-check"
               "biome-organize-imports"
+              "eslint_d"
+            ];
+            javascript = [
+              "biome"
+              "biome-check"
+              "biome-organize-imports"
+              "eslint_d"
+            ];
+            typescriptreact = [
+              "biome"
+              "biome-check"
+              "biome-organize-imports"
+              "eslint_d"
             ];
             typescript = [
-              "eslint_d"
               "biome"
               "biome-check"
               "biome-organize-imports"
+              "eslint_d"
             ];
             haskell = [ "stylish-haskell" ];
             nix = [ "nixpkgs_fmt" ];
+            bash = [ "shellcheck" ];
           };
           default_format_opts = {
-            lsp_format = "fallback";
+            lsp_format = "never";
           };
         };
       };
@@ -334,7 +348,7 @@ in
           };
 
           ts_ls.enable = true;
-          biome.enable = true;
+          # biome.enable = true;
           denols = {
             enable = true;
             package = null;
@@ -411,6 +425,12 @@ in
           "<leader>fg" = {
             action = "live_grep";
           };
+          "<leader>fG" = {
+            action = "grep_string";
+          };
+          "<leader>fh" = {
+            action = "git_files";
+          };
           "<leader>fb" = {
             action = "buffers";
           };
@@ -429,6 +449,17 @@ in
           "<leader>fn" = {
             action = "neoclip";
           };
+        };
+        luaConfig = {
+          pre = ''
+            local telescopeConfig = require('telescope.config')
+            local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
+            -- I want to search in hidden/dot files.
+            table.insert(vimgrep_arguments, "--hidden")
+            -- I don't want to search in the `.git` directory.
+            table.insert(vimgrep_arguments, "--glob")
+            table.insert(vimgrep_arguments, "!**/.git/*")
+          '';
         };
         settings = {
           defaults = {
@@ -469,6 +500,13 @@ in
                 };
               };
             };
+
+            vimgrep_arguments = {
+              __raw = ''
+              vimgrep_arguments
+              '';
+            };
+
           };
         };
       };
