@@ -72,6 +72,7 @@ in
 
       sandwich.enable = true; # surround motions
       fugitive.enable = true; # git
+      rhubarb.enable = true; # fugitive github plugin
       neoconf.enable = true; # Local configuration
       oil.enable = true; # filesystem editing
       twilight.enable = true; # focus on current code
@@ -350,7 +351,7 @@ in
           ts_ls.enable = true;
           # biome.enable = true;
           denols = {
-            enable = true;
+            enable = false;
             package = null;
           };
 
@@ -373,7 +374,7 @@ in
           };
 
           # cloud/automation
-          ansiblels.enable = true;
+          # ansiblels.enable = true;
           terraformls.enable = true;
           helm_ls.enable = true;
         };

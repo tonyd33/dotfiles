@@ -42,12 +42,17 @@ in
       ncmpcpp
       restish
       localsend
-      gimp # bitwarden-cli
+      # bitwarden-cli
 
       # others
       python3
       typst
 
+      kubectl
+      kubernetes-helm
+      k9s
+      minikube
+      kubectx
       # kubectl podman podman-compose
     ]
     ++ (
@@ -59,6 +64,7 @@ in
           # on macOS, tailscale will be installed through app store
           tailscale
           # darkman
+          gimp
         ]
       else
         [ ]
