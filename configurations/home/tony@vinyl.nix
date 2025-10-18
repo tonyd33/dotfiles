@@ -11,24 +11,8 @@ let
   inherit (flake.config) me;
 in
 {
-  imports =
-    with self.homeModules;
-    [
-      bat
-      direnv
-      gc
-      git
-      kitty
-      k8s
-      nixvim
-      packages
-      tmux
-      yazi
-      zoxide
-      zsh
-      fzf
-    ]
-    ++ [
-      (self + /configurations/home/${me.username}.nix)
-    ];
+  imports = [
+    (self + /configurations/home/${config.me.username}.nix)
+    self.homeModules."vinyl.host"
+  ];
 }

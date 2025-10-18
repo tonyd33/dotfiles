@@ -1,5 +1,5 @@
 # User configuration module
-{ config, lib, ... }:
+{ flake, config, lib, ... }:
 {
   options = {
     me = {
@@ -16,8 +16,13 @@
         description = "Your email for use in Git config";
       };
     };
+    theme = lib.mkOption {
+      default = "ansi";
+      type = lib.types.str;
+      description = "catppuccin or ansi";
+    };
   };
   config = {
-    home.username = config.me.username;
+    home.username = flake.config.me.username;
   };
 }

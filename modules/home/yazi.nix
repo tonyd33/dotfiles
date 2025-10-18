@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, flake, config, ... }:
 let
+  inherit (config) theme;
   yaziFlavors = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "flavors";
@@ -13,8 +14,15 @@ in
     shellWrapperName = "y";
     enableBashIntegration = true;
     enableZshIntegration = true;
-    flavors = {
-      catppuccin-frappe = "${yaziFlavors}/catppuccin-frappe.yazi";
-    };
+    flavors = (
+      if theme == "catppuccin" then
+        {
+          catppuccin-frappe = "${yaziFlavors}/catppuccin-frappe.yazi";
+        }
+      else if theme == "ansi" then
+        { }
+      else
+        { }
+    );
   };
 }

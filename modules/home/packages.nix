@@ -53,7 +53,8 @@ in
       k9s
       minikube
       kubectx
-      # kubectl podman podman-compose
+      gh
+      tmux-xpanes
     ]
     ++ (
       if isLinux then

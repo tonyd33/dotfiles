@@ -1,3 +1,7 @@
+{ flake, config, ... }:
+let
+  inherit (config) theme;
+in
 {
   programs.fzf = {
     enable = true;
@@ -10,23 +14,32 @@
       # "--preview 'test -f {} && bat -n --color=always {} || tree -C {}'"
     ];
 
-    # Catppuccin colors
-    colors = {
-      "bg+" = "#414559";
-      "bg" = "#303446";
-      "spinner" = "#f2d5cf";
-      "hl" = "#e78284";
-      "fg" = "#c6d0f5";
-      "header" = "#e78284";
-      "info" = "#ca9ee6";
-      "pointer" = "#f2d5cf";
-      "marker" = "#babbf1";
-      "fg+" = "#c6d0f5";
-      "prompt" = "#ca9ee6";
-      "hl+" = "#e78284";
-      "selected-bg" = "#51576d";
-      "border" = "#414559";
-      "label" = "#c6d0f5";
-    };
-  };
+  }
+  // (
+    if theme == "catppuccin" then
+      {
+        # Catppuccin colors
+        colors = {
+          "bg+" = "#414559";
+          "bg" = "#303446";
+          "spinner" = "#f2d5cf";
+          "hl" = "#e78284";
+          "fg" = "#c6d0f5";
+          "header" = "#e78284";
+          "info" = "#ca9ee6";
+          "pointer" = "#f2d5cf";
+          "marker" = "#babbf1";
+          "fg+" = "#c6d0f5";
+          "prompt" = "#ca9ee6";
+          "hl+" = "#e78284";
+          "selected-bg" = "#51576d";
+          "border" = "#414559";
+          "label" = "#c6d0f5";
+        };
+      }
+    else if theme == "ansi" then
+      { }
+    else
+      { }
+  );
 }

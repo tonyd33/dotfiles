@@ -1,9 +1,15 @@
-{ flake, pkgs, ... }:
+{
+  flake,
+  pkgs,
+  config,
+  ...
+}:
 let
   inherit (flake) inputs;
+  inherit (config) theme;
 in
 {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+  imports = [ inputs.nixvim.homeModules.nixvim ];
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
@@ -18,7 +24,7 @@ in
 
       wrap = false;
       foldlevel = 99;
-      cursorline = true;
+      # cursorline = true;
       ignorecase = true;
       colorcolumn = "+1";
 
@@ -39,18 +45,15 @@ in
       # formatexpr = "v:lua.require'conform'.formatexpr()";
     };
 
-    diagnostic.settings = {
-      virtual_text = false;
-    };
-
-    colorschemes.catppuccin = {
-      enable = true;
-      settings.flavour = "frappe";
-    };
+    clipboard.register = "unnamedplus";
+    diagnostic.settings.virtual_text = false;
 
     filetype = {
       extension = {
         purs = "purescript";
+      };
+      pattern = {
+        helm = "**/helm/**/*.yaml";
       };
     };
 
@@ -72,7 +75,7 @@ in
 
       sandwich.enable = true; # surround motions
       fugitive.enable = true; # git
-      rhubarb.enable = true; # fugitive github plugin
+      rhubarb.enable = true; # git
       neoconf.enable = true; # Local configuration
       oil.enable = true; # filesystem editing
       twilight.enable = true; # focus on current code
@@ -83,10 +86,32 @@ in
       glance.enable = true; # navigation by reference
       todo-comments.enable = true; # todo comments
       trouble.enable = true; # diagnostics
+      diffview.enable = true;
+      lspkind.enable = true;
+
+      refactoring.enable = true;
+      treesitter-textobjects.enable = true;
+      treesitter-context = {
+        enable = true;
+        settings = {
+          multiline_threshold = 1;
+          max_lines = 3;
+        };
+      };
+
+      octo = {
+        enable = true;
+        settings.picker = "fzf-lua";
+      };
+
+      gitlinker.enable = true;
+      neogit = {
+        enable = true;
+      };
 
       neorg = {
         enable = true;
-        telescopeIntegration.enable = true;
+        # telescopeIntegration.enable = true;
         settings.load = {
           "core.concealer" = {
             config = {
@@ -107,14 +132,6 @@ in
         };
       };
 
-      zen-mode = {
-        enable = true;
-        settings = {
-          plugins.twilight.enabled = true;
-          plugins.kitty.enabled = true;
-        };
-      };
-
       treesitter = {
         enable = true;
         folding = true;
@@ -125,19 +142,13 @@ in
       # Powerful structural navigator
       navbuddy = {
         enable = true;
-        lsp = {
+        settings.lsp = {
           autoAttach = true;
           preference = [
             "ts_ls"
             "deno"
           ];
         };
-      };
-
-      # Breadcrumb stuff
-      navic = {
-        enable = true;
-        settings.lsp.auto_attach = true;
       };
 
       lualine = {
@@ -240,7 +251,6 @@ in
       # alternative completion engine
       blink-cmp.enable = false;
 
-      lspkind.enable = true;
       cmp = {
         enable = true;
         autoEnableSources = true;
@@ -385,7 +395,7 @@ in
 
         modules = {
           # basics.enable     = true; # this messes up things with autopairs
-          ai.enable = true;
+          # ai.enable = true;
           align.enable = true;
           pairs.enable = true;
           icons.enable = true;
@@ -417,97 +427,23 @@ in
         };
       };
 
-      telescope = {
+      fzf-lua = {
         enable = true;
-        keymaps = {
-          "<leader>ff" = {
-            action = "find_files";
-          };
-          "<leader>fg" = {
-            action = "live_grep";
-          };
-          "<leader>fG" = {
-            action = "grep_string";
-          };
-          "<leader>fh" = {
-            action = "git_files";
-          };
-          "<leader>fb" = {
-            action = "buffers";
-          };
-          "<leader>fm" = {
-            action = "marks";
-          };
-          "<leader>fj" = {
-            action = "jumplist";
-          };
-          "<leader>fl" = {
-            action = "loclist";
-          };
-          "<leader>fs" = {
-            action = "lsp_workspace_symbols";
-          };
-          "<leader>fn" = {
-            action = "neoclip";
-          };
-        };
-        luaConfig = {
-          pre = ''
-            local telescopeConfig = require('telescope.config')
-            local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-            -- I want to search in hidden/dot files.
-            table.insert(vimgrep_arguments, "--hidden")
-            -- I don't want to search in the `.git` directory.
-            table.insert(vimgrep_arguments, "--glob")
-            table.insert(vimgrep_arguments, "!**/.git/*")
-          '';
-        };
         settings = {
-          defaults = {
-            layout_strategy = "flex";
-            layout_config = {
-              width = 0.99;
-              height = 0.95;
-              anchor = "CENTER";
-              horizontal = {
-                preview_width = 0.5;
-              };
-              vertical = {
-                prompt_position = "top";
-                mirror = true;
-                preview_height = 0.5;
-                preview_cutoff = 0;
-              };
-            };
-            file_ignore_patterns = [
-              "^.git/"
-              "^.direnv/"
-            ];
-            mappings = {
-              i = {
-                "<C-q><C-q>" = {
-                  __raw = "require('telescope.actions').send_selected_to_qflist + require('telescope.actions').open_qflist";
-                };
-                "<C-q><C-a>" = {
-                  __raw = "require('telescope.actions').send_to_qflist + require('telescope.actions').open_qflist";
-                };
-              };
-              n = {
-                "<C-q><C-q>" = {
-                  __raw = "require('telescope.actions').send_selected_to_qflist + require('telescope.actions').open_qflist";
-                };
-                "<C-q><C-a>" = {
-                  __raw = "require('telescope.actions').send_to_qflist + require('telescope.actions').open_qflist";
-                };
-              };
-            };
-
-            vimgrep_arguments = {
-              __raw = ''
-              vimgrep_arguments
-              '';
-            };
-
+          keymap.builtin = {
+            "<m-p>" = "toggle-preview";
+          };
+          keymap.fzf = {
+            "ctrl-f" = "half-page-down";
+            "ctrl-b" = "half-page-up";
+          };
+          winopts = {
+            height = 0.94;
+            width = 0.94;
+            backdrop = 80;
+          };
+          grep = {
+            rg_glob = true;
           };
         };
       };
@@ -613,15 +549,6 @@ in
         options.unique = true;
       }
 
-      # zenmode
-      {
-        key = "<leader>0";
-        action = ":ZenMode<cr>";
-        mode = [ "n" ];
-        options.desc = "Toggle Zen (zenmode)";
-        options.unique = true;
-      }
-
       # easymotion
       {
         key = "S";
@@ -655,6 +582,46 @@ in
         options.desc = "Format buffer (conform)";
       }
 
+      # gitlinker
+      {
+        key = "<leader><leader>gl";
+        action = "<cmd>lua require'gitlinker'.get_buf_range_url('n')<cr>";
+        mode = [ "n" ];
+        options.desc = "Get git link (gitlinker)";
+      }
+      {
+        key = "<leader><leader>gl";
+        action = "<cmd>lua require'gitlinker'.get_buf_range_url('v')<cr>";
+        mode = [ "v" ];
+        options.desc = "Get git link (gitlinker)";
+      }
+
+      # fzf-lua
+      {
+        key = "<leader>fa";
+        action = ":FzfLua ";
+        mode = [ "n" ];
+        options.desc = "fzf-lua all (fzf-lua)";
+      }
+      {
+        key = "<leader>ff";
+        action = ":FzfLua files<cr>";
+        mode = [ "n" ];
+        options.desc = "Find files (fzf-lua)";
+      }
+      {
+        key = "<leader>fg";
+        action = ":FzfLua live_grep<cr>";
+        mode = [ "n" ];
+        options.desc = "Find string (fzf-lua)";
+      }
+      {
+        key = "<leader>fg";
+        action = ":FzfLua grep_visual<cr>";
+        mode = [ "v" ];
+        options.desc = "Find string (fzf-lua)";
+      }
+
       # plugin-agnostic
       {
         key = "gp";
@@ -682,5 +649,36 @@ in
         options.unique = true;
       }
     ];
-  };
+  }
+  // (
+    if theme == "catppuccin" then
+      {
+        colorschemes.catppuccin = {
+          enable = true;
+          settings.flavour = "frappe";
+          settings.styles = {
+            comments = ["italic"];
+            keywords = ["italic"];
+          };
+          settings.integrations = {
+            cmp = true;
+            gitsigns = true;
+            nvimtree = true;
+            treesitter = true;
+            notify = false;
+            mini = {
+              enabled = true;
+              indentscope_color = "";
+            };
+          };
+        };
+      }
+    else if theme == "ansi" then
+      {
+        colorscheme = "vim";
+      }
+    else
+      { }
+  );
+
 }
