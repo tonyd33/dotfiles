@@ -47,13 +47,15 @@ in
 
     clipboard.register = "unnamedplus";
     diagnostic.settings.virtual_text = false;
+    diagnostic.settings.underline = false;
 
     filetype = {
       extension = {
         purs = "purescript";
       };
       pattern = {
-        helm = "**/helm/**/*.yaml";
+        ".*/templates/.*%.yaml" = "helm";
+        ".*/templates/.*%.tpl" = "helm";
       };
     };
 
@@ -81,16 +83,29 @@ in
       twilight.enable = true; # focus on current code
       which-key.enable = true; # too many keybinds sometimes
       web-devicons.enable = true; # soy icons
-      neoclip.enable = true; # register management
       nvim-tree.enable = true; # file tree browser
       glance.enable = true; # navigation by reference
-      todo-comments.enable = true; # todo comments
       trouble.enable = true; # diagnostics
       diffview.enable = true;
-      lspkind.enable = true;
 
       refactoring.enable = true;
-      treesitter-textobjects.enable = true;
+
+      treesitter-textobjects = {
+        enable = true;
+        move = {
+          enable = true;
+        };
+        select = {
+          enable = true;
+          keymaps = {
+            "if" = "@function.inner";
+            "af" = "@function.outer";
+            "ic" = "@class.inner";
+            "ac" = "@class.outer";
+          };
+        };
+        swap.enable = true;
+      };
       treesitter-context = {
         enable = true;
         settings = {
@@ -251,48 +266,59 @@ in
       # alternative completion engine
       blink-cmp.enable = false;
 
-      cmp = {
+      coq-nvim = {
         enable = true;
-        autoEnableSources = true;
+        autoLoad = true;
+        installArtifacts = true;
         settings = {
-          sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
-          ];
-          performance = {
-            # These values might be too low, negatively affecting performance.
-            debounce = 10;
-            throttle = 5;
-            max_view_entries = 10;
-          };
-          # Change this to false for manual trigger, null for auto
-          completion.autocomplete = false;
-          mapping = {
-            __raw = ''
-              cmp.mapping.preset.insert({
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                ['<C-Space>'] = cmp.mapping.complete(),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
-              })
-            '';
-          };
-          enabled = {
-            __raw = ''
-              function()
-                local disabled = false
-                disabled = disabled or (vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt')
-                disabled = disabled or (vim.fn.reg_recording() ~= ''')
-                disabled = disabled or (vim.fn.reg_executing() ~= ''')
-                disabled = disabled or require('cmp.config.context').in_treesitter_capture('comment')
-                return not disabled
-              end
-            '';
-          };
+          completion.always = false;
+          completion.sticky_manual = false;
         };
       };
+
+      # lspkind.enable = true;
+      # cmp = {
+      #   enable = true;
+      #   autoEnableSources = true;
+      #   settings = {
+      #     sources = [
+      #       { name = "nvim_lsp"; }
+      #       { name = "path"; }
+      #       { name = "buffer"; }
+      #     ];
+      #     performance = {
+      #       # These values might be too low, negatively affecting performance.
+      #       debounce = 10;
+      #       throttle = 5;
+      #       max_view_entries = 10;
+      #     };
+      #     # Change this to false for manual trigger, null for auto
+      #     completion.autocomplete = false;
+      #     mapping = {
+      #       __raw = ''
+      #         cmp.mapping.preset.insert({
+      #           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      #           ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      #           ['<C-Space>'] = cmp.mapping.complete(),
+      #           ['<C-e>'] = cmp.mapping.abort(),
+      #           ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      #         })
+      #       '';
+      #     };
+      #     enabled = {
+      #       __raw = ''
+      #         function()
+      #           local disabled = false
+      #           disabled = disabled or (vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt')
+      #           disabled = disabled or (vim.fn.reg_recording() ~= ''')
+      #           disabled = disabled or (vim.fn.reg_executing() ~= ''')
+      #           disabled = disabled or require('cmp.config.context').in_treesitter_capture('comment')
+      #           return not disabled
+      #         end
+      #       '';
+      #     };
+      #   };
+      # };
 
       lsp = {
         enable = true;
@@ -308,8 +334,6 @@ in
             "<leader>P" = "format";
           };
           diagnostic = {
-            "<leader>j" = "goto_next";
-            "<leader>k" = "goto_prev";
           };
         };
         servers = {
@@ -408,20 +432,6 @@ in
               comment = "<leader>cc";
               comment_line = "<leader>cc";
               comment_visual = "<leader>cc";
-            };
-          };
-
-          indentscope = {
-            enable = true;
-            draw = {
-              delay = 0;
-              animation = {
-                __raw = ''
-                  function(s, n)
-                      return 0
-                  end
-                '';
-              };
             };
           };
         };
@@ -622,6 +632,22 @@ in
         options.desc = "Find string (fzf-lua)";
       }
 
+      # neoclip
+      {
+        key = "<leader>fr";
+        action = ":lua require('neoclip.fzf')()<cr>";
+        mode = [ "n" ];
+        options.desc = "Find register history (neoclip)";
+      }
+
+      # coq-nvim
+      {
+        key = "<leader><leader>cn";
+        action = ":COQnow --shut-up<cr>";
+        mode = [ "n" ];
+        options.desc = "Start COQ (coq-nvim)";
+      }
+
       # plugin-agnostic
       {
         key = "gp";
@@ -675,7 +701,7 @@ in
       }
     else if theme == "ansi" then
       {
-        colorscheme = "vim";
+        colorscheme = "industry";
       }
     else
       { }
