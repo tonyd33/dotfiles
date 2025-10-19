@@ -1,6 +1,6 @@
-{ flake, ... }:
+{ flake, config, ... }:
 let
-  inherit (flake.config) me;
+  inherit (config) me;
 in
 {
   programs = {
