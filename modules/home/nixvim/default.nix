@@ -678,7 +678,7 @@ in
       }
     else if theme == "ansi" then
       {
-        colorscheme = "vim";
+        colorscheme = "industry";
       }
     else
       { }
