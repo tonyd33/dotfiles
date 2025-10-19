@@ -2,7 +2,6 @@
   flake,
   pkgs,
   lib,
-  config,
   ...
 }:
 let
@@ -15,4 +14,5 @@ in
     (self + /configurations/home/${me.username}.nix)
     self.homeModules."nylon.host"
   ];
+  theme = "ansi";
 }

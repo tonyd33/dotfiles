@@ -2,7 +2,6 @@
   flake,
   pkgs,
   lib,
-  config,
   ...
 }:
 let
@@ -15,4 +14,5 @@ in
     (self + /configurations/home/${config.me.username}.nix)
     self.homeModules."vinyl.host"
   ];
+  theme = "ansi";
 }

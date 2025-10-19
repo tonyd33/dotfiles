@@ -1,5 +1,5 @@
 # User configuration module
-{ flake, config, lib, ... }:
+{ flake, lib, ... }:
 {
   options = {
     me = {
@@ -22,7 +22,14 @@
       description = "catppuccin or ansi";
     };
   };
+
   config = {
+    # this is so bad but i can't be bothered to fix it
+    me = {
+      username = "tony";
+      fullname = "Tony Du";
+      email = "tonydu121@hotmail.com";
+    };
     home.username = flake.config.me.username;
   };
 }

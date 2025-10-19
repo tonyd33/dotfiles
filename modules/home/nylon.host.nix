@@ -1,5 +1,6 @@
-{ lib, ... }:
+{ lib, flake, ... }:
 let
+  inherit (flake.config) me;
   excluded = [
     "all.nix"
     "ghostty.nix"
