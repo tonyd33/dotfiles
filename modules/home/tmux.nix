@@ -150,7 +150,7 @@ in
       bind -T copy-mode-vi v send -X begin-selection
       bind -T copy-mode-vi y send -X copy-selection
 
-      # This is needed to enable C-a passthrough (jump to start of line)
+      # This is needed to enable C-a passthrough
       bind-key C-a send-keys C-a
 
       # set default directory for new windows in this session to current directory

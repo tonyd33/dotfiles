@@ -7,6 +7,9 @@ let
   ];
 in
 {
+  config = {
+    theme = "ansi";
+  };
   imports =
     with builtins;
     with lib;
