@@ -230,20 +230,20 @@ in
               "biome"
               "biome-check"
               "biome-organize-imports"
-              "eslint_d"
+              # "eslint_d"
             ];
             typescript = [
               "biome"
               "biome-check"
               "biome-organize-imports"
-              "eslint_d"
+              # "eslint_d"
             ];
             haskell = [ "stylish-haskell" ];
             nix = [ "nixpkgs_fmt" ];
             bash = [ "shellcheck" ];
           };
           default_format_opts = {
-            lsp_format = "never";
+            lsp_format = "fallback";
           };
         };
       };
@@ -360,9 +360,12 @@ in
 
           ts_ls.enable = true;
           # biome.enable = true;
-          denols = {
-            enable = false;
-            package = null;
+          # denols = {
+          #   enable = true;
+          #   package = null;
+          # };
+          zls = {
+            enable = true;
           };
 
           # weird guys
