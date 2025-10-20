@@ -14,5 +14,5 @@ in
     (self + /configurations/home/${me.username}.nix)
     self.homeModules."nylon.host"
   ];
-  theme = "ansi";
+  theme = "catppuccin";
 }

@@ -70,6 +70,7 @@ in
       ./conform.nix
       ./fzf-lua.nix
       ./neorg.nix
+      ./nvim-tree.nix
     ];
 
     plugins = {
