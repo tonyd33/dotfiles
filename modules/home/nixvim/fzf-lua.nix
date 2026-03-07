@@ -17,6 +17,7 @@
       };
       grep = {
         rg_glob = true;
+        rg_opts = "--hidden --color=always --line-number --column --smart-case";
       };
     };
   };

@@ -46,7 +46,7 @@ in
       # formatexpr = "v:lua.require'conform'.formatexpr()";
     };
 
-    clipboard.register = "unnamedplus";
+    # clipboard.register = "unnamedplus";
     diagnostic.settings.virtual_text = false;
     diagnostic.settings.underline = false;
 

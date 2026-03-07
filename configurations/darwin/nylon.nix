@@ -65,6 +65,7 @@ in
       "docker"
       "musescore"
       "autodesk-fusion"
+      "anytype"
     ];
     taps = [ ];
     masApps = {
