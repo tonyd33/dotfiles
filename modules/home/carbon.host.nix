@@ -4,6 +4,7 @@ let
     "all.nix"
     "kitty.nix"
     "ghostty.nix"
+    "xdg.nix"
   ];
 in
 {

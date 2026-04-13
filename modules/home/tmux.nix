@@ -11,6 +11,7 @@ in
 {
   programs.tmux = {
     enable = true;
+    shell = "/usr/bin/zsh";
 
     shortcut = "a";
     baseIndex = 1;
@@ -51,6 +52,50 @@ in
             set -g @jump-key 's'
           '';
         }
+        {
+          plugin = mkTmuxPlugin rec {
+            pluginName = "tmux-menus";
+            version = "2.2.33";
+            src = pkgs.fetchFromGitHub {
+              owner = "jaclu";
+              repo = "tmux-menus";
+              rev = "v${version}";
+              hash = "sha256-UPWsa7sFy6P3Jo3KFEvZrz4M4IVDhKI7T1LNAtWqTT4=";
+            };
+            rtpFilePath = "menus.tmux";
+            meta = with lib; {
+              homepage = "https://github.com/jaclu/tmux-menus";
+              description = "Tmux plugin, Popup menus to help with managing your environment";
+              license = licenses.mit;
+              platforms = platforms.unix;
+              maintainers = with maintainers; [ jaclu ];
+            };
+          };
+          extraConfig = ''
+            set -g @menus_trigger '+'
+            set -g @menus_use_cache 'false'
+          '';
+        }
+        # {
+        #   plugin = mkTmuxPlugin rec {
+        #     pluginName = "tmux-modal";
+        #     version = "unstable-2024-11-03";
+        #     src = pkgs.fetchFromGitHub {
+        #       owner = "whame";
+        #       repo = "tmux-modal";
+        #       rev = "21adf90b27068948a8ce12dce805c95faeb9459f";
+        #       hash = "sha256-HbnAQJidmwz5orpiSAj/HOcDrNSHU379Gyvwl5n5jDE=";
+        #     };
+        #     rtpFilePath = "tmux-modal.tmux";
+        #     meta = with lib; {
+        #       homepage = "https://github.com/whame/tmux-modal";
+        #       description = "Execute complex tmux commands in just a few keystrokes with a modal mode that is designed to be efficient, easy to remember and comfortable";
+        #       license = licenses.mit;
+        #       platforms = platforms.unix;
+        #       maintainers = with maintainers; [ whame ];
+        #     };
+        #   };
+        # }
       ]
       ++ (
         if theme == "catppuccin" then
@@ -123,6 +168,30 @@ in
                 set -g @catppuccin_host_icon ""
               '';
             }
+            # {
+            #   plugin = catppuccin;
+            #   extraConfig = ''
+            #     set -g @catppuccin_flavour 'frappe'
+            #
+            #     set -g @catppuccin_window_left_separator ""
+            #     set -g @catppuccin_window_right_separator " "
+            #     set -g @catppuccin_window_middle_separator " █"
+            #     set -g @catppuccin_window_number_position "right"
+            #     set -g @catppuccin_window_default_fill "number"
+            #     set -g @catppuccin_window_default_text "#W"
+            #     set -g @catppuccin_window_current_text "#W"
+            #     set -g @catppuccin_window_current_fill "number"
+            #     set -g @catppuccin_status_modules_right "directory host"
+            #     set -g @catppuccin_status_modules_left "session"
+            #     set -g @catppuccin_status_left_separator  " "
+            #     set -g @catppuccin_status_right_separator " "
+            #     set -g @catppuccin_status_right_separator_inverse "no"
+            #     set -g @catppuccin_status_fill "icon"
+            #     set -g @catppuccin_status_connect_separator "no"
+            #     set -g @catppuccin_directory_text "#{b:pane_current_path}"
+            #     set -g @catppuccin_host_icon ""
+            #   '';
+            # }
           ]
         else if theme == "ansi" then
           [ ]

@@ -24,7 +24,7 @@
       gopls.enable = true;
       hls = {
         enable = true;
-        installGhc = false;
+        installGhc = true;
       };
       rust_analyzer = {
         enable = true;

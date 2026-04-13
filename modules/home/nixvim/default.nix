@@ -49,6 +49,7 @@ in
     clipboard.register = "unnamedplus";
     diagnostic.settings.virtual_text = false;
     diagnostic.settings.underline = false;
+    diagnostic.settings.signs = false;
 
     filetype = {
       extension = {
@@ -65,7 +66,7 @@ in
       ./lsp.nix
       ./mini.nix
       ./treesitter.nix
-      ./coq.nix
+      ./autocomplete.nix
       ./git.nix
       ./conform.nix
       ./fzf-lua.nix
@@ -170,7 +171,7 @@ in
       }
     else if theme == "ansi" then
       {
-        colorscheme = "vim";
+        colorscheme = "industry";
       }
     else
       { }

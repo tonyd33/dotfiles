@@ -5,13 +5,17 @@ in
 {
   programs.git = {
     enable = true;
-    userName = me.fullname;
-    userEmail = me.email;
+    settings = {
+      user = {
+        name = me.fullname;
+        email = me.email;
+      };
+    };
     ignores = [
       "*~"
       "*.swp"
     ];
-    extraConfig = {
+    settings = {
       init.defaultBranch = "master";
       # pull.rebase = "false";
     };

@@ -30,3 +30,7 @@ dev:
 [group('Main')]
 run:
   nix run
+
+# [group('Main')]
+# run-home:
+#   nix run .#activate "$USER@$HOST"

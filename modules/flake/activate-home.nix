@@ -14,8 +14,9 @@
           name = "activate-home";
           text = ''
             set -x
-            HOSTNAME=$(hostname -s)
-            ${lib.getExe self'.packages.activate} "$USER"@"$HOSTNAME"
+            HOSTNAME=$(uname -n)
+            USER=$(whoami)
+            ${lib.getExe self'.packages.activate} "$tony"@"$HOSTNAME"
           '';
         };
       };
