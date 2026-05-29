@@ -80,17 +80,17 @@ in
       # neotest.enable       = true; # Easier test running
       # fidget.enable        = true; # LSP Progress message
 
-      sandwich.enable = true; # surround motions
+      vim-surround.enable = true; # surround motions
       neoconf.enable = true; # project-local configuration
       oil.enable = true; # filesystem editing
       twilight.enable = true; # focus on current code
-      which-key.enable = true; # too many keybinds sometimes
+      which-key.enable = false; # too many keybinds sometimes
       web-devicons.enable = true; # soy icons
       diffview.enable = true; # better diff
       lualine.enable = true; # status line
       nvim-ufo.enable = true; # better fold
       refactoring.enable = true; # refactoring
-      vimwiki.enable = true;
+      vimwiki.enable = false;
     };
 
     extraPlugins = [
@@ -106,9 +106,9 @@ in
       })
     ];
 
-    extraConfigVim = ''
-      runtime macros/sandwich/keymap/surround.vim
-    '';
+    # extraConfigVim = ''
+    #   runtime macros/sandwich/keymap/surround.vim
+    # '';
 
     keymaps = [
       # easymotion
