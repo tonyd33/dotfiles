@@ -37,7 +37,9 @@ in
             PATH="$PATH:/opt/homebrew/bin"
           ''
         else
-          ""
+          ''
+            PATH="$PATH:$HOME/.local/bin"
+          ''
       );
 
     initContent = ''

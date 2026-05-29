@@ -54,6 +54,7 @@ in
     filetype = {
       extension = {
         purs = "purescript";
+        tql = "tql";
       };
       pattern = {
         ".*/templates/.*%.yaml" = "helm";
@@ -94,7 +95,8 @@ in
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
-        name = "easymotion";
+        pname = "easymotion";
+        version = "unstable";
         src = pkgs.fetchFromGitHub {
           owner = "easymotion";
           repo = "vim-easymotion";
@@ -153,8 +155,8 @@ in
           enable = true;
           settings.flavour = "frappe";
           settings.styles = {
-            comments = ["italic"];
-            keywords = ["italic"];
+            comments = [ "italic" ];
+            keywords = [ "italic" ];
           };
           settings.integrations = {
             cmp = true;
