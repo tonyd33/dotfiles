@@ -88,7 +88,7 @@ in
       web-devicons.enable = true; # soy icons
       diffview.enable = true; # better diff
       lualine.enable = true; # status line
-      nvim-ufo.enable = true; # better fold
+      nvim-ufo.enable = false; # better fold
       refactoring.enable = true; # refactoring
       vimwiki.enable = false;
     };
@@ -173,7 +173,7 @@ in
       }
     else if theme == "ansi" then
       {
-        colorscheme = "industry";
+        colorscheme = "vim";
       }
     else
       { }

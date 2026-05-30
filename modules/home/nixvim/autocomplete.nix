@@ -13,7 +13,7 @@ in
     };
   };
   plugins.blink-cmp = {
-    enable = true;
+    enable = blink-enabled;
     autoLoad = true;
     setupLspCapabilities = true;
     settings = {

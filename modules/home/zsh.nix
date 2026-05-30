@@ -13,20 +13,9 @@ in
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
+    enableCompletion = false;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-
-    oh-my-zsh = {
-      enable = true;
-      theme = "fwalch";
-      plugins = [
-        "colored-man-pages"
-        "fzf" # cmd history
-        "kubectl" # completion
-        "kubectx"
-      ];
-    };
 
     profileExtra =
       ''''
@@ -43,6 +32,21 @@ in
       );
 
     initContent = ''
+      PROMPT='%F{blue}%2~%f %F{green}$%f '
+
+      autoload -Uz compinit
+      compinit -C
+
+      # emacs keybinds
+      WORDCHARS='*?[]~=&;!#$%^(){}<>'
+      bindkey -e
+      backward-kill-dir() {
+        local WORDCHARS='*?[]~=&;!#$%^(){}<>'
+        zle backward-kill-word
+      }
+      zle -N backward-kill-dir
+      bindkey '^W' backward-kill-dir
+
       # Make kubecolor share same completion logic as kubectl
       compdef kubecolor=kubectl
       alias ls="ls --color=auto"

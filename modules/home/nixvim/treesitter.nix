@@ -42,7 +42,7 @@ in
     };
   };
   plugins.treesitter-context = {
-    enable = true;
+    enable = false;
     settings = {
       multiline_threshold = 1;
       max_lines = 3;

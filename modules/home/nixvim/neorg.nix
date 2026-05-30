@@ -1,6 +1,6 @@
 {
   plugins.neorg = {
-    enable = true;
+    enable = false;
     settings.load = {
       "core.concealer" = {
         config = {
