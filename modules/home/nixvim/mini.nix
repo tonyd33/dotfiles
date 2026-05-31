@@ -6,7 +6,7 @@
       # basics.enable     = true; # this messes up things with autopairs
       # ai.enable = true;
       align.enable = true;
-      pairs.enable = true;
+      # pairs.enable = true;
       icons.enable = true;
 
       trailspace.enable = true;

@@ -49,10 +49,12 @@ in
     # clipboard.register = "unnamedplus";
     diagnostic.settings.virtual_text = false;
     diagnostic.settings.underline = false;
+    diagnostic.settings.signs = false;
 
     filetype = {
       extension = {
         purs = "purescript";
+        tql = "tql";
       };
       pattern = {
         ".*/templates/.*%.yaml" = "helm";
@@ -65,7 +67,7 @@ in
       ./lsp.nix
       ./mini.nix
       ./treesitter.nix
-      ./coq.nix
+      ./autocomplete.nix
       ./git.nix
       ./conform.nix
       ./fzf-lua.nix
@@ -78,22 +80,23 @@ in
       # neotest.enable       = true; # Easier test running
       # fidget.enable        = true; # LSP Progress message
 
-      sandwich.enable = true; # surround motions
+      vim-surround.enable = true; # surround motions
       neoconf.enable = true; # project-local configuration
       oil.enable = true; # filesystem editing
       twilight.enable = true; # focus on current code
-      which-key.enable = true; # too many keybinds sometimes
+      which-key.enable = false; # too many keybinds sometimes
       web-devicons.enable = true; # soy icons
       diffview.enable = true; # better diff
       lualine.enable = true; # status line
-      nvim-ufo.enable = true; # better fold
+      nvim-ufo.enable = false; # better fold
       refactoring.enable = true; # refactoring
-      vimwiki.enable = true;
+      vimwiki.enable = false;
     };
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
-        name = "easymotion";
+        pname = "easymotion";
+        version = "unstable";
         src = pkgs.fetchFromGitHub {
           owner = "easymotion";
           repo = "vim-easymotion";
@@ -103,9 +106,9 @@ in
       })
     ];
 
-    extraConfigVim = ''
-      runtime macros/sandwich/keymap/surround.vim
-    '';
+    # extraConfigVim = ''
+    #   runtime macros/sandwich/keymap/surround.vim
+    # '';
 
     keymaps = [
       # easymotion
@@ -152,8 +155,8 @@ in
           enable = true;
           settings.flavour = "frappe";
           settings.styles = {
-            comments = ["italic"];
-            keywords = ["italic"];
+            comments = [ "italic" ];
+            keywords = [ "italic" ];
           };
           settings.integrations = {
             cmp = true;

@@ -2,6 +2,7 @@
   flake,
   inputs,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -48,6 +49,9 @@ in
       python3
       typst
 
+      just
+      go-task
+
       kubectl
       kubernetes-helm
       k9s
@@ -55,11 +59,14 @@ in
       kubectx
       gh
       tmux-xpanes
+
+      opencode
     ]
     ++ (
       if isLinux then
         [
           imv
+          lazysql
           obs-studio
           tofi
           # on macOS, tailscale will be installed through app store
