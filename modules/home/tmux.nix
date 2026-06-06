@@ -232,6 +232,10 @@ in
           status_style="fg=colour0,bg=colour7"
           status_style_inverse="fg=colour7,bg=colour0"
 
+          # dim inactive pane
+          set -g window-style 'fg=colour8'
+          set -g window-active-style 'fg=colour15'
+
           set -g status-position bottom
           set -g status "on"
           set -g status-bg "colour0"

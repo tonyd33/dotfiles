@@ -72,7 +72,7 @@ in
       ./conform.nix
       ./fzf-lua.nix
       ./neorg.nix
-      ./nvim-tree.nix
+      ./netrw.nix
     ];
 
     plugins = {
@@ -82,7 +82,6 @@ in
 
       vim-surround.enable = true; # surround motions
       neoconf.enable = true; # project-local configuration
-      oil.enable = true; # filesystem editing
       twilight.enable = true; # focus on current code
       which-key.enable = false; # too many keybinds sometimes
       web-devicons.enable = true; # soy icons

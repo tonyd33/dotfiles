@@ -15,21 +15,9 @@ in
     enable = true;
     enableCompletion = false;
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    syntaxHighlighting.enable = false;
 
-    profileExtra =
-      ''''
-      + (
-        if isDarwin then
-          ''
-            alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-            PATH="$PATH:/opt/homebrew/bin"
-          ''
-        else
-          ''
-            PATH="$PATH:$HOME/.local/bin"
-          ''
-      );
+    profileExtra = "";
 
     initContent = ''
       PROMPT='%F{blue}%2~%f %F{green}$%f '
@@ -37,21 +25,42 @@ in
       autoload -Uz compinit
       compinit -C
 
-      # emacs keybinds
-      WORDCHARS='*?[]~=&;!#$%^(){}<>'
+      # bash readline keybinds
+      WORDCHARS=\'\'
       bindkey -e
-      backward-kill-dir() {
-        local WORDCHARS='*?[]~=&;!#$%^(){}<>'
+      backward-kill-space-word() {
+        WORDCHARS='*?[]~=&;!#$%^(){}<>-_./:|'
         zle backward-kill-word
       }
-      zle -N backward-kill-dir
-      bindkey '^W' backward-kill-dir
+      zle -N backward-kill-space-word
+      bindkey '^W' backward-kill-space-word
+
+      # ctrl x ctrl e editor
+      autoload -Uz edit-command-line
+      zle -N edit-command-line
+      bindkey '^X^E' edit-command-line
 
       # Make kubecolor share same completion logic as kubectl
       compdef kubecolor=kubectl
       alias ls="ls --color=auto"
       enable-fzf-tab
-    '';
+
+      export MANPAGER="nvim +Man!"
+    ''
+    + (
+      if isDarwin then
+        ''
+          alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+          alias copy="pbcopy"
+          alias paste="pbpaste"
+        ''
+      else
+        ''
+          alias copy="wl-copy"
+          alias paste="wl-paste"
+          PATH="$PATH:$HOME/.local/bin"
+        ''
+    );
 
     plugins = [
       {

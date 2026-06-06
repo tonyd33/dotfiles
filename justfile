@@ -2,6 +2,11 @@
 # https://just.systems/
 # run `just` from this directory to see available commands
 
+set lazy := true
+
+user := `whoami`
+host := `cat /proc/sys/kernel/hostname`
+
 # Default command when 'just' is run without arguments
 default:
   @just --list
@@ -31,6 +36,6 @@ dev:
 run:
   nix run
 
-# [group('Main')]
-# run-home:
-#   nix run .#activate "$USER@$HOST"
+[group('Main')]
+run-home:
+  nix run .#activate "{{ user }}@{{ host }}"
