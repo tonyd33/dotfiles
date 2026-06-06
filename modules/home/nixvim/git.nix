@@ -8,7 +8,7 @@
     # trying these
     neogit.enable = true;
     octo = {
-      enable = true;
+      enable = false;
       settings.picker = "fzf-lua";
     };
   };

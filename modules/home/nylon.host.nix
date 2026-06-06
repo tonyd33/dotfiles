@@ -4,7 +4,6 @@ let
   excluded = [
     "all.nix"
     "ghostty.nix"
-    "mise.nix"
   ];
 in
 {

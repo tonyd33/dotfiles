@@ -11,13 +11,13 @@ in
 {
   programs.tmux = {
     enable = true;
-    shell = "/usr/bin/zsh";
+    shell = "/bin/zsh";
 
     shortcut = "a";
     baseIndex = 1;
     escapeTime = 0;
 
-    # terminal = "xterm-kitty";
+    terminal = "tmux-256color";
 
     keyMode = "vi";
     mouse = true;
