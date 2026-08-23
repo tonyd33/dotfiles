@@ -2,13 +2,13 @@
 let
   treesitter-tql-grammar = pkgs.tree-sitter.buildGrammar {
     language = "tql";
-    version = "0.1.2";
+    version = "0.2.0";
     location = "packages/tree-sitter-tql";
     src = pkgs.fetchFromGitHub {
       owner = "tonyd33";
       repo = "tql";
-      rev = "97ee05e53e90f4871cb36bc96344324cf915e8f9";
-      hash = "sha256-YuaWDgyJ/wXXMtpzy3kglDVioFs1e/QDp9qkhCobWWA=";
+      rev = "5e5fd1cd96bbb480ae1e17120f027985c60e1648";
+      hash = "sha256-O3y+2xWGmafim4kYzpiBKWrUoNeeeOAE11RIptpa+7w=";
     };
     meta.homepage = "https://github.com/tonyd33/tql";
   };

@@ -46,7 +46,7 @@ in
       # formatexpr = "v:lua.require'conform'.formatexpr()";
     };
 
-    # clipboard.register = "unnamedplus";
+    clipboard.register = "unnamedplus";
     diagnostic.settings.virtual_text = false;
     diagnostic.settings.underline = false;
     diagnostic.settings.signs = false;
@@ -92,6 +92,12 @@ in
       vimwiki.enable = false;
     };
 
+    highlightOverride = {
+      Pmenu = {
+        bg = "Grey";
+      };
+    };
+
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
         pname = "easymotion";
@@ -103,11 +109,20 @@ in
           hash = "sha256-4Xc7QHlS2zdVHksIMPZUkJcd8Urq3NK0AmKUHMFUYMA=";
         };
       })
+      # (pkgs.vimUtils.buildVimPlugin {
+      #   pname = "asyncrun";
+      #   version = "unstable";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "skywind3000";
+      #     repo = "asyncrun.vim";
+      #     rev = "98d3c0fdeb983f0ef62fe3a49da440f6d2c045ce";
+      #     hash = "sha256-cJUDUToKbfvZl4y8JROiRH1yRgPYVmkqVyDH4njxwM8=";
+      #   };
+      # })
     ];
 
-    # extraConfigVim = ''
-    #   runtime macros/sandwich/keymap/surround.vim
-    # '';
+    extraConfigVim = ''
+    '';
 
     keymaps = [
       # easymotion

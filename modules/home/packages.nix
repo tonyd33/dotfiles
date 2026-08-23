@@ -23,6 +23,7 @@ in
       nil # Nix language server
       nix-info
       nixfmt
+      devenv
 
       # util
       bash
@@ -43,6 +44,7 @@ in
       ncmpcpp
       restish
       localsend
+      irssi
       # bitwarden-cli
 
       # others
@@ -52,9 +54,9 @@ in
       just
       go-task
 
-      kubectl
+      # kubectl
       kubernetes-helm
-      k9s
+      # k9s
       minikube
       kubectx
       gh
@@ -65,7 +67,7 @@ in
     ++ (
       if isLinux then
         [
-          imv
+          # imv
           lazysql
           obs-studio
           tofi

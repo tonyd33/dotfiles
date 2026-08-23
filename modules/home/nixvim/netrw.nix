@@ -1,5 +1,5 @@
 let
-  editor = "oil"; # | nvim-tree
+  editor = "nvim-tree"; # | nvim-tree
 in
 {
   plugins.oil = {

@@ -14,7 +14,7 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = false;
-    autosuggestion.enable = true;
+    autosuggestion.enable = false;
     syntaxHighlighting.enable = false;
 
     profileExtra = "";
@@ -26,8 +26,11 @@ in
       compinit -C
 
       # bash readline keybinds
-      WORDCHARS=\'\'
+      WORDCHARS=""
       bindkey -e
+      autoload -U select-word-style
+      select-word-style bash
+
       backward-kill-space-word() {
         WORDCHARS='*?[]~=&;!#$%^(){}<>-_./:|'
         zle backward-kill-word
