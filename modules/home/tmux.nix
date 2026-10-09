@@ -224,7 +224,8 @@ in
 
       # set default directory for new windows in this session to current directory
       bind M-c attach-session -c "#{pane_current_path}"
-    '' + (
+    ''
+    + (
       if theme == "catppuccin" then
         ""
       else if theme == "ansi" then

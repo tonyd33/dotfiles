@@ -26,7 +26,10 @@
     {
       key = "<leader>fp";
       action = ":FzfLua ";
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
       options.desc = "fzf-lua prompt (fzf-lua)";
     }
     {

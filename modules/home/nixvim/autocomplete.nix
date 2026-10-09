@@ -23,7 +23,10 @@ in
         };
       };
       keymap = {
-        "<CR>" = ["accept" "fallback"];
+        "<CR>" = [
+          "accept"
+          "fallback"
+        ];
       };
     };
   };

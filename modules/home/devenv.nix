@@ -5,4 +5,3 @@
   #   # enableZshIntegration = true;
   # };
 }
-

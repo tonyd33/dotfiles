@@ -14,4 +14,3 @@ in
       filter (fn: !(hasSuffix ".host.nix" fn) && !(elem fn excluded)) (attrNames (readDir ./.))
     );
 }
-

@@ -1,4 +1,9 @@
-{ pkgs, flake, config, ... }:
+{
+  pkgs,
+  flake,
+  config,
+  ...
+}:
 let
   inherit (config) theme;
   yaziFlavors = pkgs.fetchFromGitHub {

@@ -19,6 +19,7 @@ in
     };
 
     opts = {
+      exrc = true;
       syntax = "on";
       compatible = false;
 
@@ -121,8 +122,7 @@ in
       # })
     ];
 
-    extraConfigVim = ''
-    '';
+    extraConfigVim = "";
 
     keymaps = [
       # easymotion
@@ -175,7 +175,7 @@ in
           settings.integrations = {
             cmp = true;
             gitsigns = true;
-            nvimtree = true;
+            # nvimtree = true;
             treesitter = true;
             notify = false;
             mini = {

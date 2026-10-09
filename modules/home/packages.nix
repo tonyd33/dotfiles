@@ -18,6 +18,8 @@ in
   home.packages =
     with pkgs;
     [
+      git
+      jujutsu
 
       # Nix dev
       nil # Nix language server
@@ -71,8 +73,6 @@ in
           lazysql
           obs-studio
           tofi
-          # on macOS, tailscale will be installed through app store
-          tailscale
           # darkman
           gimp
         ]
