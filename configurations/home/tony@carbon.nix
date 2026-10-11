@@ -15,7 +15,7 @@ in
     fullname = "Tony Du";
     email = "tonydu121@hotmail.com";
   };
-  theme = "ansi";
+  theme = "catppuccin";
 
   home.stateVersion = "24.11";
 }

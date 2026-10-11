@@ -123,7 +123,7 @@ in
                 };
               };
               extraConfig = ''
-                set -g @catppuccin_flavour 'frappe'
+                set -g @catppuccin_flavour 'macchiato'
 
                 set -g @catppuccin_window_left_separator ""
                 set -g @catppuccin_window_right_separator " "
@@ -147,7 +147,7 @@ in
             {
               plugin = catppuccin;
               extraConfig = ''
-                set -g @catppuccin_flavour 'frappe'
+                set -g @catppuccin_flavour 'macchiato'
 
                 set -g @catppuccin_window_left_separator ""
                 set -g @catppuccin_window_right_separator " "
@@ -171,7 +171,7 @@ in
             # {
             #   plugin = catppuccin;
             #   extraConfig = ''
-            #     set -g @catppuccin_flavour 'frappe'
+            #     set -g @catppuccin_flavour 'macchiato'
             #
             #     set -g @catppuccin_window_left_separator ""
             #     set -g @catppuccin_window_right_separator " "
@@ -218,6 +218,9 @@ in
       bind a copy-mode
       bind -T copy-mode-vi v send -X begin-selection
       bind -T copy-mode-vi y send -X copy-selection
+      bind -T copy-mode-vi [ send -X previous-prompt -o
+      bind -T copy-mode-vi ] send -X next-prompt -o
+      bind o copy-mode \; send -X previous-prompt -o
 
       # This is needed to enable C-a passthrough
       bind-key C-a send-keys C-a
@@ -227,7 +230,11 @@ in
     ''
     + (
       if theme == "catppuccin" then
-        ""
+        ''
+          # tmux 3.7 only clears the message line when the style has fill
+          set -g message-style "fg=#8bd5ca,bg=#24273a,fill=#24273a"
+          set -g message-command-style "fg=#8bd5ca,bg=#24273a,fill=#24273a"
+        ''
       else if theme == "ansi" then
         ''
           status_style="fg=colour0,bg=colour7"

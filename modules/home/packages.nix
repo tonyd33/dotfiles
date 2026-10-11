@@ -36,7 +36,7 @@ in
       ripgrep
       fd
       tree
-      ncdu
+      # ncdu
       btop
       entr
       unzip
@@ -64,17 +64,17 @@ in
       gh
       tmux-xpanes
 
-      opencode
+      claude-code
     ]
     ++ (
       if isLinux then
         [
           # imv
           lazysql
-          obs-studio
+          # obs-studio
           tofi
           # darkman
-          gimp
+          # gimp
         ]
       else
         [ ]

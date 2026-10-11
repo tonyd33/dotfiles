@@ -167,7 +167,7 @@ in
       {
         colorschemes.catppuccin = {
           enable = true;
-          settings.flavour = "frappe";
+          settings.flavour = "macchiato";
           settings.styles = {
             comments = [ "italic" ];
             keywords = [ "italic" ];

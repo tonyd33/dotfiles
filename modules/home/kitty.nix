@@ -41,7 +41,7 @@ in
   // (
     if theme == "catppuccin" then
       {
-        themeFile = "Catppuccin-Frappe";
+        themeFile = "Catppuccin-Macchiato";
       }
     else if theme == "ansi" then
       { }

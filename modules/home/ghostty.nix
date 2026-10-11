@@ -14,7 +14,7 @@ in
         "Comic Code Ligatures"
         "Comic Mono"
       ];
-      theme = "catppuccin-frappe";
+      theme = "catppuccin-macchiato";
       window-decoration = false;
     };
   };

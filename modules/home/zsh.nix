@@ -22,6 +22,13 @@ in
     initContent = ''
       PROMPT='%F{blue}%2~%f %F{green}$%f '
 
+      # OSC 133 marks for tmux previous-prompt/next-prompt
+      autoload -Uz add-zsh-hook
+      _osc133_prompt() { print -n "\e]133;A\e\\" }
+      _osc133_output() { print -n "\e]133;C\e\\" }
+      add-zsh-hook precmd _osc133_prompt
+      add-zsh-hook preexec _osc133_output
+
       autoload -Uz compinit
       compinit -C
 

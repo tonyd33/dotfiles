@@ -22,10 +22,19 @@ in
     flavors = (
       if theme == "catppuccin" then
         {
-          catppuccin-frappe = "${yaziFlavors}/catppuccin-frappe.yazi";
+          catppuccin-macchiato = "${yaziFlavors}/catppuccin-macchiato.yazi";
         }
       else if theme == "ansi" then
         { }
+      else
+        { }
+    );
+    theme = (
+      if theme == "catppuccin" then
+        {
+          flavor.dark = "catppuccin-macchiato";
+          flavor.light = "catppuccin-macchiato";
+        }
       else
         { }
     );
